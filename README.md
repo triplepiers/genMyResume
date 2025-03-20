@@ -15,7 +15,7 @@
 
 ## 后端
 
-- 技术栈：NodeJS + LowDB（实在不想在别人的电脑上装 MySQL 了）
+- 技术栈：NodeJS + [LowDB](https://github.com/typicode/lowdb)（实在不想在别人的电脑上装 MySQL 了）
 
 - 启动：
     ```bash
