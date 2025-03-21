@@ -11,7 +11,7 @@
 
 ## 前端
 
-- 技术栈：React(NextJS)
+- 技术栈：React(NextJS)、TailWind CSS
 
 ## 后端
 
