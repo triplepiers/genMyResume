@@ -1,9 +1,17 @@
-import styles from '@/styles/header.module.css';
-
 export const Header = () => {
     return (
-        <header className={styles.header}>
-            Create a job-winning resume in minutes with our easy-to-use builder
+        <header className="bg-slate-800 text-white
+        w-screen h-[var(--header-height)] sticky top-0
+        flex items-center justify-between px-5">
+            <div>Logo</div>
+            <div className="flex gap-[1rem] items-center">
+                <div>Options</div>
+                <button className="bg-[var(--hilight)] text-[var(--foreground)] font-bold
+                px-[1.25rem] py-[0.25rem] rounded-2xl
+                cursor-pointer">
+                    Log In
+                </button>
+            </div>
         </header>
     )
 };

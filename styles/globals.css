@@ -6,6 +6,8 @@
   --foreground:  #06152B;
   --foreground-lt:#505C70;
   --hilight:      #FFC85F;
+  --pink:         #E92E4C;
+  --blue:         #37BBCC;
 }
 
 @theme inline {

@@ -1,9 +1,9 @@
-import styles from '@/styles/footer.module.css';
-
 export const Footer = () => {
     return (
-        <footer className={styles.footer}>
-            This is Footer
+        <footer className="h-40
+        bg-stone-600 text-white font-thin
+        flex items-center justify-center">
+            © 2025 Works Limited. All Rights Reserved.
         </footer>
     )
 };
