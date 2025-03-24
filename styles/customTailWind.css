@@ -1,0 +1,15 @@
+/* custom.css */
+@import 'tailwindcss';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@layer components {
+    .custom-option-set {
+        @apply flex flex-col gap-1 items-center cursor-pointer;
+    }
+    .custom-option-icon {
+        @apply w-6 h-6 bg-[var(--foregroud)];
+    }
+}
