@@ -13,6 +13,8 @@
 
 - 技术栈：React(NextJS)、TailWind CSS
 
+    - 使用 react-color 实现自定义颜色选择
+
 ## 后端
 
 - 技术栈：NodeJS + [LowDB](https://github.com/typicode/lowdb)（实在不想在别人的电脑上装 MySQL 了）
