@@ -5,7 +5,7 @@ export default function Home(props: any[]) {
 
   const Jump = () => {
     // 这里缺一个登录验证
-    router.push('/result')
+    router.push('/checkout')
   }
   
   return (
@@ -19,7 +19,7 @@ export default function Home(props: any[]) {
           Create a job-winning resume in minutes with our easy-to-use builder
         </p>
       </div>
-      <button className="bg-[var(--green)]
+      <button className="bg-[var(--green)] font-medium
         px-[2rem] py-[0.5rem] rounded-4xl
         cursor-pointer"
         onClick={() => Jump()}>

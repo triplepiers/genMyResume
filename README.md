@@ -1,6 +1,10 @@
 # genMyResume
 > 什么，我居然能接外包
 
+## Bug
+
+header 的样式会变
+
 ## init
 
 - NPM 换源：
@@ -14,6 +18,9 @@
 - 技术栈：React(NextJS)、TailWind CSS
 
     - 使用 react-color 实现自定义颜色选择
+    - 使用 Material-UI 实现表单组件
+
+可以删掉 @mui/icons-material @emotion/styles 之类的
 
 ## 后端
 
