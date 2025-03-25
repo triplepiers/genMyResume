@@ -34,14 +34,14 @@ export const PdfGenerator = () => {
     }
 
     return (
-        <div className={styles.container}>
-            <div id="pdf" className={styles.pdf}>
-                <h1>PDF Generator</h1>
-                <p>PDF Generator</p>
-            </div>
-            <button onClick={() => generate(true)} className={styles.btn}>Generate PDF</button>
-            <button onClick={() => generate(false)} className={styles.btn}>Generate PNG</button>
+        <div id="pdf" className={styles.pdf}>
+            <h1>PDF Generator</h1>
+            <p>PDF Generator</p>
+            {/* <button onClick={() => generate(true)} className={styles.btn}>Generate PDF</button> */}
+            {/* <button onClick={() => generate(false)} className={styles.btn}>Generate PNG</button> */}
         </div>
+
+
     )
 };
 

@@ -9,7 +9,10 @@
     .custom-option-set {
         @apply flex flex-col gap-1 items-center cursor-pointer;
     }
+    .custom-option-set:hover .custom-option-icon {
+        @apply text-[var(--blue)]
+    }
     .custom-option-icon {
-        @apply w-6 h-6 bg-[var(--foregroud)];
+        @apply w-6 h-6 text-[var(--foregroud)] duration-200;
     }
 }

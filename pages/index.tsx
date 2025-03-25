@@ -19,7 +19,7 @@ export default function Home(props: any[]) {
           Create a job-winning resume in minutes with our easy-to-use builder
         </p>
       </div>
-      <button className="bg-[var(--hilight)]
+      <button className="bg-[var(--green)]
         px-[2rem] py-[0.5rem] rounded-4xl
         cursor-pointer"
         onClick={() => Jump()}>

@@ -3,11 +3,13 @@
 :root {
   --header-height: 50px;
   --background:  #F9FAFF;
-  --foreground:  #06152B;
-  --foreground-lt:#505C70;
+  --foreground:  #333333;
+  --foreground-lt:#787878;
   --hilight:      #FFC85F;
+  --green:        #B9EB3A;
   --pink:         #E92E4C;
   --blue:         #37BBCC;
+  --blue-lt:      #31CFE2;
 }
 
 @theme inline {
