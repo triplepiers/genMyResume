@@ -1,187 +1,97 @@
-import { useRouter } from "next/router"
-import { useState, Fragment } from "react";
+import { useState } from "react";
+import { useRouter } from "next/router";
 
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Stack from '@mui/material/Stack';
-import Step from '@mui/material/Step';
-import StepLabel from '@mui/material/StepLabel';
-import Stepper from '@mui/material/Stepper';
-import Typography from '@mui/material/Typography';
-import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
-import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
+import { Heading } from "@/components/Form/Heading";
+import { TemplateString } from "next/dist/lib/metadata/types/metadata-types";
 
-import { HeadingForm } from "@/components/Form/HeadingForm";
-import { EducationForm } from "@/components/Form/EducationForm";
-import PaymentForm from '@/components/Form/PaymentForm';
-import Review from '@/components/Form/Review';
+// 样式
+const btn_base_style = '\
+cursor-pointer rounded-md font-medium\
+block px-4 py-[0.2rem] min-w-[6rem] shrink-0\
+duration-300 hover:-translate-y-1'
 
-
-
-// 节点
-const steps = [                // ? optional
-    ['Heading', false],
-    ['Education', false],
-    ['Working Experience', false],
-    ['Award & Certificates', true],
-    ['Additional Information', true],
-    ['Slef-Statement', false],
-]
-function getStepContent(step: number) {
-    switch (step) {
-        case 0:
-            // return <HeadingForm />;
-            return <EducationForm />;
-        case 1:
-            return <PaymentForm />;
-        case 2:
-            return <Review />;
-        case 3:
-        case 4:
-        case 5:
-            return (<div>steps[step]</div>);
-        default:
-            throw new Error('Unknown Step!');
-    }
-}
+type FormMeta =  { title: string, desc: string }
 
 export default function Checkout(props: any[]) {
+    // 路由相关
     const router = useRouter()
-    const Jump = () => {
-        // 这里缺一个登录验证
-        router.push('/result')
-    }
 
-    const [activeStep, setActiveStep] = useState(0);
-    const goNextStep = () => { setActiveStep(cur => cur + 1) }
+    // stepper 组件
+    // 节点
+    const steps = [                // ? optional
+        ['Heading', false],
+        ['Education', false],
+        ['Working Experience', false],
+        ['Award & Certificates', true],
+        ['Additional Information', true],
+        ['Slef-Statement', false],
+    ]
+    function getStepContent(step: number) {
+        switch (step) {
+            case 0:
+                return <Heading updateFormMeta={handleFormMeta}/>;
+                // return 'head';
+            case 1:
+                // return 'edu';
+            case 2:
+                // return 'work';
+            case 3:
+            case 4:
+            case 5:
+                return (<span>{steps[step]}</span>);
+            default:
+                throw new Error('Unknown Step!');
+        }
+    }
+    const [activeStep, setActiveStep] = useState(0)
+    const goNextStep = () => { 
+        if (activeStep === steps.length - 1) { router.push('/result') } 
+        else                                 { setActiveStep(cur => cur + 1) }
+    }
     const goPrevStep = () => { setActiveStep(cur => cur - 1) }
 
+    // 表单信息
+    const [formTitle, setFormTitle] = useState('');
+    const [formDesc,  setFormDesc]  = useState('');
+    const handleFormMeta = (neoFormMeta: FormMeta) => {
+        setFormTitle(neoFormMeta.title);
+        setFormDesc(neoFormMeta.desc);
+    }
+
     return (
-        <>
-            <div className="w-screen min-h-[calc(100vh-var(--header-height))]
-            flex flex-col items-center
-            px-10 pt-10">
-                <>
-                    {/* Form */}
-                    <Box
-                        sx={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            flexGrow: 1,
-                            width: '100%',
-                            maxWidth: { sm: '100%', md: 600 },
-                            gap: { xs: 5, md: 'none' },
-                        }}
-                    >
-                        <Stepper
-                            activeStep={activeStep}
-                            alternativeLabel
-                            sx={{ display: 'flex' }}
-                        >
-                            {steps.map((label) => (
-                                <Step
-                                    sx={{
-                                        ':first-child': { pl: 0 },
-                                        ':last-child': { pr: 0 },
-                                        '& .MuiStepConnector-root': { top: { xs: 11 } },
-                                    }}
-                                    key={label}
-                                >
-                                    <StepLabel
-                                        sx={{ '.MuiStepLabel-labelContainer': { maxWidth: '70px' } }}
-                                    >
-                                        {label}
-                                    </StepLabel>
-                                </Step>
-                            ))}
-                        </Stepper>
-                        {activeStep === steps.length ? (
-                            <Stack spacing={2} useFlexGap>
-                                <Typography variant="h1">📦</Typography>
-                                <Typography variant="h5">Thank you for your order!</Typography>
-                                <Typography variant="body1" sx={{ color: 'text.secondary' }}>
-                                    Your order number is
-                                    <strong>&nbsp;#140396</strong>. We have emailed your order
-                                    confirmation and will update you once its shipped.
-                                </Typography>
-                                <Button
-                                    variant="contained"
-                                    sx={{ alignSelf: 'start', width: { xs: '100%', sm: 'auto' } }}
-                                >
-                                    Go to my orders
-                                </Button>
-                            </Stack>
-                        ) : (
-                            <Fragment>
-                                {getStepContent(activeStep)}
-                                <Box
-                                    sx={[
-                                        {
-                                            display: 'flex',
-                                            flexDirection: { xs: 'column-reverse', sm: 'row' },
-                                            alignItems: 'end',
-                                            flexGrow: 1,
-                                            gap: 1,
-                                            pb: { xs: 12, sm: 0 },
-                                            mt: { xs: 2, sm: 0 },
-                                            mb: '60px',
-                                        },
-                                        activeStep !== 0
-                                            ? { justifyContent: 'space-between' }
-                                            : { justifyContent: 'flex-end' },
-                                    ]}
-                                >
-                                    {activeStep !== 0 && (
-                                        <Button
-                                            startIcon={<ChevronLeftRoundedIcon />}
-                                            onClick={goPrevStep}
-                                            variant="text"
-                                            sx={{ display: { xs: 'none', sm: 'flex' } }}
-                                        >
-                                            Previous
-                                        </Button>
-                                    )}
-                                    {activeStep !== 0 && (
-                                        <Button
-                                            startIcon={<ChevronLeftRoundedIcon />}
-                                            onClick={goPrevStep}
-                                            variant="outlined"
-                                            fullWidth
-                                            sx={{ display: { xs: 'flex', sm: 'none' } }}
-                                        >
-                                            Previous
-                                        </Button>
-                                    )}
-                                    <Button
-                                        variant="contained"
-                                        endIcon={<ChevronRightRoundedIcon />}
-                                        onClick={goNextStep}
-                                        sx={{
-                                            width: { xs: '100%', sm: 'fit-content' },
-                                        }}
-                                    >
-                                        {activeStep === steps.length - 1 ? 'Finished!' : 'Next'}
-                                    </Button>
-                                </Box>
-                            </Fragment>
-                        )}
-                    </Box>
-                </>
-                {/* <button className="bg-[var(--pink)] font-medium text-white
-            px-[2rem] py-[0.5rem] rounded-[5px]
-            cursor-pointer"
-                    onClick={() => Jump()}>
-                    Finished !
-                </button> */}
+        <div className="flex flex-col w-screen h-[calc(100vh-var(--header-height))] p-10 gap-3">
+            <div>这是该死的 Stepper，你在：{steps[activeStep]}</div>
+            <div className="grow-1 border-1 w-100%
+            flex flex-col items-center">
+                <h1 className="text-3xl font-bold">{formTitle}</h1>
+                <p dangerouslySetInnerHTML={{ __html: formDesc}} className="mt-2 mb-5"></p>
+                <div className="">
+                    {(getStepContent(activeStep))}
+                </div>
             </div>
-        </>
+            {/* button wrap */}
+            <div className="w-100% flex justify-end gap-3">
+                {
+                    activeStep !== 0 && (
+                    <button onClick={goPrevStep}
+                    className={`${btn_base_style} bg-[var(--foreground)] text-[var(--background)]`}>
+                        Prev
+                    </button>
+                    )
+                }
+                <button onClick={goNextStep}
+                className={`${btn_base_style} bg-[var(${activeStep === steps.length - 1 ? '--green' : '--blue'})] font-bold`}>
+                    {activeStep === steps.length - 1 ? 'Finished!' : 'Next'}
+                </button>
+            </div>
+        </div>
     )
 }
 
 export function getStaticProps() {
     return {
         props: {
-            pageName: "CheckOut",
+            pageName: "Checkout",
         },
     };
 }
