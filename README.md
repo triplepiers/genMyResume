@@ -20,6 +20,7 @@ header 的样式会变
     - 使用 react-color 实现自定义颜色选择
     - 使用 Material-UI 实现表单组件
       - 妈的样式定义太丑了，换成 MUI-tailWind 了 => giao 超难用
+      - 然后发现还有 Shadcn 和 nextui 这种好东西
 
 可以删掉 @mui/icons-material @emotion/styles 之类的 
 

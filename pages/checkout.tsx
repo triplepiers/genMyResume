@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useRouter } from "next/router";
 
 import { Heading } from "@/components/Form/Heading";
 import { TemplateString } from "next/dist/lib/metadata/types/metadata-types";
+import { FaS } from "react-icons/fa6";
 
 // 样式
 const btn_base_style = '\
@@ -29,7 +30,7 @@ export default function Checkout(props: any[]) {
     function getStepContent(step: number) {
         switch (step) {
             case 0:
-                return <Heading updateFormMeta={handleFormMeta}/>;
+                return <Heading updateFormMeta={handleFormMeta} updateFormStatus={goNextStep}/>;
                 // return 'head';
             case 1:
                 // return 'edu';
@@ -44,7 +45,8 @@ export default function Checkout(props: any[]) {
         }
     }
     const [activeStep, setActiveStep] = useState(0)
-    const goNextStep = () => { 
+    const trySubmit = () => { document.getElementById('GO')?.click() }
+    const goNextStep = () => {
         if (activeStep === steps.length - 1) { router.push('/result') } 
         else                                 { setActiveStep(cur => cur + 1) }
     }
@@ -59,30 +61,35 @@ export default function Checkout(props: any[]) {
     }
 
     return (
-        <div className="flex flex-col w-screen h-[calc(100vh-var(--header-height))] p-10 gap-3">
+        <div className="flex flex-col w-screen min-h-[calc(100vh-var(--header-height))] p-10 gap-3">
             <div>这是该死的 Stepper，你在：{steps[activeStep]}</div>
             <div className="grow-1 border-1 w-100%
             flex flex-col items-center">
                 <h1 className="text-3xl font-bold">{formTitle}</h1>
                 <p dangerouslySetInnerHTML={{ __html: formDesc}} className="mt-2 mb-5"></p>
-                <div className="">
+                <div className="w-full flex justify-center">
                     {(getStepContent(activeStep))}
                 </div>
             </div>
             {/* button wrap */}
             <div className="w-100% flex justify-end gap-3">
                 {
-                    activeStep !== 0 && (
-                    <button onClick={goPrevStep}
+                    activeStep !== 0 &&
+                    (<button onClick={goPrevStep}
                     className={`${btn_base_style} bg-[var(--foreground)] text-[var(--background)]`}>
                         Prev
-                    </button>
-                    )
+                    </button>)
                 }
-                <button onClick={goNextStep}
-                className={`${btn_base_style} bg-[var(${activeStep === steps.length - 1 ? '--green' : '--blue'})] font-bold`}>
-                    {activeStep === steps.length - 1 ? 'Finished!' : 'Next'}
-                </button>
+                {
+                    (activeStep === steps.length - 1) ?
+                    (<button onClick={trySubmit} type="submit" form='headingForm'
+                        className={`${btn_base_style} bg-[var(--green)] font-bold`}>
+                        Finished!
+                    </button>):
+                    (<button onClick={trySubmit} className={`${btn_base_style} bg-[var(--blue)] font-bold`}>
+                        Next
+                    </button>)
+                }
             </div>
         </div>
     )

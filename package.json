@@ -9,14 +9,24 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.0.1",
+    "@radix-ui/react-label": "^2.1.2",
+    "@radix-ui/react-slot": "^1.1.2",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
     "dom-to-pdf": "^0.3.2",
     "html2canvas": "^1.4.1",
     "jspdf": "^3.0.1",
+    "lucide-react": "^0.487.0",
     "next": "15.2.3",
     "react": "^19.0.0",
     "react-color": "^2.19.3",
     "react-dom": "^19.0.0",
-    "react-icons": "^5.5.0"
+    "react-hook-form": "^7.55.0",
+    "react-icons": "^5.5.0",
+    "tailwind-merge": "^3.1.0",
+    "tw-animate-css": "^1.2.5",
+    "zod": "^3.24.2"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
