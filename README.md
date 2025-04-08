@@ -24,6 +24,10 @@ header 的样式会变
 
 可以删掉 @mui/icons-material @emotion/styles 之类的 
 
+month picker 不想自己重新写，直接用了 ElementUI
+
+INPUT-OTP 可以用来做验证码输入框
+
 ## 后端
 
 - 技术栈：NodeJS + [LowDB](https://github.com/typicode/lowdb)（实在不想在别人的电脑上装 MySQL 了）

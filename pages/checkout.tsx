@@ -1,9 +1,8 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { useRouter } from "next/router";
 
 import { Heading } from "@/components/Form/Heading";
-import { TemplateString } from "next/dist/lib/metadata/types/metadata-types";
-import { FaS } from "react-icons/fa6";
+import { Education } from "@/components/Form/Education";
 
 // 样式
 const btn_base_style = '\
@@ -31,9 +30,8 @@ export default function Checkout(props: any[]) {
         switch (step) {
             case 0:
                 return <Heading updateFormMeta={handleFormMeta} updateFormStatus={goNextStep}/>;
-                // return 'head';
             case 1:
-                // return 'edu';
+                return <Education updateFormMeta={handleFormMeta} updateFormStatus={goNextStep}/>;
             case 2:
                 // return 'work';
             case 3:
