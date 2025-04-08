@@ -1,18 +1,24 @@
-const Koa = require('koa');
+import Koa from 'koa';
+import Router from 'koa-router';
+import cors from '@koa/cors';
+
 const app = new Koa();
+app.use(cors());
 
 // Logger
 app.use((ctx, nxt) => {
     console.log(`[${ctx.request.method}]  ${ctx.request.url}`);
+    nxt(); // tmd 忘记 next 了
 });
 
 // Router
-var Router = require('koa-router');
 var router = new Router();
 router.get('/',(ctx, nxt) => {
-    return ctx.response.body = 'Hello Koa';
+    ctx.response.body = 'Hello Koa';
+    nxt();
 })
 app.use(router.routes()).use(router.allowedMethods());
+
 
 // listen to Port: 8080, do sth. afer init
 app.listen(8080, () => {
