@@ -28,6 +28,16 @@ header 的样式会变
 
 - 技术栈：NodeJS + [LowDB](https://github.com/typicode/lowdb)（实在不想在别人的电脑上装 MySQL 了）
 
+- 配置 LLM 调用环境
+
+    在 `backEnd` 目录下新建 `.env` 文件，内容如下：
+
+    ```text
+    MODEL_URL='https://api.deepseek.com'
+    MODEL_KEY='sk-******'                # 请替换为自己的 Key
+    MODEL_NAME='deepseek-chat'
+    ```
+
 - 启动：
     ```bash
     cd backEnd
