@@ -1,5 +1,5 @@
 import Router from "koa-router";
-import { userExist, addUser } from "../User.js";
+import { userExist, addUser, validateAccount } from "../User.js";
 
 const userRouter = new Router({
     prefix: '/usr'
@@ -42,10 +42,12 @@ userRouter.post('/signin', (ctx, nxt) => {
 */
 userRouter.post('/', (ctx, nxt) => {
     let { phone, pwd } = ctx.request.body;
-    // ctx.response.body = genCDK(uid, tid);
-    console.log(phone, pwd)
-    ctx.response.body = 'ok got'
-    nxt();
+
+    if (validateAccount(phone, pwd)) {
+        ctx.response.body = JSON.stringify({ account: phone });
+        return ctx.status = 200
+    }
+    return ctx.status = 203
 })
 
 

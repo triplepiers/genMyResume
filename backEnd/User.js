@@ -6,6 +6,20 @@ function userExist(phone) {
     return (users.find((user) => user.phone === phone) !== undefined)
 }
 
+function validateAccount(phone, pwd) {
+    let usrInfo = users.find((user) => user.phone === phone);
+    console.log('hase acc')
+    if (!usrInfo) return false;
+    console.log('err pwd, should', usrInfo.password, 'but', pwd)
+    return usrInfo.password === pwd;
+}
+
+function checkPwd(phone, pwd) {
+    return (users.find(
+        (user) => user.phone === phone && user.password === pwd
+    ) !== undefined)
+}
+
 function isVIP(phone) {
     let userInfo = users.find((user) => user.phone === phone);
     if (!userInfo) {
@@ -24,15 +38,17 @@ async function modVIP(phone, neoIsVIP) {
 
 async function addUser(phone, pwd) {
     await userDB.update(({ users }) => users.push({
-        isVIP:    false,
-        phone:    phone,
+        isVIP: false,
+        phone: phone,
         password: pwd
     }));
 }
 
 export {
     userExist,
+    validateAccount,
     isVIP,
     modVIP,
-    addUser
+    addUser,
+    checkPwd
 }
