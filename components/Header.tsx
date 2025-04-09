@@ -8,8 +8,9 @@ export const Header = () => {
     const [isVIP,   setIsVIP]   = useState(false)
 
     useEffect(() => {
-        localStorage.setItem('account', 'sss777')
-        localStorage.setItem('isVIP', 'true')
+        // 这里要删掉
+        // localStorage.setItem('account', 'sss777')
+        // localStorage.setItem('isVIP', 'true')
         if (localStorage.getItem('account')) {
             setAccount(localStorage.getItem('account') as string);
         }

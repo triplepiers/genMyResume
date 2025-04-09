@@ -1,6 +1,12 @@
 import "@/styles/globals.css";
 import '@/styles/customTailWind.css';
 // import { Hanken_Grotesk } from "next/font/google";
+// const ft_HKGrotesk = Hanken_Grotesk({
+//   variable: "--font-HKGrotesk"
+// });
+
+import { useEffect } from "react";
+import { useRouter } from "next/router";
 
 import Head from "next/head";
 import type { AppProps } from "next/app";
@@ -8,11 +14,28 @@ import type { AppProps } from "next/app";
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 
-// const ft_HKGrotesk = Hanken_Grotesk({
-//   variable: "--font-HKGrotesk"
-// });
-
 export default function App({ Component, pageProps }: AppProps) {
+  // 监听路由变化
+  const router = useRouter()
+
+  useEffect(() => {
+    const handleRouteChange = (url:string) => {
+      // 不能阻止直接通过 URL 访问的
+      console.log(`Route is changing to ${url}`)
+      if (!localStorage.getItem('account') &&
+        url!=='/' && url!=='/login'
+      ) {
+        router.push('/login');
+      }
+    }
+    router.events.on('routeChangeStart', handleRouteChange)
+    // If the component is unmounted, unsubscribe
+    // from the event with the `off` method:
+    return () => {
+      router.events.off('routeChangeStart', handleRouteChange)
+    }
+  })
+  
   return (
     <>
       <Head>
