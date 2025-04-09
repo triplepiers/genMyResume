@@ -17,6 +17,10 @@
     .custom-option-icon {
         @apply w-6 h-6 text-[var(--foregroud)] duration-200;
     }
+    
+    .custom-hover-page-middle {
+        @apply fixed left-[50%] top-[50%] -translate-x-[50%] -translate-y-[50%] z-998;
+    }
 }
 
 :root {

@@ -24,7 +24,7 @@ export const Heading = (props: { updateFormMeta: Function, updateFormStatus: Fun
       title: 'Resume Heading',
       desc: 'We suggest including an <b>email</b> and <b>phone number</b>'
     })
-  })
+  }, [])
 
   useEffect(() => {
     let data = localStorage.getItem('1');
@@ -33,7 +33,7 @@ export const Heading = (props: { updateFormMeta: Function, updateFormStatus: Fun
         form.setValue(key as formKey, val as string)
       }
     }
-  })
+  }, [])
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

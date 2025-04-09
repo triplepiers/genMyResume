@@ -1,12 +1,33 @@
+import { useState } from "react";
+
 import { PdfGenerator } from "@/components/PdfGenerator";
 import { Palette } from "@/components/Editor/Palette";
+import { PurchaseCard } from "@/components/Cards/PurchaseCard";
 import { FaFileLines, FaPaintRoller, FaCirclePlus, FaDownload } from "react-icons/fa6";
 
 import '@/styles/customTailWind.css';
 
 export default function Result(props: any[]) {
+    // 下载按钮相关内容
+    const [showOPT, setShowOPT] = useState(true);
+    const handleDownload = {
+        download: () => {
+            if (handleDownload.checkPurcahased()) {
+                // down
+            } else { setShowOPT(true); }
+        },
+        // 检查是否已经购买
+        checkPurcahased: () => {
+            return false;
+        },
+        // 关闭 Purchase Card
+        handleUpdateShowOPT: (neoShowOPT: boolean) => {
+            setShowOPT(neoShowOPT);
+        }
+    }
+
     return (
-        <>
+        <div className="relative">
             {/* body */}
             <div className="w-screen min-h-[calc(100vh-var(--header-height))] 
             px-10 py-5 pb-10 relative">
@@ -34,12 +55,17 @@ export default function Result(props: any[]) {
                     <FaCirclePlus className="custom-option-icon" />
                     New Section
                 </div>
-                <div className="custom-option-set">
+                <div className="custom-option-set" onClick={handleDownload.download}>
                     <FaDownload className="custom-option-icon" />
                     Download
                 </div>
             </div>
-        </>
+            {/* 购买提示 */}
+            
+            {
+                showOPT ? (< PurchaseCard updateShow={handleDownload.handleUpdateShowOPT}/>) : (<></>)
+            }
+        </div>
     );
 }
 
