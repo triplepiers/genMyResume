@@ -3,11 +3,11 @@ import CryptoJS from "crypto-js";
 const MD5 = CryptoJS.MD5;
 const salt = 'buy_cdk';    // 这里可以改
 
-// 本来 MD5 的结果是 32 bit 的，这里截取 8-24 位
+// 本来 MD5 的结果是 32 bit 的，这里截取 8-20 位（12bit）
 function genCDK(uId, templateId) {
     return MD5(`${uId}${salt}${templateId}`)
             .toString(CryptoJS.enc.Hex)
-            .substring(8, 24)
+            .substring(8, 20)
             .toUpperCase();
 }
 
@@ -17,6 +17,13 @@ function checkCDK(cdk, uId, templateId) {
 }
 
 // 测试
-let cdk = genCDK('123456789', '1');
-console.log('CDK:', cdk);
-console.log('checkCDK:', checkCDK(cdk, '123456789', '1'));
+function test() {
+    let cdk = genCDK('123456789', '1');
+    console.log('CDK:', cdk);
+    console.log('checkCDK:', checkCDK(cdk, '123456789', '1'));
+}
+
+export {
+    genCDK,
+    checkCDK
+}
