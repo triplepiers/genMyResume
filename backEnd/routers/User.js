@@ -1,5 +1,5 @@
 import Router from "koa-router";
-import { userExist, addUser, validateAccount } from "../User.js";
+import { userExist, addUser, validateAccount, isVIP } from "../User.js";
 
 const userRouter = new Router({
     prefix: '/usr'
@@ -44,7 +44,7 @@ userRouter.post('/', (ctx, nxt) => {
     let { phone, pwd } = ctx.request.body;
 
     if (validateAccount(phone, pwd)) {
-        ctx.response.body = JSON.stringify({ account: phone });
+        ctx.response.body = JSON.stringify({ account: phone, isVIP: isVIP(phone) });
         return ctx.status = 200
     }
     return ctx.status = 203

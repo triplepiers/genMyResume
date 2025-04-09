@@ -51,6 +51,7 @@ export const SigninForm = () => {
             if (res.status === 200) {
                 // 存 localStorage
                 localStorage.setItem('account', res.data.account);
+                localStorage.setItem('isVIP',   'false');
                 // 返回之前的页面
                 setBtnType(BtnType.success);
                 setTimeout(() => {

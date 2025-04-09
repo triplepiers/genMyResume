@@ -42,6 +42,7 @@ export const LoginForm = () => {
             if (res.status === 200) {
                 // 存 localStorage
                 localStorage.setItem('account', res.data.account);
+                localStorage.setItem('isVIP',   res.data.isVIP);
                 // 返回之前的页面
                 setBtnType(BtnType.success);
                 setTimeout(() => {
