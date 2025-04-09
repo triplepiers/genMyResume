@@ -5,11 +5,10 @@ import { Palette } from "@/components/Editor/Palette";
 import { PurchaseCard } from "@/components/Cards/PurchaseCard";
 import { FaFileLines, FaPaintRoller, FaCirclePlus, FaDownload } from "react-icons/fa6";
 
-import '@/styles/customTailWind.css';
 
 export default function Result(props: any[]) {
     // 下载按钮相关内容
-    const [showOPT, setShowOPT] = useState(true);
+    const [showOPT, setShowOPT] = useState(false);
     const handleDownload = {
         download: () => {
             if (handleDownload.checkPurcahased()) {

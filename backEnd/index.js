@@ -2,7 +2,7 @@ import Koa from 'koa';
 import Router from 'koa-router';
 import cors from '@koa/cors';
 import bodyParser from 'koa-bodyparser';
-import { cdkRouter } from './routers/index.js';
+import routers from './routers/index.js';
 
 const app = new Koa();
 
@@ -25,7 +25,10 @@ router.get('/',(ctx, nxt) => {
     ctx.response.body = 'Hello Koa';
     nxt();
 })
-router.use(cdkRouter.routes())
+for (let subrouter of routers) {
+    router.use(subrouter.routes())
+}
+
 app.use(router.routes()).use(router.allowedMethods());
 
 

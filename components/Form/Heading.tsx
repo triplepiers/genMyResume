@@ -3,7 +3,7 @@ import { set, useForm } from "react-hook-form";
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 
-import { Form, FormItem, FormField, FormLabel, FormControl, FormDescription, FormMessage } from "../ui/form";
+import { Form, FormItem, FormField, FormLabel, FormControl, FormMessage } from "../ui/form";
 import { Input } from "../ui/input";
 
 type formKey = "name" | "surname" | "profession" | "city" | "province" | "postcode" | "phone" | "email";

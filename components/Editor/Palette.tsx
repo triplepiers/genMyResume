@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { PaletteBtn } from "./PaletteBtn";
-import { ColorPicker } from "./ColorPicker";
+import { PaletteBtn } from "@/components/Editor/PaletteBtn";
+import { ColorPicker } from "@/components/Editor/ColorPicker";
 
 const default_clr_list: string[][] = [
     ['#7D7D7D', '#34383D', '#E4E2DE', '#000000'],

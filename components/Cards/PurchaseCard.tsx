@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "@/lib/axios";
 import { useState, useEffect } from "react";
 
 import {
@@ -9,10 +9,6 @@ import {
 } from "@/components/ui/input-otp";
 import { Loader2, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-import '@/styles/customTailWind.css';
-
-axios.defaults.baseURL = 'http://localhost:8080';
 
 var uid = 'uid';
 var tid = 'tid';
@@ -79,11 +75,7 @@ export const PurchaseCard = (props: {updateShow: Function}) => {
     }
 
     return (
-        <div className="
-        custom-hover-page-middle
-        border-1 rounded-lg shadow-lg bg-[var(--background)]
-        px-6 py-5
-        ">
+        <div className="custom-hover-page-middle custom-card-base">
             <div className="w-full flex justify-between">
                 <h2 className="font-bold text-xl mb-1">
                     Oops! You haven't bought this template yet

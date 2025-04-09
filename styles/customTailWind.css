@@ -21,6 +21,9 @@
     .custom-hover-page-middle {
         @apply fixed left-[50%] top-[50%] -translate-x-[50%] -translate-y-[50%] z-998;
     }
+    .custom-card-base {
+        @apply border-1 rounded-lg shadow-lg bg-[var(--background)] px-6 py-5;
+    }
 }
 
 :root {

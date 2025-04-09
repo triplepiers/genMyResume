@@ -1,14 +1,25 @@
 import { PurchaseCard } from "@/components/Cards/PurchaseCard";
 import { useState } from "react";
 
+import axios from "@/lib/axios";
+
 export default function Test(props: any[]) {
   const [showOPT, setShowOPT] = useState(false);
   const download = () => {
-    if (checkPurcahased()) {
-      // down
-    } else {
-      setShowOPT(true);
-    }
+    // axios.get('/', {})
+    // .then((res:any) => {console.log(res)})
+    axios.post('/usr/signin', {
+      phone:    'a2a',
+      pwd:      'x86'
+  }).then((res) => {
+      console.log(res)
+      
+  })
+    // if (checkPurcahased()) {
+    //   // down
+    // } else {
+    //   setShowOPT(true);
+    // }
   }
   // 检查是否已经购买
   const checkPurcahased = () => {

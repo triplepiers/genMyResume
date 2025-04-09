@@ -4,7 +4,7 @@ import { string, z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Form, FormItem, FormField, FormLabel, FormControl, FormDescription, FormMessage } from "../ui/form";
+import { Form, FormItem, FormField, FormLabel, FormControl, FormMessage } from "../ui/form";
 import { Input } from "../ui/input";
 
 // 这个是 Degree 的选择列表

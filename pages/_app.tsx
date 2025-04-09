@@ -1,4 +1,5 @@
 import "@/styles/globals.css";
+import '@/styles/customTailWind.css';
 // import { Hanken_Grotesk } from "next/font/google";
 
 import Head from "next/head";

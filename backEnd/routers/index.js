@@ -1,5 +1,9 @@
 import cdkRouter from "./CDK.js";
+import userRouter from "./user.js";
 
-export {
-    cdkRouter
-}
+const routers = [
+    cdkRouter,
+    userRouter
+]
+
+export default routers;
