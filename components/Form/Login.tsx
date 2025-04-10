@@ -19,7 +19,7 @@ enum BtnType {
 };
 
 const formSchema = z.object({
-    phone:      z.string().length(11).regex(/^[0-9]+$/, { message: "Invalid Character", }),
+    phone:      z.string().length(8).regex(/^[0-9]+$/, { message: "Invalid Character", }),
     password:   z.string().min(5, { message: "Too short", }).max(10, { message: "Too long"})
 });
 

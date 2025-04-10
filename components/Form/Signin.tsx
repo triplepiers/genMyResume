@@ -21,7 +21,7 @@ enum BtnType {
 const formSchema = z.object({
     // username:   z.string().min(2, { message: "Too short", }).max(10, { message: "Too long"})
     //              .regex(/^[0-9A-Za-z\_]+$/, { message: "Invalid input", }),
-    phone:      z.string().length(11).regex(/^[0-9]+$/, { message: "Contains ONLY numbers", }),
+    phone:      z.string().length(8).regex(/^[0-9]+$/, { message: "Contains ONLY numbers", }),
     password:   z.string().min(5, { message: "Too short", }).max(10, { message: "Too long"})
                  .regex(/^.*(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&*?]).*$/),
     confirmpwd: z.string().min(1, { message: "Missing", })
