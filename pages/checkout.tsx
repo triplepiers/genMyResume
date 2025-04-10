@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 
 import { Heading } from "@/components/Form/Heading";
-import { Education } from "@/components/Form/Education";
+import { EducationWrap } from "@/components/Form/EduWrap";
 
 // 样式
 const btn_base_style = '\
@@ -31,7 +31,7 @@ export default function Checkout(props: any[]) {
             case 0:
                 return <Heading updateFormMeta={handleFormMeta} updateFormStatus={goNextStep}/>;
             case 1:
-                return <Education updateFormMeta={handleFormMeta} updateFormStatus={goNextStep}/>;
+                return <EducationWrap updateFormMeta={handleFormMeta} updateFormStatus={goNextStep}/>;
             case 2:
                 // return 'work';
             case 3:
@@ -43,7 +43,13 @@ export default function Checkout(props: any[]) {
         }
     }
     const [activeStep, setActiveStep] = useState(0)
-    const trySubmit = () => { document.getElementById('GO')?.click() }
+    const trySubmit = () => { 
+        if (activeStep == 1) {
+            goNextStep();
+        } else {
+            document.getElementById('GO')?.click()
+        }
+    }
     const goNextStep = () => {
         if (activeStep === steps.length - 1) { router.push('/result') } 
         else                                 { setActiveStep(cur => cur + 1) }

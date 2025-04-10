@@ -1,8 +1,6 @@
 import { head_db_file as db_file } from './config.js';
 import { JSONFilePreset } from 'lowdb/node';
 
-// console.log('Load headDB from:', db_file);
-
 // read or create dbFile
 const headDB = await JSONFilePreset(db_file, { heads: [] });
 

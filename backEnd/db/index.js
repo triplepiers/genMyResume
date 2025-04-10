@@ -1,9 +1,11 @@
 import userDB from "./UserDB.js";
 import headDB from "./HeadDB.js";
+import eduDB from "./EduDB.js";
 
 const DBList = [
     userDB,
-    headDB
+    headDB,
+    eduDB
 ]
 
 export default DBList;

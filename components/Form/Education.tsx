@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useState } from "react";
 import { set, useForm } from "react-hook-form";
 import { string, z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -6,6 +7,8 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Form, FormItem, FormField, FormLabel, FormControl, FormMessage } from "../ui/form";
 import { Input } from "../ui/input";
+
+import axios from "@/lib/axios";
 
 // 这个是 Degree 的选择列表
 const degreeList = [
@@ -46,22 +49,24 @@ const formSchema = z.object({
 })
 type formKey = "institution" | "location" | "degree" | "neodegree" | "field" | "bg_month" | "bg_year" | "ed_month" | "ed_year";
 
-export const Education = (props: { updateFormMeta: Function, updateFormStatus: Function }) => {
+export const Education = (props: { edit: number, updateFormStatus: Function }) => {
     useEffect(() => {
-        props.updateFormMeta({
-            title: 'Education Experience',
-            desc: 'Tell us about it, even if you are still studying or have not graduated yet.',
-        })
-    }, [])
-
-    useEffect(() => {
-        let data = localStorage.getItem('2');
-        if (data) {
-            for (let [key, val] of Object.entries(JSON.parse(data))) {
-                form.setValue(key as formKey, val as string)
-            }
+        Clear()
+        if (props.edit !== -1)  {
+            axios.get('/edu', {
+                params: { 
+                    phone: localStorage.getItem('account'),
+                    idx:   props.edit
+                }
+            }).then((res) => {
+                if(res.status === 200) {
+                    for (let [key, val] of Object.entries(JSON.parse(res.data.edu))) {
+                        form.setValue(key as formKey, val as string)
+                    }
+                }
+            })
         }
-    }, [])
+    }, [props.edit])
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -89,203 +94,214 @@ export const Education = (props: { updateFormMeta: Function, updateFormStatus: F
             form.setError('ed_month', { message: 'Select a month' });
             return;
         }
-        // localStorage.removeItem('2')
-        let prev = localStorage.getItem('2');
-        if (prev) { // '{edus:[]}'
-            // console.log(`${prev.slice(0, -1)}, ${JSON.stringify(values)}]}`)
-            await localStorage.setItem('2', `${prev.slice(0, -2)}, ${JSON.stringify(values)}]}`); // 存在 localStorage
+
+        if (props.edit === -1) {
+            axios.post('/edu/add', {
+                phone: localStorage.getItem('account'),
+                data:  JSON.stringify(values)
+            })
+            // clear input
+            Clear();
         } else {
-            await localStorage.setItem('2', `{"edus":[${JSON.stringify(values)}]}`); // 不存在 localStorage
+            axios.post('/edu/update', {
+                phone: localStorage.getItem('account'),
+                data:  JSON.stringify(values),
+                idx:   props.edit
+            })
         }
-        console.log(localStorage.getItem('2'))
-        // await localStorage.setItem('2', JSON.stringify(values)); // 存在 localStorage
-        // props.updateFormStatus();                                // go next
+        props.updateFormStatus();                                // go next
+    }
+
+    const Clear = () => {
+        // console.log('clr')
+        form.setValue("institution", "")
+        form.setValue("location", "")
+        form.setValue("degree", "")
+        form.setValue("neodegree", "")
+        form.setValue("field", "")
+        form.setValue("bg_month", "")
+        form.setValue("bg_year", "")
+        form.setValue('ed_month', "")
+        form.setValue('ed_year', "")
     }
     return (
-        <div className="flex w-full justify-center flex-col md:flex-row">
-            <div className="px-5 border-r-1">
-                <h2 className="text-xl font-bold mb-5">Summary</h2>
-                {localStorage.getItem('2')}
-            </div>
-            <div className="px-5">
-                <h2 className="text-xl font-bold mb-5">Add an New Education Experience</h2>
-                <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)}
-                        className="grid grid-cols-2 gap-5 space-y-0 w-full max-w-140">
+        <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)}
+                className="grid grid-cols-2 gap-5 space-y-0 w-full max-w-140">
+                <div className="col-span-2 sm:col-span-1"><FormField
+                    control={form.control}
+                    name="institution"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Institution*</FormLabel>
+                            <FormControl>
+                                <Input placeholder="e.g. The University of Hong Kong" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                /></div>
+                <div className="col-span-2 sm:col-span-1"><FormField
+                    control={form.control}
+                    name="location"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Location</FormLabel>
+                            <FormControl>
+                                <Input placeholder="e.g. HonKong" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                /></div>
+                <div className="col-span-2 grid grid-cols-2 gap-5">
+                    {/* 看了下 zety 是直接搞了个 row */}
+                    <div className="col-span-2 sm:col-span-1"><FormField
+                        control={form.control}
+                        name="degree"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Degree</FormLabel>
+                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <FormControl>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Select a degree" />
+                                        </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>{degreeList.map((degree, index) => (
+                                        // 总之列表渲染
+                                        <SelectItem key={index} value={degree}>{degree}</SelectItem>
+                                    ))}</SelectContent>
+                                </Select>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    /></div>
+                    {form.watch('degree') === 'Enter your own' && ( // 要用 watch，否则没法实时监听
                         <div className="col-span-2 sm:col-span-1"><FormField
                             control={form.control}
-                            name="institution"
+                            name="neodegree"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Institution*</FormLabel>
+                                    <span className="text-[var(--blue)]"><FormLabel>Enter a New Degree*</FormLabel></span>
                                     <FormControl>
-                                        <Input placeholder="e.g. The University of Hong Kong" {...field} />
+                                        <Input placeholder="e.g. Bachelor's" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         /></div>
-                        <div className="col-span-2 sm:col-span-1"><FormField
+                    )}
+                </div>
+                <div className="col-span-2 grid grid-cols-2 gap-5">
+                    <div className="col-span-2 sm:col-span-1"><FormField
+                        control={form.control}
+                        name="field"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Field of Study</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="e.g. Business" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    /></div>
+                </div>
+                <div className="col-span-2 sm:col-span-1">
+                    <FormLabel>Start Date</FormLabel>
+                    <div className="grid grid-cols-2 gap-5 mt-2">
+                        <FormField
                             control={form.control}
-                            name="location"
+                            name="bg_month"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Location</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="e.g. HonKong" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        /></div>
-                        <div className="col-span-2 grid grid-cols-2 gap-5">
-                            {/* 看了下 zety 是直接搞了个 row */}
-                            <div className="col-span-2 sm:col-span-1"><FormField
-                                control={form.control}
-                                name="degree"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Degree</FormLabel>
-                                        <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                            <FormControl>
-                                                <SelectTrigger>
-                                                    <SelectValue placeholder="Select a degree" />
-                                                </SelectTrigger>
-                                            </FormControl>
-                                            <SelectContent>{degreeList.map((degree, index) => (
-                                                // 总之列表渲染
-                                                <SelectItem key={index} value={degree}>{degree}</SelectItem>
-                                            ))}</SelectContent>
-                                        </Select>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            /></div>
-                            {form.watch('degree') === 'Enter your own' && ( // 要用 watch，否则没法实时监听
-                                <div className="col-span-2 sm:col-span-1"><FormField
-                                    control={form.control}
-                                    name="neodegree"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <span className="text-[var(--blue)]"><FormLabel>Enter a New Degree*</FormLabel></span>
-                                            <FormControl>
-                                                <Input placeholder="e.g. Bachelor's" {...field} />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                /></div>
-                            )}
-                        </div>
-                        <div className="col-span-2 grid grid-cols-2 gap-5">
-                            <div className="col-span-2 sm:col-span-1"><FormField
-                                control={form.control}
-                                name="field"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel>Field of Study</FormLabel>
+                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
                                         <FormControl>
-                                            <Input placeholder="e.g. Business" {...field} />
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Month" />
+                                            </SelectTrigger>
                                         </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            /></div>
-                        </div>
-                        <div className="col-span-2 sm:col-span-1">
-                            <FormLabel>Start Date</FormLabel>
-                            <div className="grid grid-cols-2 gap-5 mt-2">
-                                <FormField
-                                    control={form.control}
-                                    name="bg_month"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                                <FormControl>
-                                                    <SelectTrigger>
-                                                        <SelectValue placeholder="Month" />
-                                                    </SelectTrigger>
-                                                </FormControl>
-                                                <SelectContent>{monthList.map((month, index) => (
-                                                    // 总之列表渲染
-                                                    <SelectItem key={index} value={month}>{month}</SelectItem>
-                                                ))}</SelectContent>
-                                            </Select>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )} />
-                                <FormField
-                                    control={form.control}
-                                    name="bg_year"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                                <FormControl>
-                                                    <SelectTrigger>
-                                                        <SelectValue placeholder="Year" />
-                                                    </SelectTrigger>
-                                                </FormControl>
-                                                <SelectContent>{yearList.map((year, index) => (
-                                                    // 总之列表渲染
-                                                    <SelectItem key={index} value={year}>{year}</SelectItem>
-                                                ))}</SelectContent>
-                                            </Select>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                            </div>
-                        </div>
-                        <div className="col-span-2 sm:col-span-1">
-                            <FormLabel>Graduation Date (expected)</FormLabel>
-                            <div className="grid grid-cols-2 gap-5 mt-2">
-                                <FormField
-                                    control={form.control}
-                                    name="ed_month"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                                <FormControl>
-                                                    <SelectTrigger>
-                                                        <SelectValue placeholder="Month" />
-                                                    </SelectTrigger>
-                                                </FormControl>
-                                                <SelectContent>{monthList.map((month, index) => (
-                                                    <SelectItem key={index} value={month}>{month}</SelectItem>
-                                                ))}</SelectContent>
-                                            </Select>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )} />
-                                <FormField
-                                    control={form.control}
-                                    name="ed_year"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                                <FormControl>
-                                                    <SelectTrigger>
-                                                        <SelectValue placeholder="Year" />
-                                                    </SelectTrigger>
-                                                </FormControl>
-                                                <SelectContent>{yearList.map((year, index) => (
-                                                    <SelectItem key={index} value={year}>{year}</SelectItem>
-                                                ))}</SelectContent>
-                                            </Select>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                            </div>
-                        </div>
-                        <button type="submit" id='GO' 
-                         className="cursor-pointer rounded-md font-medium bg-[var(--green)]
-                                block px-4 py-[0.2rem] min-w-[6rem]">
-                            Add
-                        </button>
-                    </form>
-                </Form>
-            </div>
-        </div>
+                                        <SelectContent>{monthList.map((month, index) => (
+                                            // 总之列表渲染
+                                            <SelectItem key={index} value={month}>{month}</SelectItem>
+                                        ))}</SelectContent>
+                                    </Select>
+                                    <FormMessage />
+                                </FormItem>
+                            )} />
+                        <FormField
+                            control={form.control}
+                            name="bg_year"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                        <FormControl>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Year" />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>{yearList.map((year, index) => (
+                                            // 总之列表渲染
+                                            <SelectItem key={index} value={year}>{year}</SelectItem>
+                                        ))}</SelectContent>
+                                    </Select>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+                </div>
+                <div className="col-span-2 sm:col-span-1">
+                    <FormLabel>Graduation Date (expected)</FormLabel>
+                    <div className="grid grid-cols-2 gap-5 mt-2">
+                        <FormField
+                            control={form.control}
+                            name="ed_month"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                        <FormControl>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Month" />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>{monthList.map((month, index) => (
+                                            <SelectItem key={index} value={month}>{month}</SelectItem>
+                                        ))}</SelectContent>
+                                    </Select>
+                                    <FormMessage />
+                                </FormItem>
+                            )} />
+                        <FormField
+                            control={form.control}
+                            name="ed_year"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                        <FormControl>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Year" />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>{yearList.map((year, index) => (
+                                            <SelectItem key={index} value={year}>{year}</SelectItem>
+                                        ))}</SelectContent>
+                                    </Select>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+                </div>
+                <button type="submit" id='GO' 
+                    className={`cursor-pointer rounded-md font-medium 
+                        bg-[var(--${props.edit===-1?"green":"pink"})]
+                        text-[var(--${props.edit===-1?"fore":"back"}ground)]
+                        block px-4 py-[0.2rem] min-w-[6rem]`}>
+                    <>{props.edit===-1?"Add":"Update"}</>
+                </button>
+            </form>
+        </Form>
     )
 }
