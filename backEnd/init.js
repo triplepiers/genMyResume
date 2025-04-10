@@ -1,4 +1,6 @@
-import UserDB from './db/UserDB.js';
+import DBList from "./db/index.js";
 
 // init DBs
-UserDB.initDB();
+for (let db of DBList) {
+    db.initDB();
+}

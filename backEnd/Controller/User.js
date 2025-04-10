@@ -1,4 +1,4 @@
-import userDB from "./db/UserDB.js";
+import userDB from "../db/UserDB.js";
 
 const { users } = userDB.data;
 
@@ -8,9 +8,7 @@ function userExist(phone) {
 
 function validateAccount(phone, pwd) {
     let usrInfo = users.find((user) => user.phone === phone);
-    
     if (!usrInfo) return false;
-    console.log('err pwd, should', usrInfo.password, 'but', pwd)
     return usrInfo.password === pwd
 }
 

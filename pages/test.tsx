@@ -8,10 +8,11 @@ export default function Test(props: any[]) {
   const download = () => {
     // axios.get('/', {})
     // .then((res:any) => {console.log(res)})
-    axios.post('/usr/signin', {
-      phone:    'a2a',
-      pwd:      'x86'
-  }).then((res) => {
+    axios.get('/head', {
+      params: {
+        phone:    '00',
+      }
+    }).then((res) => {
       console.log(res)
       
   })

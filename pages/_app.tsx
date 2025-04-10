@@ -25,7 +25,7 @@ export default function App({ Component, pageProps }: AppProps) {
       if (!localStorage.getItem('account') &&
         url!=='/' && url!=='/login'
       ) {
-        router.push('/login');
+        // router.push('/login'); // 这个要放出来
       }
     }
     router.events.on('routeChangeStart', handleRouteChange)

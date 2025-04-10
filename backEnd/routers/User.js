@@ -1,5 +1,5 @@
 import Router from "koa-router";
-import { userExist, addUser, validateAccount, isVIP } from "../User.js";
+import { userExist, addUser, validateAccount, isVIP } from "../Controller/User.js";
 
 const userRouter = new Router({
     prefix: '/usr'
