@@ -49,8 +49,9 @@ function addSkill(phone, data) {
     let neo_data;
     if (moreExist(phone)) { // append
         neo_data = [...getAllSkills(phone), data];
+        console.log('new', data)
         moreDB.update(
-            ({ mores }) => mores.find((more) => more.phone === phone).data = neo_data
+            ({ mores }) => mores.find((more) => more.phone === phone).skills = neo_data
         )
     } else {               // new
         neo_data = [data];
@@ -71,7 +72,7 @@ function updateIdxSkiil(phone, data, idx) {
 
     let neo_data = [...prev_data.slice(0,idx), data, ...prev_data.slice(idx+1)];
     moreDB.update(
-        ({ mores }) => mores.find((more) => more.phone === phone).data = neo_data
+        ({ mores }) => mores.find((more) => more.phone === phone).skills = neo_data
     )
     return neo_data
 }
@@ -84,7 +85,7 @@ function deleteIdxSkill(phone, idx) {
 
     let neo_data = [...prev_data.slice(0,idx), ...prev_data.slice(idx+1)];
     moreDB.update(
-        ({ mores }) => mores.find((more) => more.phone === phone).data = neo_data
+        ({ mores }) => mores.find((more) => more.phone === phone).skills = neo_data
     )
     return neo_data
 }

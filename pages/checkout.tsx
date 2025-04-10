@@ -25,19 +25,21 @@ export default function Checkout(props: any[]) {
         ['Education', false],
         ['Working Experience', false],
         ['Additional Information', true],
+        ['More Blocks', true],
         ['Slef-Statement', false],
     ]
     function getStepContent(step: number) {
         switch (step) {
             case 0:
-                // return <Heading updateFormMeta={handleFormMeta} updateFormStatus={goNextStep}/>;
+                return <Heading updateFormMeta={handleFormMeta} updateFormStatus={goNextStep}/>;
             case 1:
-                // return <EducationWrap updateFormMeta={handleFormMeta}/>;
+                return <EducationWrap updateFormMeta={handleFormMeta}/>;
             case 2:
-                // return <WorkWrap updateFormMeta={handleFormMeta}/>;
+                return <WorkWrap updateFormMeta={handleFormMeta}/>;
             case 3:
                 return <MoreInfoWrap updateFormMeta={handleFormMeta}/>;
             case 4:
+            case 5:
                 return (<span>{steps[step]}</span>);
             default:
                 throw new Error('Unknown Step!');

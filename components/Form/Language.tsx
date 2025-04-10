@@ -7,7 +7,6 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Form, FormItem, FormField, FormLabel, FormControl, FormMessage } from "../ui/form";
 import { Input } from "../ui/input";
-import { Textarea } from "../ui/textarea";
 
 import axios from "@/lib/axios";
 
@@ -21,13 +20,13 @@ const levelList = [ // low => high
 
 const str_spc = z.string()//.regex(/^[A-Za-z\s]+$/, { message: "Contains ONLY characters", });
 const formSchema = z.object({
-    lan:   str_spc,
+    lan:   str_spc.min(1),
     level: str_spc.optional(),
 })
 type formKey = "lan" | "level";
 
 export const Language = (props: { edit: number, updateFormStatus: Function }) => {
-    const [selectVal, setSelectVal] = useState("")
+    const [ selectVal, setSelectVal ] = useState("")
     useEffect(() => {
         Clear()
         if (props.edit !== -1)  {
@@ -41,7 +40,6 @@ export const Language = (props: { edit: number, updateFormStatus: Function }) =>
                     let data = JSON.parse(res.data.skill)
                     form.setValue("lan", data.lan)
                     setSelectVal(data.level)
-  
                 }
             })
         }
@@ -52,21 +50,28 @@ export const Language = (props: { edit: number, updateFormStatus: Function }) =>
     })
 
     function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values)
-        return
+        let vals = {
+            isLan: true,
+            lan: values.lan,
+            level: selectVal
+        }
+        
         if (props.edit === -1) {
-            axios.post('/work/add', {
-                data:  JSON.stringify(values)
+            axios.post('/more/skill/add', {
+                data:  JSON.stringify(vals)
             })
             // clear input
             Clear();
         } else {
-            axios.post('/work/update', {
-                data:  JSON.stringify(values),
+            axios.post('/more/skill/update', {
+                data:  JSON.stringify(vals),
                 idx:   props.edit
             })
         }
-        props.updateFormStatus();                                // go next
+        // go next
+        setTimeout(() => {
+            props.updateFormStatus();  
+        }, 500)                
     }
 
     const Clear = () => {

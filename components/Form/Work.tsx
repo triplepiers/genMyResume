@@ -81,20 +81,33 @@ export const Work = (props: { edit: number, updateFormStatus: Function }) => {
             form.setError('ed_month', { message: 'Select a month' });
             return;
         }
+        let vals = {
+            company:    values.company,
+            location:   values.location,
+            title:      values.title,
+            bg_month:   bgMonth,
+            bg_year:    bgYear,
+            ed_month:   edMonth,
+            ed_year:    edYear,
+            more:       values.more
+        }
 
         if (props.edit === -1) {
             axios.post('/work/add', {
-                data:  JSON.stringify(values)
+                data:  JSON.stringify(vals)
             })
             // clear input
             Clear();
         } else {
             axios.post('/work/update', {
-                data:  JSON.stringify(values),
+                data:  JSON.stringify(vals),
                 idx:   props.edit
             })
         }
-        props.updateFormStatus();                                // go next
+        // go next
+        setTimeout(() => {
+            props.updateFormStatus(); 
+        }, 500)
     }
 
     const Clear = () => {
@@ -103,10 +116,10 @@ export const Work = (props: { edit: number, updateFormStatus: Function }) => {
         form.setValue("company", "")
         form.setValue("location", "")
         form.setValue("title", "")
-        form.setValue("bg_month", "")
-        form.setValue("bg_year", "")
-        form.setValue('ed_month', "")
-        form.setValue('ed_year', "")
+        setbgMonth("")
+        setbgYear("")
+        setedMonth("")
+        setedYear("")
         form.setValue('more', "")
     }
     return (
@@ -181,7 +194,7 @@ export const Work = (props: { edit: number, updateFormStatus: Function }) => {
                             name="bg_year"
                             render={({ field }) => (
                                 <FormItem>
-                                    <Select onValueChange={(val) => setbgYear} defaultValue={bgYear} value={bgYear}>
+                                    <Select onValueChange={(val) => setbgYear(val)} defaultValue={bgYear} value={bgYear}>
                                         <FormControl>
                                             <SelectTrigger>
                                                 <SelectValue placeholder="Year" />

@@ -5,7 +5,9 @@
 
 header 的样式会变
 
-select 无法清空
+select 无法清空(好了)
+
+没等待直接请求会显示不出来(md 手动延迟)
 
 ## init
 

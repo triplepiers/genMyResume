@@ -14,8 +14,8 @@ moreDB.initDB = async () => {
             award: "nothing",
             skills: [
                 // 很颠了 => 如果存 obj 直接没办法识别
-                JSON.stringify({ isLan: 'true', lan: 'CN', level: 'Limited'}),
-                JSON.stringify({ isLan: 'false', title: 'play', desc: 'kkk'})
+                JSON.stringify({ isLan: true, lan: 'CN', level: 'Limited'}),
+                JSON.stringify({ isLan: false, title: 'play', desc: 'kkk'})
             ]
         }));
     } else {

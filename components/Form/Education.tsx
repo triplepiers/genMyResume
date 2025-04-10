@@ -106,19 +106,35 @@ export const Education = (props: { edit: number, updateFormStatus: Function }) =
             return;
         }
 
+        let vals = {
+            institution: values.institution,
+            location:    values.location,
+            degree:      degree,
+            neodegree:   values.neodegree,
+            field:       values.field,
+            bg_month:    bgMonth,
+            bg_year:     bgYear,
+            ed_month:    edMonth,
+            ed_year:     edYear,
+            more:        values.more
+        }
+
         if (props.edit === -1) {
             axios.post('/edu/add', {
-                data:  JSON.stringify(values)
+                data:  JSON.stringify(vals)
             })
             // clear input
             Clear();
         } else {
             axios.post('/edu/update', {
-                data:  JSON.stringify(values),
+                data:  JSON.stringify(vals),
                 idx:   props.edit
             })
         }
-        props.updateFormStatus();                                // go next
+        // go next
+        setTimeout(() => {
+            props.updateFormStatus();   
+        }, 500)                      
     }
 
     const Clear = () => {

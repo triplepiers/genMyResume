@@ -3,6 +3,7 @@ import { useState } from "react";
 
 import { Awards } from "@/components/Form/Awards";
 import { Language } from "@/components/Form/Language";
+import { Customize } from "@/components/Form/CustomSkill";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
@@ -12,6 +13,7 @@ import axios from "@/lib/axios";
 export const MoreInfoWrap = (props: { updateFormMeta: Function }) => {
     const [ skillList, setSkillList ] = useState([])
     const [ editIdx, setEditIdx ] = useState(-1) // add
+    const [ mode, setMode ] = useState("else")
     useEffect(() => {
         props.updateFormMeta({
             title: 'More Informations',
@@ -28,6 +30,7 @@ export const MoreInfoWrap = (props: { updateFormMeta: Function }) => {
         axios.get('/more/skill/all').then((res) => {
             if(res.status === 200) {
                 // 后端处理不了，前端自己 parse
+                console.log(res.data.skill.map((item:string)=>JSON.parse(item)))
                 setSkillList(res.data.skill.map((item:string)=>JSON.parse(item)))
             }
         })
@@ -59,23 +62,25 @@ export const MoreInfoWrap = (props: { updateFormMeta: Function }) => {
                         <div>这边列表渲染还没写</div>
                         {
                             skillList.map((item, idx) => 
-                                (<li key={idx} data-id={`${idx}`} onClick={(e)=>changeSkillInfo(e)}>
-                                    {item.isLan==='true' ? `Lan: ${item.lan}, ${item.level}` : `Cstm: ${item.title}, ${item.desc}`}
+                                (<li key={idx} data-id={`${idx}`} onClick={(e)=>{setMode(item.isLan?"lan":"else");changeSkillInfo(e)}}>
+                                    {item.isLan ? `Lan: ${item.lan}, ${item.level}` : `Cstm: ${item.title}, ${item.desc}`}
                                 </li>)
                             )
                         }
                     </div>
                     <div className="px-5 w-fit">
                         <h3 className="text-xl font-bold mb-2">Edit Your Skills</h3>
-                        <Tabs defaultValue="lan" className="w-50%">
+                        <Tabs defaultValue={mode} value={mode} className="w-50%">
                             <TabsList className="mb-2">
-                                <TabsTrigger value="lan">Language</TabsTrigger>
-                                <TabsTrigger value="else">Customize</TabsTrigger>
+                                <TabsTrigger value="lan" onClick={() => {setEditIdx(-1); setMode("lan")}}>Language</TabsTrigger>
+                                <TabsTrigger value="else" onClick={() => {setEditIdx(-1);setMode("else")}}>Customize</TabsTrigger>
                             </TabsList>
                             <TabsContent value="lan" className="px-5">
-                                <Language edit={editIdx} updateFormStatus={updateFormStatus}/>
+                                <Language isLan={mode==="lan"} edit={editIdx} updateFormStatus={updateFormStatus}/>
                             </TabsContent>
-                            <TabsContent value="else" className="px-5">Change your password here.</TabsContent>
+                            <TabsContent value="else" className="px-5">
+                                <Customize isLan={mode==="lan"} edit={editIdx} updateFormStatus={updateFormStatus}/>
+                            </TabsContent>
                         </Tabs>
 
                     </div>
