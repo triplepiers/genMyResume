@@ -5,16 +5,16 @@ import { JSONFilePreset } from 'lowdb/node';
 const eduDB = await JSONFilePreset(db_file, { edus: [] });
 
 eduDB.initDB = async () => {
-    console.log('Init eduDB ...');
+    console.log('Init (EduDB)');
     const { edus } = eduDB.data;
     if (!(edus.find((head) => head.phone === '00'))) {
-        console.log('No admin head found, create one ...');
+        console.log('No admin edu found, create one ...');
         await eduDB.update(({ edus }) => edus.push({
             phone: "00",
-            data:  ["just a test"]
+            data:  ["{\"institution\":\"just a test\"}",]
         }));
     } else {
-        console.log('Admin head found, skip create ...');
+        console.log('Admin edu found, skip create ...');
     }
 }
 

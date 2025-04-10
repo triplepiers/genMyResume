@@ -11,58 +11,40 @@ import { Textarea } from "../ui/textarea";
 
 import axios from "@/lib/axios";
 
-// 这个是 Degree 的选择列表
-const degreeList = [
-    'Associate of Arts',
-    'Associate of Science',
-    'Associate of Applied Science',
-    'Bachelor of Arts',
-    'Bachelor of Science',
-    'BBA',
-    'Master of Arts',
-    'Master of Science',
-    'MBA',
-    'J.D.',
-    'M.D.',
-    'Ph.D.',
-    'Enter your own',
-]
 const monthList = [
     'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'
 ]
-// 从今年往后 5 年
+// 到今年为止
 let minYear = 1990;
 let curYear = new Date().getFullYear();
 var yearList: string[] = [];
-for (let i = curYear + 5; i >= minYear; i--) { yearList.push(i.toString()) }
+for (let i = curYear ; i >= minYear; i--) { yearList.push(i.toString()) }
 
 const str_spc = z.string()//.regex(/^[A-Za-z\s]+$/, { message: "Contains ONLY characters", });
 const formSchema = z.object({
-    institution: str_spc.min(1, { message: 'Not Null'}),
+    company: str_spc.optional(),
     location: str_spc.optional(),
-    degree: str_spc.optional(),
-    neodegree: str_spc.optional(),
-    field: str_spc.optional(),
+    title: str_spc.min(1, { message: 'Not Null'}),
     bg_month: z.string().optional(),
     bg_year: z.string().optional(),
     ed_month: z.string().optional(),
     ed_year: z.string().optional(),
     more:    z.string().optional()
 })
-type formKey = "institution" | "location" | "degree" | "neodegree" | "field" | "bg_month" | "bg_year" | "ed_month" | "ed_year";
+type formKey = "company" | "location" | "title" | "bg_month" | "bg_year" | "ed_month" | "ed_year";
 
-export const Education = (props: { edit: number, updateFormStatus: Function }) => {
+export const Work = (props: { edit: number, updateFormStatus: Function }) => {
     useEffect(() => {
         Clear()
         if (props.edit !== -1)  {
-            axios.get('/edu', {
+            axios.get('/work', {
                 params: { 
                     phone: localStorage.getItem('account'),
                     idx:   props.edit
                 }
             }).then((res) => {
                 if(res.status === 200) {
-                    for (let [key, val] of Object.entries(JSON.parse(res.data.edu))) {
+                    for (let [key, val] of Object.entries(JSON.parse(res.data.work))) {
                         form.setValue(key as formKey, val as string)
                     }
                 }
@@ -76,10 +58,6 @@ export const Education = (props: { edit: number, updateFormStatus: Function }) =
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         // 做一些级联检查
-        if (values.degree === 'Enter your own' && !values.neodegree) {
-            form.setError('neodegree', { message: 'Please enter a new degree' });
-            return;
-        }
         if (values.bg_month && !values.bg_year) {
             form.setError('bg_year', { message: 'Select a year' });
             return;
@@ -98,14 +76,14 @@ export const Education = (props: { edit: number, updateFormStatus: Function }) =
         }
 
         if (props.edit === -1) {
-            axios.post('/edu/add', {
+            axios.post('/work/add', {
                 phone: localStorage.getItem('account'),
                 data:  JSON.stringify(values)
             })
             // clear input
             Clear();
         } else {
-            axios.post('/edu/update', {
+            axios.post('/work/update', {
                 phone: localStorage.getItem('account'),
                 data:  JSON.stringify(values),
                 idx:   props.edit
@@ -117,11 +95,9 @@ export const Education = (props: { edit: number, updateFormStatus: Function }) =
     const Clear = () => {
         // console.log('clr')
         form.clearErrors()
-        form.setValue("institution", "")
+        form.setValue("company", "")
         form.setValue("location", "")
-        form.setValue("degree", "")
-        form.setValue("neodegree", "")
-        form.setValue("field", "")
+        form.setValue("title", "")
         form.setValue("bg_month", "")
         form.setValue("bg_year", "")
         form.setValue('ed_month', "")
@@ -132,14 +108,29 @@ export const Education = (props: { edit: number, updateFormStatus: Function }) =
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}
                 className="grid grid-cols-2 gap-5 space-y-0 w-full max-w-140">
+                <div className="col-span-2 grid grid-cols-2 gap-5">
+                    <div className="col-span-2 sm:col-span-1"><FormField
+                        control={form.control}
+                        name="title"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Your Title*</FormLabel>
+                                <FormControl>
+                                    <Input placeholder="e.g. HR Intern" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    /></div>
+                </div>
                 <div className="col-span-2 sm:col-span-1"><FormField
                     control={form.control}
-                    name="institution"
+                    name="company"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Institution*</FormLabel>
+                            <FormLabel>Company or Organization</FormLabel>
                             <FormControl>
-                                <Input placeholder="e.g. The University of Hong Kong" {...field} />
+                                <Input placeholder="Company, organization .." {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -158,60 +149,6 @@ export const Education = (props: { edit: number, updateFormStatus: Function }) =
                         </FormItem>
                     )}
                 /></div>
-                <div className="col-span-2 grid grid-cols-2 gap-5">
-                    {/* 看了下 zety 是直接搞了个 row */}
-                    <div className="col-span-2 sm:col-span-1"><FormField
-                        control={form.control}
-                        name="degree"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Degree</FormLabel>
-                                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                    <FormControl>
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Select a degree" />
-                                        </SelectTrigger>
-                                    </FormControl>
-                                    <SelectContent>{degreeList.map((degree, index) => (
-                                        // 总之列表渲染
-                                        <SelectItem key={index} value={degree}>{degree}</SelectItem>
-                                    ))}</SelectContent>
-                                </Select>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    /></div>
-                    {form.watch('degree') === 'Enter your own' && ( // 要用 watch，否则没法实时监听
-                        <div className="col-span-2 sm:col-span-1"><FormField
-                            control={form.control}
-                            name="neodegree"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <span className="text-[var(--blue)]"><FormLabel>Enter a New Degree*</FormLabel></span>
-                                    <FormControl>
-                                        <Input placeholder="e.g. Bachelor's" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        /></div>
-                    )}
-                </div>
-                <div className="col-span-2 grid grid-cols-2 gap-5">
-                    <div className="col-span-2 sm:col-span-1"><FormField
-                        control={form.control}
-                        name="field"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Field of Study</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="e.g. Business" {...field} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    /></div>
-                </div>
                 <div className="col-span-2 sm:col-span-1">
                     <FormLabel>Start Date</FormLabel>
                     <div className="grid grid-cols-2 gap-5 mt-2">
@@ -257,7 +194,7 @@ export const Education = (props: { edit: number, updateFormStatus: Function }) =
                     </div>
                 </div>
                 <div className="col-span-2 sm:col-span-1">
-                    <FormLabel>Graduation Date (expected)</FormLabel>
+                    <FormLabel>End Date</FormLabel>
                     <div className="grid grid-cols-2 gap-5 mt-2">
                         <FormField
                             control={form.control}
@@ -303,10 +240,10 @@ export const Education = (props: { edit: number, updateFormStatus: Function }) =
                         name="more"
                         render={({ field }) => (
                             <FormItem>
-                            <FormLabel>More Information</FormLabel>
+                            <FormLabel>More Details</FormLabel>
                             <FormControl>
                                 <Textarea
-                                placeholder="Tell us a little bit about yourself"
+                                placeholder="Tell us more about it"
                                 className="resize-none"
                                 {...field}
                                 />

@@ -4,6 +4,10 @@ import cors from '@koa/cors';
 import bodyParser from 'koa-bodyparser';
 import routers from './routers/index.js';
 
+// init DBs
+import initDBs from "./db/index.js";
+initDBs();
+
 const app = new Koa();
 
 // 允许跨域

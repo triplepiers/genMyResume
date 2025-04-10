@@ -1,20 +1,21 @@
+// 属于是和 Education 没啥区别
 import Router from "koa-router";
 import {
-    getAllEdus,
-    getIdxEdu,
-    addEdu,
-    updateIdxEdu,
-    deleteIdxEdu
-} from "../Controller/Education.js";
+    getAllWorks,
+    getIdxWork,
+    addWork,
+    updateIdxWork,
+    deleteIdxWork
+} from "../Controller/Work.js";
 
-const eduRouter = new Router({
-    prefix: '/edu'
+const workRouter = new Router({
+    prefix: '/work'
 });
 
 /* 拦截，统一 check user是否存在
    201 { 没带 }
 */
-eduRouter.use((ctx, nxt) => {
+workRouter.use((ctx, nxt) => {
     if (ctx.method == 'GET') {
         var { phone }  = ctx.query;
     } else {
@@ -30,39 +31,39 @@ eduRouter.use((ctx, nxt) => {
 
 // 获取：指定 idx
 // 202 不存在
-eduRouter.get('/', (ctx, nxt) => {
+workRouter.get('/', (ctx, nxt) => {
     let phone = ctx.phone;
     let { idx } = ctx.query;
-    ctx.response.body = JSON.stringify({ edu: getIdxEdu(phone, idx) });
+    ctx.response.body = JSON.stringify({ work: getIdxWork(phone, idx) });
     return ctx.status = 200
 })
 
-eduRouter.get('/all', (ctx, nxt) => {
+workRouter.get('/all', (ctx, nxt) => {
     let phone = ctx.phone;
-
-    ctx.response.body = JSON.stringify({ edu: getAllEdus(phone) });
+    
+    ctx.response.body = JSON.stringify({ work: getAllWorks(phone) });
     return ctx.status = 200
 })
 
-eduRouter.post('/add', (ctx, nxt) => {
+workRouter.post('/add', (ctx, nxt) => {
     let phone = ctx.phone;
     let { data } = ctx.request.body;
-    addEdu(phone, data);
+    addWork(phone, data);
     return ctx.status = 200
 })
 
-eduRouter.post('/update', (ctx, nxt) => {
+workRouter.post('/update', (ctx, nxt) => {
     let phone = ctx.phone;
     let { idx, data } = ctx.request.body;
-    updateIdxEdu(phone, data, idx)
+    updateIdxWork(phone, data, idx)
     return ctx.status = 200
 })
 
-eduRouter.post('/delete', (ctx, nxt) => {
+workRouter.post('/delete', (ctx, nxt) => {
     let phone = ctx.phone;
     let { idx, data } = ctx.request.body;
-    deleteIdxEdu(phone, data, idx)
+    deleteIdxWork(phone, data, idx)
     return ctx.status = 200
 })
 
-export default eduRouter;
+export default workRouter;

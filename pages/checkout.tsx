@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 
 import { Heading } from "@/components/Form/Heading";
 import { EducationWrap } from "@/components/Form/EduWrap";
+import { WorkWrap } from "@/components/Form/WorkWrap";
 
 // 样式
 const btn_base_style = '\
@@ -31,9 +32,9 @@ export default function Checkout(props: any[]) {
             case 0:
                 // return <Heading updateFormMeta={handleFormMeta} updateFormStatus={goNextStep}/>;
             case 1:
-                return <EducationWrap updateFormMeta={handleFormMeta} updateFormStatus={goNextStep}/>;
+                // return <EducationWrap updateFormMeta={handleFormMeta} updateFormStatus={goNextStep}/>;
             case 2:
-                // return 'work';
+                return <WorkWrap updateFormMeta={handleFormMeta} updateFormStatus={goNextStep}/>;
             case 3:
             case 4:
             case 5:

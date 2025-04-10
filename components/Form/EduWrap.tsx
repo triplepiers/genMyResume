@@ -49,7 +49,7 @@ export const EducationWrap = (props: { updateFormMeta: Function, updateFormStatu
                 }
             </div>
             <div className="px-5">
-                <h2 className="text-xl font-bold mb-5">Add an New Education Experience</h2>
+                <h2 className="text-xl font-bold mb-5">Edit Education Experience</h2>
                 <Education edit={editIdx} updateFormStatus={updateFormStatus}/>
             </div>
         </div>

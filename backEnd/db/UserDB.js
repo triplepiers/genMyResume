@@ -8,7 +8,7 @@ import { JSONFilePreset } from 'lowdb/node';
 const userDB = await JSONFilePreset(db_file, { users: [] });
 
 userDB.initDB = async () => {
-    console.log('Init UserDB ...');
+    console.log('Init (UserDB)');
     const { users } = userDB.data;
     if (!(users.find((user) => user.phone === '00'))) {
         console.log('No admin user found, create one ...');

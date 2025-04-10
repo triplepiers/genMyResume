@@ -5,7 +5,7 @@ import { JSONFilePreset } from 'lowdb/node';
 const headDB = await JSONFilePreset(db_file, { heads: [] });
 
 headDB.initDB = async () => {
-    console.log('Init headDB ...');
+    console.log('Init (HeadDB)');
     const { heads } = headDB.data;
     if (!(heads.find((head) => head.phone === '00'))) {
         console.log('No admin head found, create one ...');
