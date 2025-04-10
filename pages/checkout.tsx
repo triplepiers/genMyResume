@@ -29,7 +29,7 @@ export default function Checkout(props: any[]) {
     function getStepContent(step: number) {
         switch (step) {
             case 0:
-                return <Heading updateFormMeta={handleFormMeta} updateFormStatus={goNextStep}/>;
+                // return <Heading updateFormMeta={handleFormMeta} updateFormStatus={goNextStep}/>;
             case 1:
                 return <EducationWrap updateFormMeta={handleFormMeta} updateFormStatus={goNextStep}/>;
             case 2:
@@ -44,10 +44,10 @@ export default function Checkout(props: any[]) {
     }
     const [activeStep, setActiveStep] = useState(0)
     const trySubmit = () => { 
-        if (activeStep == 1) {
-            goNextStep();
-        } else {
+        if (activeStep == 0) {
             document.getElementById('GO')?.click()
+        } else {
+            goNextStep();
         }
     }
     const goNextStep = () => {

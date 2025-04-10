@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Form, FormItem, FormField, FormLabel, FormControl, FormMessage } from "../ui/form";
 import { Input } from "../ui/input";
+import { Textarea } from "../ui/textarea";
 
 import axios from "@/lib/axios";
 
@@ -35,9 +36,9 @@ let curYear = new Date().getFullYear();
 var yearList: string[] = [];
 for (let i = curYear + 5; i >= minYear; i--) { yearList.push(i.toString()) }
 
-const str_spc = z.string().min(2, { message: "Name must be at least 2 characters.", }).regex(/^[A-Za-z\s]+$/, { message: "Contains ONLY characters", });
+const str_spc = z.string()//.regex(/^[A-Za-z\s]+$/, { message: "Contains ONLY characters", });
 const formSchema = z.object({
-    institution: str_spc,
+    institution: str_spc.min(1, { message: 'Not Null'}),
     location: str_spc.optional(),
     degree: str_spc.optional(),
     neodegree: str_spc.optional(),
@@ -46,6 +47,7 @@ const formSchema = z.object({
     bg_year: z.string().optional(),
     ed_month: z.string().optional(),
     ed_year: z.string().optional(),
+    more:    z.string().optional()
 })
 type formKey = "institution" | "location" | "degree" | "neodegree" | "field" | "bg_month" | "bg_year" | "ed_month" | "ed_year";
 
@@ -73,6 +75,7 @@ export const Education = (props: { edit: number, updateFormStatus: Function }) =
     })
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
+        console.log('uuuuup')
         // 做一些级联检查
         if (values.degree === 'Enter your own' && !values.neodegree) {
             form.setError('neodegree', { message: 'Please enter a new degree' });
@@ -103,6 +106,7 @@ export const Education = (props: { edit: number, updateFormStatus: Function }) =
             // clear input
             Clear();
         } else {
+            console.log('update')
             axios.post('/edu/update', {
                 phone: localStorage.getItem('account'),
                 data:  JSON.stringify(values),
@@ -114,6 +118,7 @@ export const Education = (props: { edit: number, updateFormStatus: Function }) =
 
     const Clear = () => {
         // console.log('clr')
+        form.clearErrors()
         form.setValue("institution", "")
         form.setValue("location", "")
         form.setValue("degree", "")
@@ -123,6 +128,7 @@ export const Education = (props: { edit: number, updateFormStatus: Function }) =
         form.setValue("bg_year", "")
         form.setValue('ed_month', "")
         form.setValue('ed_year', "")
+        form.setValue('more', "")
     }
     return (
         <Form {...form}>
@@ -294,6 +300,23 @@ export const Education = (props: { edit: number, updateFormStatus: Function }) =
                         />
                     </div>
                 </div>
+                <div className="col-span-2"><FormField
+                        control={form.control}
+                        name="more"
+                        render={({ field }) => (
+                            <FormItem>
+                            <FormLabel>Bio</FormLabel>
+                            <FormControl>
+                                <Textarea
+                                placeholder="Tell us a little bit about yourself"
+                                className="resize-none"
+                                {...field}
+                                />
+                            </FormControl>
+                            <FormMessage />
+                            </FormItem>
+                        )}
+                /></div>
                 <button type="submit" id='GO' 
                     className={`cursor-pointer rounded-md font-medium 
                         bg-[var(--${props.edit===-1?"green":"pink"})]

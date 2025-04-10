@@ -19,6 +19,7 @@ export const EducationWrap = (props: { updateFormMeta: Function, updateFormStatu
     }, [])
 
     const updateFormStatus = () => {
+        setEduList([])
         axios.get('/edu/all', {
             params: { phone: localStorage.getItem('account') }
           }).then((res) => {
