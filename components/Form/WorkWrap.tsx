@@ -4,7 +4,7 @@ import { Work } from "./Work";
 
 import axios from "@/lib/axios";
 
-export const WorkWrap = (props: { updateFormMeta: Function, updateFormStatus: Function }) => {
+export const WorkWrap = (props: { updateFormMeta: Function }) => {
     const [ wkList, setwkList ] = useState([])
     const [ editIdx, setEditIdx ] = useState(-1) // add
     useEffect(() => {

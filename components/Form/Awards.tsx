@@ -1,0 +1,64 @@
+import { useState } from "react";
+import { useEffect } from "react";
+import { set, useForm } from "react-hook-form";
+import { string, z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
+
+import { Form, FormItem, FormField, FormControl, FormMessage } from "../ui/form";
+import { Textarea } from "../ui/textarea";
+
+import axios from "@/lib/axios";
+
+const formSchema = z.object({
+    awards:    z.string().optional()
+})
+
+export const Awards = (props: { updateFormStatus: Function }) => {
+    const [awardsInfo, setAwardsInfo] = useState("");
+    useEffect(() => {
+        axios.get('/more/award', {
+            params: { phone: localStorage.getItem('account') }
+        }).then((res) => {
+            if (res.status === 200) {
+                setAwardsInfo(res.data.award)
+                form.setValue('awards', res.data.award)
+            }
+        })
+    }, [])
+
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+    })
+    
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+        if (values.awards !== awardsInfo) {
+            axios.post('/more/award', {
+                phone: localStorage.getItem('account'),
+                data:  values.awards
+            })
+        }
+    }
+    return (
+        <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="mb-5"
+            onBlur={form.handleSubmit(onSubmit)}>
+                <FormField
+                control={form.control}
+                name="awards"
+                render={({ field }) => (
+                    <FormItem>
+                    <FormControl>
+                        <Textarea
+                        placeholder="It would be better to write sth here."
+                        className="resize-none min-h-40 max-h-40"
+                        {...field}
+                        />
+                    </FormControl>
+                    <FormMessage />
+                    </FormItem>
+                )}
+                />
+            </form>
+        </Form>
+    )
+}

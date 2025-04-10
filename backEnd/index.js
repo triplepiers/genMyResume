@@ -6,7 +6,7 @@ import routers from './routers/index.js';
 
 // init DBs
 import initDBs from "./db/index.js";
-initDBs();
+// initDBs();
 
 const app = new Koa();
 

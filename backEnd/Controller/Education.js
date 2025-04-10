@@ -42,7 +42,6 @@ function addEdu(phone, data) {
 }
 
 function updateIdxEdu(phone, data, idx) {
-    console.log('recv', data)
     let prev_data = getAllEdus(phone);
     if (idx<0 || idx>=prev_data.length) {
         return false;

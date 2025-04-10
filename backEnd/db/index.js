@@ -2,12 +2,14 @@ import userDB from "./UserDB.js";
 import headDB from "./HeadDB.js";
 import eduDB from "./EduDB.js";
 import workDB from "./WorkDB.js";
+import moreDB from "./MoreDB.js";
 
 const DBList = [
     userDB,
     headDB,
     eduDB,
-    workDB
+    workDB,
+    moreDB
 ]
 
 function initDBs() {

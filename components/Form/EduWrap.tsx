@@ -4,7 +4,7 @@ import { Education } from "./Education";
 
 import axios from "@/lib/axios";
 
-export const EducationWrap = (props: { updateFormMeta: Function, updateFormStatus: Function }) => {
+export const EducationWrap = (props: { updateFormMeta: Function }) => {
     const [ eduList, setEduList ] = useState([])
     const [ editIdx, setEditIdx ] = useState(-1) // add
     useEffect(() => {

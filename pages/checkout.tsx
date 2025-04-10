@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { Heading } from "@/components/Form/Heading";
 import { EducationWrap } from "@/components/Form/EduWrap";
 import { WorkWrap } from "@/components/Form/WorkWrap";
+import { MoreInfoWrap } from "@/components/Form/MoreInfoWrap";
 
 // 样式
 const btn_base_style = '\
@@ -23,7 +24,6 @@ export default function Checkout(props: any[]) {
         ['Heading', false],
         ['Education', false],
         ['Working Experience', false],
-        ['Award & Certificates', true],
         ['Additional Information', true],
         ['Slef-Statement', false],
     ]
@@ -32,12 +32,12 @@ export default function Checkout(props: any[]) {
             case 0:
                 // return <Heading updateFormMeta={handleFormMeta} updateFormStatus={goNextStep}/>;
             case 1:
-                // return <EducationWrap updateFormMeta={handleFormMeta} updateFormStatus={goNextStep}/>;
+                // return <EducationWrap updateFormMeta={handleFormMeta}/>;
             case 2:
-                return <WorkWrap updateFormMeta={handleFormMeta} updateFormStatus={goNextStep}/>;
+                // return <WorkWrap updateFormMeta={handleFormMeta}/>;
             case 3:
+                return <MoreInfoWrap updateFormMeta={handleFormMeta}/>;
             case 4:
-            case 5:
                 return (<span>{steps[step]}</span>);
             default:
                 throw new Error('Unknown Step!');
