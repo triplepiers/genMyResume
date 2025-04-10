@@ -11,7 +11,7 @@ eduDB.initDB = async () => {
         console.log('No admin edu found, create one ...');
         await eduDB.update(({ edus }) => edus.push({
             phone: "00",
-            data:  ["{\"institution\":\"just a test\"}",]
+            data:  ["{\"institution\":\"HKU\",\"location\":\"HK\",\"degree\":\"Associate of Science\"}",]
         }));
     } else {
         console.log('Admin edu found, skip create ...');

@@ -9,10 +9,7 @@ export default function Test(props: any[]) {
     // axios.get('/', {})
     // .then((res:any) => {console.log(res)})
     axios.post('/head', {
-
-        phone:    '00',
         data:      'trtt'
-
     }).then((res) => {
       console.log(res)
       

@@ -56,8 +56,7 @@ export const Education = (props: { edit: number, updateFormStatus: Function }) =
         Clear()
         if (props.edit !== -1)  {
             axios.get('/edu', {
-                params: { 
-                    phone: localStorage.getItem('account'),
+                params: {
                     idx:   props.edit
                 }
             }).then((res) => {
@@ -99,14 +98,12 @@ export const Education = (props: { edit: number, updateFormStatus: Function }) =
 
         if (props.edit === -1) {
             axios.post('/edu/add', {
-                phone: localStorage.getItem('account'),
                 data:  JSON.stringify(values)
             })
             // clear input
             Clear();
         } else {
             axios.post('/edu/update', {
-                phone: localStorage.getItem('account'),
                 data:  JSON.stringify(values),
                 idx:   props.edit
             })

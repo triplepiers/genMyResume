@@ -30,9 +30,7 @@ export const Heading = (props: { updateFormMeta: Function, updateFormStatus: Fun
 
   useEffect(() => {
     // let data = localStorage.getItem('1');
-    axios.get('/head', {
-      params: { phone: localStorage.getItem('account') }
-    }).then((res) => {
+    axios.get('/head').then((res) => {
       if(res.status === 200) {
         for (let [key, val] of Object.entries(JSON.parse(res.data.head)) ) {
           form.setValue(key as formKey, val as string)
@@ -50,7 +48,6 @@ export const Heading = (props: { updateFormMeta: Function, updateFormStatus: Fun
     // await localStorage.setItem('1', JSON.stringify(values)); // 存在 localStorage
     // save to server
     axios.post('/head', {
-      phone: localStorage.getItem('account'),
       data: JSON.stringify(values)
     }).then((res) => {
       // 没啥要干的了

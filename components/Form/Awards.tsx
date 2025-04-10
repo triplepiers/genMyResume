@@ -16,9 +16,7 @@ const formSchema = z.object({
 export const Awards = (props: { updateFormStatus: Function }) => {
     const [awardsInfo, setAwardsInfo] = useState("");
     useEffect(() => {
-        axios.get('/more/award', {
-            params: { phone: localStorage.getItem('account') }
-        }).then((res) => {
+        axios.get('/more/award').then((res) => {
             if (res.status === 200) {
                 setAwardsInfo(res.data.award)
                 form.setValue('awards', res.data.award)
@@ -33,7 +31,6 @@ export const Awards = (props: { updateFormStatus: Function }) => {
     async function onSubmit(values: z.infer<typeof formSchema>) {
         if (values.awards !== awardsInfo) {
             axios.post('/more/award', {
-                phone: localStorage.getItem('account'),
                 data:  values.awards
             })
         }

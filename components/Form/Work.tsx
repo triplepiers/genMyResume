@@ -39,7 +39,6 @@ export const Work = (props: { edit: number, updateFormStatus: Function }) => {
         if (props.edit !== -1)  {
             axios.get('/work', {
                 params: { 
-                    phone: localStorage.getItem('account'),
                     idx:   props.edit
                 }
             }).then((res) => {
@@ -77,14 +76,12 @@ export const Work = (props: { edit: number, updateFormStatus: Function }) => {
 
         if (props.edit === -1) {
             axios.post('/work/add', {
-                phone: localStorage.getItem('account'),
                 data:  JSON.stringify(values)
             })
             // clear input
             Clear();
         } else {
             axios.post('/work/update', {
-                phone: localStorage.getItem('account'),
                 data:  JSON.stringify(values),
                 idx:   props.edit
             })

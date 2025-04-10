@@ -11,7 +11,7 @@ headDB.initDB = async () => {
         console.log('No admin head found, create one ...');
         await headDB.update(({ heads }) => heads.push({
             phone: "00",
-            data:  "just a test"
+            data:  "{\"name\":\"Jhon\",\"surname\":\"Doe\",\"email\":\"JD@qq.com\"}"
         }));
     } else {
         console.log('Admin head found, skip create ...');
