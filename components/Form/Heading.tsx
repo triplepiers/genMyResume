@@ -6,6 +6,8 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Form, FormItem, FormField, FormLabel, FormControl, FormMessage } from "../ui/form";
 import { Input } from "../ui/input";
 
+import axios from "@/lib/axios";
+
 type formKey = "name" | "surname" | "profession" | "city" | "province" | "postcode" | "phone" | "email";
 const formSchema = z.object({
   name:       z.string().min(2, { message: "Name must be at least 2 characters.", }).regex(/^[A-Za-z]+$/, { message: "Contains ONLY characters", }),
@@ -27,12 +29,16 @@ export const Heading = (props: { updateFormMeta: Function, updateFormStatus: Fun
   }, [])
 
   useEffect(() => {
-    let data = localStorage.getItem('1');
-    if (data) {
-      for (let [key, val] of Object.entries(JSON.parse(data)) ) {
-        form.setValue(key as formKey, val as string)
+    // let data = localStorage.getItem('1');
+    axios.get('/head', {
+      params: { phone: localStorage.getItem('account') }
+    }).then((res) => {
+      if(res.status === 200) {
+        for (let [key, val] of Object.entries(JSON.parse(res.data.head)) ) {
+          form.setValue(key as formKey, val as string)
+        }
       }
-    }
+    }) 
   }, [])
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -41,8 +47,16 @@ export const Heading = (props: { updateFormMeta: Function, updateFormStatus: Fun
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    await localStorage.setItem('1', JSON.stringify(values)); // 存在 localStorage
-    props.updateFormStatus();                                // go next
+    // await localStorage.setItem('1', JSON.stringify(values)); // 存在 localStorage
+    // save to server
+    axios.post('/head', {
+      phone: localStorage.getItem('account'),
+      data: JSON.stringify(values)
+    }).then((res) => {
+      // 没啥要干的了
+    })
+    // go next
+    props.updateFormStatus();                                
   }
 
   return (

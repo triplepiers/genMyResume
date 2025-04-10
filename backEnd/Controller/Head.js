@@ -33,30 +33,3 @@ export {
     addHead,
     updateHead
 }
-
-// function validateAccount(phone, pwd) {
-//     let usrInfo = users.find((user) => user.phone === phone);
-//     if (!usrInfo) return false;
-//     return usrInfo.password === pwd
-// }
-
-// function checkPwd(phone, pwd) {
-//     return (users.find(
-//         (user) => user.phone === phone && user.password === pwd
-//     ) !== undefined)
-// }
-
-// function isVIP(phone) {
-//     let userInfo = users.find((user) => user.phone === phone);
-//     if (!userInfo) {
-//         console.log(`[ERR] invalid user: ${phone}`);
-//         return false;
-//     } else {
-//         return userInfo.isVIP;
-//     }
-// }
-
-// async function modVIP(phone, neoIsVIP) {
-    
-// }
-

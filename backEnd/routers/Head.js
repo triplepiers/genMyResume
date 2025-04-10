@@ -26,7 +26,6 @@ headRouter.use((ctx, nxt) => {
 // 202 不存在
 headRouter.get('/', (ctx, nxt) => {
     let phone = ctx.phone;
-    console.log(phone)
     if (!headExist(phone)) {
         return ctx.status = 202
     } else {
