@@ -12,9 +12,10 @@ moreDB.initDB = async () => {
         await moreDB.update(({ mores }) => mores.push({
             phone: "00",
             award: "nothing",
-            skils: [
-                { isLan: 'true', lan: 'CN', rank: '5'},
-                { isLan: 'false', desc: ''}
+            skills: [
+                // 很颠了 => 如果存 obj 直接没办法识别
+                JSON.stringify({ isLan: 'true', lan: 'CN', level: 'Limited'}),
+                JSON.stringify({ isLan: 'false', title: 'play', desc: 'kkk'})
             ]
         }));
     } else {

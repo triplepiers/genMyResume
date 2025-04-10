@@ -34,6 +34,10 @@ const formSchema = z.object({
 type formKey = "company" | "location" | "title" | "bg_month" | "bg_year" | "ed_month" | "ed_year";
 
 export const Work = (props: { edit: number, updateFormStatus: Function }) => {
+    const [bgMonth, setbgMonth] = useState("")
+    const [bgYear,  setbgYear]  = useState("")
+    const [edMonth, setedMonth] = useState("")
+    const [edYear,  setedYear]  = useState("")
     useEffect(() => {
         Clear()
         if (props.edit !== -1)  {
@@ -44,7 +48,11 @@ export const Work = (props: { edit: number, updateFormStatus: Function }) => {
             }).then((res) => {
                 if(res.status === 200) {
                     for (let [key, val] of Object.entries(JSON.parse(res.data.work))) {
-                        form.setValue(key as formKey, val as string)
+                        if (key === 'bg_month') { setbgMonth(val as string) }
+                        else if (key === 'bg_year')  { setbgYear(val as string) }
+                        else if (key === 'ed_month') { setedMonth(val as string) }
+                        else if (key === 'ed_year')  { setedYear(val as string) }
+                        else { form.setValue(key as formKey, val as string) }
                     }
                 }
             })
@@ -154,7 +162,7 @@ export const Work = (props: { edit: number, updateFormStatus: Function }) => {
                             name="bg_month"
                             render={({ field }) => (
                                 <FormItem>
-                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <Select onValueChange={(val) => setbgMonth(val)} defaultValue={bgMonth} value={bgMonth}>
                                         <FormControl>
                                             <SelectTrigger>
                                                 <SelectValue placeholder="Month" />
@@ -173,7 +181,7 @@ export const Work = (props: { edit: number, updateFormStatus: Function }) => {
                             name="bg_year"
                             render={({ field }) => (
                                 <FormItem>
-                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <Select onValueChange={(val) => setbgYear} defaultValue={bgYear} value={bgYear}>
                                         <FormControl>
                                             <SelectTrigger>
                                                 <SelectValue placeholder="Year" />
@@ -198,7 +206,7 @@ export const Work = (props: { edit: number, updateFormStatus: Function }) => {
                             name="ed_month"
                             render={({ field }) => (
                                 <FormItem>
-                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <Select onValueChange={(val) => setedMonth(val)} defaultValue={edMonth} value={edMonth}>
                                         <FormControl>
                                             <SelectTrigger>
                                                 <SelectValue placeholder="Month" />
@@ -216,7 +224,7 @@ export const Work = (props: { edit: number, updateFormStatus: Function }) => {
                             name="ed_year"
                             render={({ field }) => (
                                 <FormItem>
-                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <Select onValueChange={(val) => setedYear(val)} defaultValue={edYear} value={edYear}>
                                         <FormControl>
                                             <SelectTrigger>
                                                 <SelectValue placeholder="Year" />

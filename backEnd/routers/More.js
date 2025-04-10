@@ -1,5 +1,13 @@
 import Router from "koa-router";
-import { getAward, updateAward } from "../Controller/More.js";
+import {
+    getAward,
+    updateAward,
+    getAllSkills,
+    getIdxSkill,
+    addSkill,
+    updateIdxSkiil,
+    deleteIdxSkill
+} from "../Controller/More.js";
 
 const moreRouter = new Router({
     prefix: '/more'
@@ -35,32 +43,36 @@ moreRouter.post('/award', (ctx, nxt) => {
     return ctx.status = 200;
 })
 
-// moreRouter.get('/all', (ctx, nxt) => {
-//     let phone = ctx.phone;
+// 单个
+moreRouter.get('/skill', (ctx, nxt) => {
+    let phone = ctx.phone;
+    let { idx } = ctx.query;
+    ctx.response.body = JSON.stringify({ skill: getIdxSkill(phone, idx) });
+    return ctx.status = 200
+})
+// 所有
+moreRouter.get('/skill/all', (ctx, nxt) => {
+    let phone = ctx.phone;
+    ctx.response.body = JSON.stringify({ skill: getAllSkills(phone) });
+    return ctx.status = 200
+})
 
-//     ctx.response.body = JSON.stringify({ more: getAllEdus(phone) });
-//     return ctx.status = 200
-// })
-
-// moreRouter.post('/add', (ctx, nxt) => {
-//     let phone = ctx.phone;
-//     let { data } = ctx.request.body;
-//     addEdu(phone, data);
-//     return ctx.status = 200
-// })
-
-// moreRouter.post('/update', (ctx, nxt) => {
-//     let phone = ctx.phone;
-//     let { idx, data } = ctx.request.body;
-//     updateIdxEdu(phone, data, idx)
-//     return ctx.status = 200
-// })
-
-// moreRouter.post('/delete', (ctx, nxt) => {
-//     let phone = ctx.phone;
-//     let { idx, data } = ctx.request.body;
-//     deleteIdxEdu(phone, data, idx)
-//     return ctx.status = 200
-// })
+moreRouter.post('/skill/add', (ctx, nxt) => {
+    let phone = ctx.phone;
+    let { data } = ctx.request.body;
+    addSkill(phone, data)
+    return ctx.status = 200
+})
+moreRouter.post('/skill/update', (ctx, nxt) => {
+    let phone = ctx.phone;
+    let { idx, data } = ctx.request.body;
+    updateIdxSkiil(phone, data, idx)
+    return ctx.status = 200
+})
+moreRouter.post('/skill/delete', (ctx, nxt) => {
+    let phone = ctx.phone;
+    deleteIdxSkill(phone, data, idx)
+    return ctx.status = 200
+})
 
 export default moreRouter;

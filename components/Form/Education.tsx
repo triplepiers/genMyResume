@@ -52,6 +52,11 @@ const formSchema = z.object({
 type formKey = "institution" | "location" | "degree" | "neodegree" | "field" | "bg_month" | "bg_year" | "ed_month" | "ed_year";
 
 export const Education = (props: { edit: number, updateFormStatus: Function }) => {
+    const [degree, setDegree] = useState("")
+    const [bgMonth, setbgMonth] = useState("")
+    const [bgYear,  setbgYear]  = useState("")
+    const [edMonth, setedMonth] = useState("")
+    const [edYear,  setedYear]  = useState("")
     useEffect(() => {
         Clear()
         if (props.edit !== -1)  {
@@ -62,7 +67,12 @@ export const Education = (props: { edit: number, updateFormStatus: Function }) =
             }).then((res) => {
                 if(res.status === 200) {
                     for (let [key, val] of Object.entries(JSON.parse(res.data.edu))) {
-                        form.setValue(key as formKey, val as string)
+                        if (key === 'degree') { setDegree(val as string) } 
+                        else if (key === 'bg_month') { setbgMonth(val as string) }
+                        else if (key === 'bg_year')  { setbgYear(val as string) }
+                        else if (key === 'ed_month') { setedMonth(val as string) }
+                        else if (key === 'ed_year')  { setedYear(val as string) }
+                        else { form.setValue(key as formKey, val as string) }
                     }
                 }
             })
@@ -116,13 +126,13 @@ export const Education = (props: { edit: number, updateFormStatus: Function }) =
         form.clearErrors()
         form.setValue("institution", "")
         form.setValue("location", "")
-        form.setValue("degree", "")
+        setDegree("")
         form.setValue("neodegree", "")
         form.setValue("field", "")
-        form.setValue("bg_month", "")
-        form.setValue("bg_year", "")
-        form.setValue('ed_month', "")
-        form.setValue('ed_year', "")
+        setbgMonth("")
+        setbgYear("")
+        setedMonth("")
+        setedYear("")
         form.setValue('more', "")
     }
     return (
@@ -163,7 +173,7 @@ export const Education = (props: { edit: number, updateFormStatus: Function }) =
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Degree</FormLabel>
-                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                <Select onValueChange={(val) => setDegree(val)} defaultValue={degree} value={degree}>
                                     <FormControl>
                                         <SelectTrigger>
                                             <SelectValue placeholder="Select a degree" />
@@ -217,7 +227,7 @@ export const Education = (props: { edit: number, updateFormStatus: Function }) =
                             name="bg_month"
                             render={({ field }) => (
                                 <FormItem>
-                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <Select onValueChange={(val) => setbgMonth(val)} defaultValue={bgMonth} value={bgMonth}>
                                         <FormControl>
                                             <SelectTrigger>
                                                 <SelectValue placeholder="Month" />
@@ -236,7 +246,7 @@ export const Education = (props: { edit: number, updateFormStatus: Function }) =
                             name="bg_year"
                             render={({ field }) => (
                                 <FormItem>
-                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <Select onValueChange={(val) => setbgYear(val)} defaultValue={bgYear} value={bgYear}>
                                         <FormControl>
                                             <SelectTrigger>
                                                 <SelectValue placeholder="Year" />
@@ -261,7 +271,7 @@ export const Education = (props: { edit: number, updateFormStatus: Function }) =
                             name="ed_month"
                             render={({ field }) => (
                                 <FormItem>
-                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <Select onValueChange={(val) => setedMonth(val)} defaultValue={edMonth} value={edMonth}>
                                         <FormControl>
                                             <SelectTrigger>
                                                 <SelectValue placeholder="Month" />
@@ -279,7 +289,7 @@ export const Education = (props: { edit: number, updateFormStatus: Function }) =
                             name="ed_year"
                             render={({ field }) => (
                                 <FormItem>
-                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <Select onValueChange={(val) => setedYear(val)} defaultValue={edYear} value={edYear}>
                                         <FormControl>
                                             <SelectTrigger>
                                                 <SelectValue placeholder="Year" />

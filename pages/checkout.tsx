@@ -18,8 +18,8 @@ export default function Checkout(props: any[]) {
     // 路由相关
     const router = useRouter()
 
-    // stepper 组件
     // 节点
+    // stepper 组件
     const steps = [                // ? optional
         ['Heading', false],
         ['Education', false],

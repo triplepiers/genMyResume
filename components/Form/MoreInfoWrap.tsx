@@ -2,11 +2,15 @@ import { useEffect } from "react";
 import { useState } from "react";
 
 import { Awards } from "@/components/Form/Awards";
+import { Language } from "@/components/Form/Language";
+
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+
 
 import axios from "@/lib/axios";
 
 export const MoreInfoWrap = (props: { updateFormMeta: Function }) => {
-    const [ eduList, setEduList ] = useState([])
+    const [ skillList, setSkillList ] = useState([])
     const [ editIdx, setEditIdx ] = useState(-1) // add
     useEffect(() => {
         props.updateFormMeta({
@@ -16,18 +20,19 @@ export const MoreInfoWrap = (props: { updateFormMeta: Function }) => {
     }, [])
 
     useEffect(() => {
-        // updateFormStatus()
+        updateFormStatus()
     }, [])
 
     const updateFormStatus = () => {
-        setEduList([])
-        axios.get('/edu/all').then((res) => {
+        setSkillList([])
+        axios.get('/more/skill/all').then((res) => {
             if(res.status === 200) {
-                setEduList(res.data.edu)
+                // 后端处理不了，前端自己 parse
+                setSkillList(res.data.skill.map((item:string)=>JSON.parse(item)))
             }
         })
     }
-    const changeEduInfo = (e: any) => {
+    const changeSkillInfo = (e: any) => {
         setEditIdx(parseInt(e.target.dataset.id))
     }
     const swtichToAdd = () => {
@@ -35,32 +40,44 @@ export const MoreInfoWrap = (props: { updateFormMeta: Function }) => {
     }
 
     return (
-        <div className="flex w-full items-center flex-col">
+        <div className="flex w-full items-center flex-col items-center">
             <div className="w-full max-w-150 shrink-0">
-                <h2 className="text-xl font-bold mb-2 text-[var(--blue)]">
+                <h2 className="text-xl font-bold mb-2">
                     Awards & Certificates
                 </h2>
                 <Awards updateFormStatus={updateFormStatus}/>
             </div>
-            <div className="flex w-full max-w-150 justify-center flex-col border-t-1">
-                <h2 className="text-xl font-bold mb-3 mt-2 text-[var(--blue)]">
+            <div className="flex w-full max-w-150 flex-col border-t-1 h-fit">
+                <h2 className="text-xl font-bold  my-2">
                     Other Skills
                 </h2>
-                <div className="flex w-full justify-center flex-col md:flex-row">
-                    <div className="px-5 border-r-1
-                    max-w-80 overflow-hidden">
-                        <h2 className="text-xl font-bold mb-5">Summary</h2>
+                <div className="flex w-full justify-center flex-col md:flex-row gap-5 md:gap-0 items-center md:items-start">
+                    <div className="border-b-1 pb-5 border-r-0 md:border-r-1 md:px-5 md:border-b-0 md:pb-0
+                    max-w-80 overflow-hidden w-fit">
+                        <h3 className="text-xl font-bold mb-2">Summary</h3>
                         <button onClick={swtichToAdd}>请点这里：Add a New One?</button>
                         <div>这边列表渲染还没写</div>
                         {
-                            eduList.map((item, idx) => 
-                                (<li key={idx} data-id={`${idx}`} onClick={(e)=>changeEduInfo(e)}>{item}</li>)
+                            skillList.map((item, idx) => 
+                                (<li key={idx} data-id={`${idx}`} onClick={(e)=>changeSkillInfo(e)}>
+                                    {item.isLan==='true' ? `Lan: ${item.lan}, ${item.level}` : `Cstm: ${item.title}, ${item.desc}`}
+                                </li>)
                             )
                         }
                     </div>
-                    <div className="px-5">
-                        <h2 className="text-xl font-bold mb-5">Edit Education Experience</h2>
-                        {/* <Education edit={editIdx} updateFormStatus={updateFormStatus}/> */}
+                    <div className="px-5 w-fit">
+                        <h3 className="text-xl font-bold mb-2">Edit Your Skills</h3>
+                        <Tabs defaultValue="lan" className="w-50%">
+                            <TabsList className="mb-2">
+                                <TabsTrigger value="lan">Language</TabsTrigger>
+                                <TabsTrigger value="else">Customize</TabsTrigger>
+                            </TabsList>
+                            <TabsContent value="lan" className="px-5">
+                                <Language edit={editIdx} updateFormStatus={updateFormStatus}/>
+                            </TabsContent>
+                            <TabsContent value="else" className="px-5">Change your password here.</TabsContent>
+                        </Tabs>
+
                     </div>
                 </div>
         </div>
