@@ -31,7 +31,7 @@ export default function Checkout(props: any[]) {
     function getStepContent(step: number) {
         switch (step) {
             case 0:
-                return <Heading updateFormMeta={handleFormMeta} updateFormStatus={goNextStep}/>;
+                // return <Heading updateFormMeta={handleFormMeta} updateFormStatus={goNextStep}/>;
             case 1:
                 return <EducationWrap updateFormMeta={handleFormMeta}/>;
             case 2:

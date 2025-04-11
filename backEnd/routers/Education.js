@@ -60,8 +60,8 @@ eduRouter.post('/update', (ctx, nxt) => {
 
 eduRouter.post('/delete', (ctx, nxt) => {
     let phone = ctx.phone;
-    let { idx, data } = ctx.request.body;
-    deleteIdxEdu(phone, data, idx)
+    let { idx } = ctx.request.body;
+    deleteIdxEdu(phone, idx)
     return ctx.status = 200
 })
 

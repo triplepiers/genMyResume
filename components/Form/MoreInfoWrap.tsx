@@ -68,7 +68,7 @@ export const MoreInfoWrap = (props: { updateFormMeta: Function }) => {
                             )
                         }
                     </div>
-                    <div className="px-5 w-fit">
+                    <div className="pl-5 w-fit">
                         <h3 className="text-xl font-bold mb-2">Edit Your Skills</h3>
                         <Tabs defaultValue={mode} value={mode} className="w-50%">
                             <TabsList className="mb-2">

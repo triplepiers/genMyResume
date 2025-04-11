@@ -1,6 +1,9 @@
 import { useEffect } from "react";
 import { useState } from "react";
-import { Education } from "./Education";
+
+import { Education } from "@/components/Form/Education";
+import { SummaryHead } from "@/components/ui/SummaryHead";
+import { EducationCard } from "@/components/Cards/EducationCard";
 
 import axios from "@/lib/axios";
 
@@ -26,25 +29,35 @@ export const EducationWrap = (props: { updateFormMeta: Function }) => {
             }
         })
     }
-    const changeEduInfo = (e: any) => {
-        setEditIdx(parseInt(e.target.dataset.id))
+    const changeEduInfo = (e: any, idx:number) => {
+        // setEditIdx(parseInt(e.target.dataset.id))
+        setEditIdx(idx)
+    }
+    const removeEduInfo = (e: any, idx:number) => {
+        // del
+        axios.post('/edu/delete', {idx})
+        setTimeout(()=>{
+            setEditIdx(-1)
+            updateFormStatus()
+        }, 500)
     }
     const swtichToAdd = () => {
         setEditIdx(-1)
     }
 
     return (
-        <div className="flex w-full justify-center flex-col md:flex-row">
-            <div className="px-5 border-r-1
-            max-w-80 overflow-hidden">
-                <h2 className="text-xl font-bold mb-5">Summary</h2>
-                <button onClick={swtichToAdd}>请点这里：Add a New One?</button>
-                <div>这边列表渲染还没写</div>
-                {
+        <div className="form-wrap-container">
+            <div className="form-wrap-left-col overflow-hidden">
+                <SummaryHead handleClick={swtichToAdd} />
+                <div className="flex flex-col gap-2">{
                     eduList.map((item, idx) => 
-                        (<li key={idx} data-id={`${idx}`} onClick={(e)=>changeEduInfo(e)}>{item}</li>)
+                        (<EducationCard idx={idx} data={item} 
+                            handleEdit={(e:any, idx:number)=>changeEduInfo(e, idx)}
+                            handleDelete={(e:any, idx:number)=>removeEduInfo(e, idx)}
+                            key={idx} />)
                     )
-                }
+                }</div>
+                
             </div>
             <div className="px-5">
                 <h2 className="text-xl font-bold mb-5">Edit Education Experience</h2>

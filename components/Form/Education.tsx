@@ -85,7 +85,7 @@ export const Education = (props: { edit: number, updateFormStatus: Function }) =
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         // 做一些级联检查
-        if (values.degree === 'Enter your own' && !values.neodegree) {
+        if (degree === 'Enter your own' && !values.neodegree) {
             form.setError('neodegree', { message: 'Please enter a new degree' });
             return;
         }
@@ -154,7 +154,7 @@ export const Education = (props: { edit: number, updateFormStatus: Function }) =
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}
-                className="grid grid-cols-2 gap-5 space-y-0 w-full max-w-140">
+                className="grid grid-cols-2 gap-5 space-y-0 w-110">
                 <div className="col-span-2 sm:col-span-1"><FormField
                     control={form.control}
                     name="institution"
@@ -204,7 +204,7 @@ export const Education = (props: { edit: number, updateFormStatus: Function }) =
                             </FormItem>
                         )}
                     /></div>
-                    {form.watch('degree') === 'Enter your own' && ( // 要用 watch，否则没法实时监听
+                    {degree === 'Enter your own' && ( // 要用 watch，否则没法实时监听
                         <div className="col-span-2 sm:col-span-1"><FormField
                             control={form.control}
                             name="neodegree"
