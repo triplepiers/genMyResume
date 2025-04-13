@@ -62,7 +62,12 @@ export default function Result(props: any[]) {
             {/* 购买提示 */}
             
             {
-                showOPT ? (< PurchaseCard updateShow={handleDownload.handleUpdateShowOPT}/>) : (<></>)
+                showOPT ? 
+                (<PurchaseCard 
+                    // todo: TID 需要传入真实值
+                    tid="tid" title="Oops! You haven't bought this template yet"
+                    updateShow={handleDownload.handleUpdateShowOPT}
+                />) : (<></>)
             }
         </div>
     );

@@ -10,8 +10,6 @@ import {
 import { Loader2, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-var uid = 'uid';
-var tid = 'tid';
 
 enum BtnType {
     tooShort,
@@ -21,16 +19,21 @@ enum BtnType {
     error
 };
 
-export const PurchaseCard = (props: {updateShow: Function}) => {
+export const PurchaseCard = (props: {
+    updateShow: Function, 
+    tid: string, title: string
+}) => {
+    var uid = localStorage.getItem('account') || '00';
+    var tid = props.tid;
     useEffect(() => {
         // buy CDK: 没用，只是在后台把 CDK 打出来
-        // axios.post('/cdk', { uid, tid }) // TODO：这个需要放出来
+        axios.post('/cdk', { uid, tid }) // TODO：这个需要放出来
     }, [])
     
     const [OTPVal,  setOTPVal]   = useState("");
     const [btnType, setBtnType]  = useState(BtnType.tooShort);
  
-    var cdk: string = '072076D953E9';     // TODO：这个需要删掉
+    // var cdk: string = '072076D953E9';     // TODO：这个需要删掉
 
     const handleChange = (newVal: string) => {
         setOTPVal(newVal.toUpperCase()) // 统一为大写
@@ -45,23 +48,30 @@ export const PurchaseCard = (props: {updateShow: Function}) => {
     const validate = async () => {
         setBtnType(BtnType.wait);
 
-        // TODO：这一块需要删掉
-        await setTimeout(() => {
-            if (OTPVal === cdk) {
-                setBtnType(BtnType.success)
-            } else {
-                setBtnType(BtnType.error)
-            }
-        }, 2000)
-        return 
+        // // TODO：这一块需要删掉
+        // await setTimeout(() => {
+        //     if (OTPVal === cdk) {
+        //         setBtnType(BtnType.success)
+        //     } else {
+        //         setBtnType(BtnType.error)
+        //     }
+        // }, 2000)
+        // return 
 
         await axios.post('/cdk/check', {
-            cdk, uid, tid
+            cdk: OTPVal, 
+            uid, tid
         }).then(res => {
             if (res.status === 200) {
-    
                 if (res.data) {
                     setBtnType(BtnType.success)
+                    if (tid==='vip') {
+                        localStorage.setItem('isVIP', 'true');
+                        axios.post('/usr/vip/add')
+                    }
+                    setTimeout(() => {
+                        handleExt();
+                    }, 2000);
                 } else {
                     setBtnType(BtnType.error)
                 }
@@ -77,8 +87,8 @@ export const PurchaseCard = (props: {updateShow: Function}) => {
     return (
         <div className="custom-hover-page-middle custom-card-base">
             <div className="w-full flex justify-between">
-                <h2 className="font-bold text-xl mb-1">
-                    Oops! You haven't bought this template yet
+                <h2 className="font-bold text-xl mb-1 text-[var(--foreground)]">
+                    {props.title}
                 </h2>
                 <button className="cursor-pointer" onClick={handleExt}>
                     <Plus className="rotate-45 hover:rotate-90 duration-100

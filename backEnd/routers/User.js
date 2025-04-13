@@ -1,5 +1,5 @@
 import Router from "koa-router";
-import { userExist, addUser, validateAccount, isVIP } from "../Controller/User.js";
+import { userExist, addUser, validateAccount, isVIP, modVIP } from "../Controller/User.js";
 
 const userRouter = new Router({
     prefix: '/usr'
@@ -50,6 +50,12 @@ userRouter.post('/', (ctx, nxt) => {
     return ctx.status = 203
 })
 
+
+userRouter.post('/vip/add', (ctx, nxt) => {
+    let { phone } = ctx.request.body;
+    modVIP(phone, true);
+    return ctx.status = 200
+})
 
 
 export default userRouter;

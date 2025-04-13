@@ -7,7 +7,9 @@ const cdkRouter = new Router({
 
 cdkRouter.post('/', (ctx, nxt) => {
     let { uid, tid } = ctx.request.body;
-    ctx.response.body = genCDK(uid, tid);
+    let cdk = genCDK(uid, tid);
+    ctx.response.body = cdk;
+    console.log(`CDK for user[${uid}] for purchasing [${tid}]: ${cdk}`);
     nxt();
 })
 
