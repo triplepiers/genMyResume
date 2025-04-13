@@ -49,15 +49,17 @@ export const EducationWrap = (props: { updateFormMeta: Function }) => {
         <div className="form-wrap-container">
             <div className="form-wrap-left-col overflow-hidden">
                 <SummaryHead handleClick={swtichToAdd} />
-                <div className="flex flex-col gap-2">{
+                <div className="flex flex-col gap-2">
+                {
                     eduList.map((item, idx) => 
                         (<EducationCard idx={idx} data={item} 
                             handleEdit={(e:any, idx:number)=>changeEduInfo(e, idx)}
                             handleDelete={(e:any, idx:number)=>removeEduInfo(e, idx)}
                             key={idx} />)
                     )
-                }</div>
-                
+                }
+                {eduList.length===0?'Oho, nothing here ...':''}
+                </div>
             </div>
             <div className="px-5">
                 <h2 className="text-xl font-bold mb-5">Edit Education Experience</h2>

@@ -61,8 +61,8 @@ workRouter.post('/update', (ctx, nxt) => {
 
 workRouter.post('/delete', (ctx, nxt) => {
     let phone = ctx.phone;
-    let { idx, data } = ctx.request.body;
-    deleteIdxWork(phone, data, idx)
+    let { idx } = ctx.request.body;
+    deleteIdxWork(phone, idx)
     return ctx.status = 200
 })
 

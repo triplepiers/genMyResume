@@ -2,6 +2,9 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { Work } from "./Work";
 
+import { SummaryHead } from "@/components/ui/SummaryHead";
+import { WorkCard } from "@/components/Cards/WorkCard";
+
 import axios from "@/lib/axios";
 
 export const WorkWrap = (props: { updateFormMeta: Function }) => {
@@ -26,29 +29,40 @@ export const WorkWrap = (props: { updateFormMeta: Function }) => {
             }
         })
     }
-    const changewkInfo = (e: any) => {
-        setEditIdx(parseInt(e.target.dataset.id))
+    const changewkInfo = (e: any, idx: number) => {
+        // setEditIdx(parseInt(e.target.dataset.id))
+        setEditIdx(idx)
+    }
+    const removewkInfo = (e: any, idx: number) => {
+        axios.post('/work/delete', {idx})
+        setTimeout(()=>{
+            setEditIdx(-1)
+            updateFormStatus()
+        }, 500)
     }
     const swtichToAdd = () => {
         setEditIdx(-1)
     }
 
     return (
-        <div className="flex w-full justify-center flex-col md:flex-row">
-            <div className="px-5 border-r-1
-            max-w-80 overflow-hidden">
-                <h2 className="text-xl font-bold mb-5">Summary</h2>
-                <button onClick={swtichToAdd}>请点这里：Add a New One?</button>
-                <div>这边列表渲染还没写</div>
-                {
-                    wkList.map((item, idx) => 
-                        (<li key={idx} data-id={`${idx}`} onClick={(e)=>changewkInfo(e)}>{item}</li>)
-                    )
-                }
+        <div className="form-wrap-container">
+            <div className="form-wrap-left-col overflow-hidden">
+                <SummaryHead handleClick={swtichToAdd} />
+                <div className="flex flex-col gap-2">
+                    {
+                        wkList.map((item, idx) => (
+                            <WorkCard idx={idx} data={item} 
+                                handleEdit={(e:any, idx:number)=>changewkInfo(e, idx)}
+                                handleDelete={(e:any, idx:number)=>removewkInfo(e, idx)}
+                                key={idx} />
+                        ))
+                    }
+                    {wkList.length === 0 ? 'Oho, nothing here ...' : ''}
+                </div>
             </div>
             <div className="px-5">
                 <h2 className="text-xl font-bold mb-5">Edit Work Experience</h2>
-                <Work edit={editIdx} updateFormStatus={updateFormStatus}/>
+                <Work edit={editIdx} updateFormStatus={updateFormStatus} />
             </div>
         </div>
     )
