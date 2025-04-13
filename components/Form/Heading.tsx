@@ -59,7 +59,7 @@ export const Heading = (props: { updateFormMeta: Function, updateFormStatus: Fun
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}
-      className="grid grid-cols-2 gap-5 space-y-0 w-full max-w-140">
+      className="grid grid-cols-2 gap-5 space-y-0 w-full max-w-100">
         <div className="col-span-2 sm:col-span-1"><FormField
           control={form.control}
           name="surname"

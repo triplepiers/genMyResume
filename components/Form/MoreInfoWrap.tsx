@@ -5,12 +5,16 @@ import { Awards } from "@/components/Form/Awards";
 import { Language } from "@/components/Form/Language";
 import { Customize } from "@/components/Form/CustomSkill";
 
+import { Checkbox } from "@/components/ui/checkbox"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-
+import { SquarePlus } from "lucide-react";
+import { SkillCard } from "@/components/Cards/SkillCard";
 
 import axios from "@/lib/axios";
 
 export const MoreInfoWrap = (props: { updateFormMeta: Function }) => {
+    const [ showLan, setShowLan ] = useState(true)
+    const [ showCus, setShowCus ] = useState(true)
     const [ skillList, setSkillList ] = useState([])
     const [ editIdx, setEditIdx ] = useState(-1) // add
     const [ mode, setMode ] = useState("else")
@@ -30,13 +34,37 @@ export const MoreInfoWrap = (props: { updateFormMeta: Function }) => {
         axios.get('/more/skill/all').then((res) => {
             if(res.status === 200) {
                 // 后端处理不了，前端自己 parse
-                console.log(res.data.skill.map((item:string)=>JSON.parse(item)))
+                // setSkillList(res.data.skill)
+                console.log(res.data.skill)
                 setSkillList(res.data.skill.map((item:string)=>JSON.parse(item)))
             }
         })
     }
-    const changeSkillInfo = (e: any) => {
-        setEditIdx(parseInt(e.target.dataset.id))
+    const filterShowList = () => {
+        let ca = 0;
+        if (showLan) { ca += 1 }
+        if (showCus) { ca += 2 }
+        switch (ca) {
+            case 0: 
+                return []
+            case 1:// show only Lan
+                return skillList.filter((item: any) => item.isLan === true)
+            case 2:
+                return skillList.filter((item: any) => item.isLan === false)
+            case 3:
+                return skillList
+        }
+    }
+    const changeSkillInfo = (e: any, idx: number) => {
+        // setEditIdx(parseInt(e.target.dataset.id))
+        setEditIdx(idx)
+    }
+    const removeSkillInfo = (e: any, idx: number) => {
+        axios.post('/more/skill/delete', {idx})
+        setTimeout(()=>{
+            setEditIdx(-1)
+            updateFormStatus()
+        }, 500)
     }
     const swtichToAdd = () => {
         setEditIdx(-1)
@@ -44,36 +72,71 @@ export const MoreInfoWrap = (props: { updateFormMeta: Function }) => {
 
     return (
         <div className="flex w-full items-center flex-col items-center">
-            <div className="w-full max-w-150 shrink-0">
+            <div className="w-full shrink-0">
                 <h2 className="text-xl font-bold mb-2">
                     Awards & Certificates
                 </h2>
                 <Awards updateFormStatus={updateFormStatus}/>
             </div>
-            <div className="flex w-full max-w-150 flex-col border-t-1 h-fit">
+            <div className="flex w-full flex-col border-t-1 h-fit">
                 <h2 className="text-xl font-bold  my-2">
                     Other Skills
                 </h2>
-                <div className="flex w-full justify-center flex-col md:flex-row gap-5 md:gap-0 items-center md:items-start">
-                    <div className="border-b-1 pb-5 border-r-0 md:border-r-1 md:px-5 md:border-b-0 md:pb-0
-                    max-w-80 overflow-hidden w-fit">
-                        <h3 className="text-xl font-bold mb-2">Summary</h3>
-                        <button onClick={swtichToAdd}>请点这里：Add a New One?</button>
-                        <div>这边列表渲染还没写</div>
-                        {
-                            skillList.map((item, idx) => 
-                                (<li key={idx} data-id={`${idx}`} onClick={(e)=>{setMode(item.isLan?"lan":"else");changeSkillInfo(e)}}>
-                                    {item.isLan ? `Lan: ${item.lan}, ${item.level}` : `Cstm: ${item.title}, ${item.desc}`}
-                                </li>)
+                <div className="form-wrap-container">
+                    <div className="form-wrap-left-col overflow-hidden w-70">
+                        {/* Summary Head */}
+                        <div className="flex justify-between mb-1">
+                            <h3 className="text-xl font-bold">Summary</h3>
+                            <button onClick={swtichToAdd} className="cursor-pointer text-[var(--pink)] hover:text-[var(--blue)] duration-200">
+                                <SquarePlus />
+                            </button>
+                        </div>
+                        <div className="flex justify-between mb-1 text-sm text-gray-500 font-normal">
+                            <div>Show:</div>
+                            <div className="flex gap-2">
+                                <div className="flex items-center space-x-2">
+                                    <Checkbox id="languages" 
+                                        checked={showLan}
+                                        onCheckedChange={(checked) => {setShowLan(checked as boolean)}}
+                                    />
+                                    <label
+                                        htmlFor="languages"
+                                        className="peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                    >
+                                        Languages
+                                    </label>
+                                </div>
+                                <div className="flex items-center space-x-2">
+                                    <Checkbox id="customs" 
+                                        checked={showCus}
+                                        onCheckedChange={(checked) => {setShowCus(checked as boolean)}}
+                                    />
+                                    <label
+                                        htmlFor="customs"
+                                        className="peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                    >
+                                        Customs
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="flex flex-col gap-2">{
+                            filterShowList().map((item, idx) => (
+                                <SkillCard idx={idx} data={item}
+                                    handleEdit={(e:any, idx:number)=>changeSkillInfo(e, idx)}
+                                    handleDelete={(e:any, idx:number)=>removeSkillInfo(e, idx)}
+                                    key={idx} />)
                             )
-                        }
+                        }</div>
                     </div>
-                    <div className="pl-5 w-fit">
+                    <div className="pl-5 w-90">
                         <h3 className="text-xl font-bold mb-2">Edit Your Skills</h3>
                         <Tabs defaultValue={mode} value={mode} className="w-50%">
                             <TabsList className="mb-2">
-                                <TabsTrigger value="lan" onClick={() => {setEditIdx(-1); setMode("lan")}}>Language</TabsTrigger>
-                                <TabsTrigger value="else" onClick={() => {setEditIdx(-1);setMode("else")}}>Customize</TabsTrigger>
+                                <TabsTrigger value="lan" className="cursor-pointer"
+                                    onClick={() => {setEditIdx(-1); setMode("lan")}}>Language</TabsTrigger>
+                                <TabsTrigger value="else" className="cursor-pointer"
+                                    onClick={() => {setEditIdx(-1);setMode("else")}}>Customize</TabsTrigger>
                             </TabsList>
                             <TabsContent value="lan" className="px-5">
                                 <Language isLan={mode==="lan"} edit={editIdx} updateFormStatus={updateFormStatus}/>

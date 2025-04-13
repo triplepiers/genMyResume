@@ -5,6 +5,7 @@ import { Heading } from "@/components/Form/Heading";
 import { EducationWrap } from "@/components/Form/EduWrap";
 import { WorkWrap } from "@/components/Form/WorkWrap";
 import { MoreInfoWrap } from "@/components/Form/MoreInfoWrap";
+import { ChevronRight } from "lucide-react";
 
 // 样式
 const btn_base_style = '\
@@ -21,17 +22,17 @@ export default function Checkout(props: any[]) {
     // 节点
     // stepper 组件
     const steps = [                // ? optional
-        ['Heading', false],
+        ['Head', false],
         ['Education', false],
-        ['Working Experience', false],
-        ['Additional Information', true],
-        ['More Blocks', true],
+        ['WorkExp', false],
+        ['Skills', true],
+        ['Additional', true],
         ['Slef-Statement', false],
     ]
     function getStepContent(step: number) {
         switch (step) {
             case 0:
-                // return <Heading updateFormMeta={handleFormMeta} updateFormStatus={goNextStep}/>;
+                return <Heading updateFormMeta={handleFormMeta} updateFormStatus={goNextStep}/>;
             case 1:
                 return <EducationWrap updateFormMeta={handleFormMeta}/>;
             case 2:
@@ -68,15 +69,22 @@ export default function Checkout(props: any[]) {
     }
 
     return (
-        <div className="flex flex-col w-screen min-h-[calc(100vh-var(--header-height))] p-10 gap-3">
-            <div>这是该死的 Stepper，你在：{steps[activeStep]}</div>
-            <div className="grow-1 border-1 w-100%
-            flex flex-col items-center">
-                <h1 className="text-3xl font-bold">{formTitle}</h1>
-                <p dangerouslySetInnerHTML={{ __html: formDesc}} className="mt-2 mb-5"></p>
-                <div className="w-full flex justify-center">
-                    {(getStepContent(activeStep))}
-                </div>
+        <div className="flex flex-col w-screen min-h-[calc(100vh-var(--header-height))] p-10 pt-5 gap-3">
+            <div className="flex flex-wrap justify-center md:justify-between items-center gap-y-2">
+            <div className="flex flex-wrap gap-[1.5] font-medium leading-tight items-center">
+                <div className="text-[var(--foreground)] font-bold pr-2">Stepps: </div>
+                {
+                    steps.map((step, idx) => {
+                        return (
+                            <>
+                            <div key={idx} className={`${activeStep === idx ? 'text-[var(--pink)]' : 'text-gray-500'}`}>
+                                {step[0]}
+                            </div>
+                            {idx !== steps.length - 1 ? (<ChevronRight className="w-4 h-4 text-gray-500"/>):(<></>)}
+                            </>
+                        )
+                    })
+                }
             </div>
             {/* button wrap */}
             <div className="w-100% flex justify-end gap-3">
@@ -97,6 +105,15 @@ export default function Checkout(props: any[]) {
                         Next
                     </button>)
                 }
+            </div>
+            </div>
+            <div className="grow-1 w-100%
+            flex flex-col items-center">
+                <h1 className="text-3xl font-bold">{formTitle}</h1>
+                <p dangerouslySetInnerHTML={{ __html: formDesc}} className="mt-2 mb-5"></p>
+                <div className="w-full max-w-190 flex justify-center">
+                    {(getStepContent(activeStep))}
+                </div>
             </div>
         </div>
     )

@@ -82,7 +82,7 @@ export const Language = (props: { edit: number, updateFormStatus: Function }) =>
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}
-                className="flex flex-col w-full max-w-140 gap-3">
+                className="flex flex-col w-full gap-3">
                 <div className="w-full"><FormField
                     control={form.control}
                     name="lan"

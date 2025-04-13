@@ -9,6 +9,7 @@ import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 
 import axios from "@/lib/axios";
+import { title } from "process";
 
 
 const str_spc = z.string()//.regex(/^[A-Za-z\s]+$/, { message: "Contains ONLY characters", });
@@ -43,16 +44,20 @@ export const Customize = (props: { edit: number, updateFormStatus: Function }) =
     })
 
     function onSubmit(values: z.infer<typeof formSchema>) {
-        
+        let vals = {
+            isLan: false,
+            title: values.title,
+            desc: values.desc,
+        }
         if (props.edit === -1) {
             axios.post('/more/skill/add', {
-                data:  JSON.stringify(values)
+                data:  JSON.stringify(vals)
             })
             // clear input
             Clear();
         } else {
             axios.post('/more/skill/update', {
-                data:  JSON.stringify(values),
+                data:  JSON.stringify(vals),
                 idx:   props.edit
             })
         }
@@ -70,7 +75,7 @@ export const Customize = (props: { edit: number, updateFormStatus: Function }) =
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}
-                className="flex flex-col w-full max-w-140 gap-5">
+                className="flex flex-col w-full gap-5">
                 <div className="w-full"><FormField
                     control={form.control}
                     name="title"

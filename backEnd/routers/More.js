@@ -71,7 +71,8 @@ moreRouter.post('/skill/update', (ctx, nxt) => {
 })
 moreRouter.post('/skill/delete', (ctx, nxt) => {
     let phone = ctx.phone;
-    deleteIdxSkill(phone, data, idx)
+    let { idx } = ctx.request.body;
+    deleteIdxSkill(phone, idx)
     return ctx.status = 200
 })
 
