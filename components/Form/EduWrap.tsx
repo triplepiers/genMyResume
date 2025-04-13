@@ -58,7 +58,7 @@ export const EducationWrap = (props: { updateFormMeta: Function }) => {
                             key={idx} />)
                     )
                 }
-                {eduList.length===0?'Oho, nothing here ...':''}
+                {eduList.length===0?'Oho, nothing here ...': ''}
                 </div>
             </div>
             <div className="px-5">

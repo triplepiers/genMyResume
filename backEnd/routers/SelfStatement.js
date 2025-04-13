@@ -1,0 +1,58 @@
+import Router from "koa-router";
+import {
+    getSS,
+    updateSS,
+    canGen,
+    genSS
+} from "../Controller/SelfStatement.js";
+
+const ssRouter = new Router({
+    prefix: '/ss'
+});
+
+/* 拦截，统一 check user是否存在
+   201 { 没带 }
+*/
+ssRouter.use((ctx, nxt) => {
+    if (ctx.method == 'GET') {
+        var { phone }  = ctx.query;
+    } else {
+        var { phone }  = ctx.request.body;
+    }
+    if (!phone) {
+        return ctx.status = 201;
+    } else {
+        ctx.phone = phone;
+    }
+    nxt();
+})
+
+// 返回 ss
+ssRouter.get('/', (ctx, nxt) => {
+    let phone = ctx.phone;
+    ctx.response.body = JSON.stringify({ ss: getSS(phone) });
+    return ctx.status = 200
+})
+// 修改
+ssRouter.post('/', (ctx, nxt) => {
+    let phone = ctx.phone;
+    let { data } = ctx.request.body;
+    updateSS(phone, data);
+    return ctx.status = 200
+})
+
+// 能不能用 gen
+ssRouter.get('/gen', (ctx, nxt) => {
+    let phone = ctx.phone;
+    ctx.response.body = JSON.stringify({ canGen: canGen(phone) });
+    return ctx.status = 200
+})
+// 生成
+ssRouter.post('/gen', async (ctx, nxt) => {
+    let phone = ctx.phone;
+    let res = await genSS(userInfo);
+    ctx.response.body = JSON.stringify({ data: res });
+    return ctx.status = 200
+})
+
+export default ssRouter;

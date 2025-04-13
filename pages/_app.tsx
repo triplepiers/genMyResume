@@ -19,6 +19,8 @@ export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter()
 
   useEffect(() => {
+    localStorage.setItem('account', '00')
+    localStorage.setItem('isVIP', 'false')
     const handleRouteChange = (url:string) => {
       // 不能阻止直接通过 URL 访问的
       console.log(`Route is changing to ${url}`)

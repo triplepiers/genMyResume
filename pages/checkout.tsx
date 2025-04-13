@@ -5,6 +5,7 @@ import { Heading } from "@/components/Form/Heading";
 import { EducationWrap } from "@/components/Form/EduWrap";
 import { WorkWrap } from "@/components/Form/WorkWrap";
 import { MoreInfoWrap } from "@/components/Form/MoreInfoWrap";
+import { SelfStatement } from "@/components/Form/SlefStatement";
 import { ChevronRight } from "lucide-react";
 
 // 样式
@@ -32,16 +33,17 @@ export default function Checkout(props: any[]) {
     function getStepContent(step: number) {
         switch (step) {
             case 0:
-                return <Heading updateFormMeta={handleFormMeta} updateFormStatus={goNextStep}/>;
+                // return <Heading updateFormMeta={handleFormMeta} updateFormStatus={goNextStep}/>;
             case 1:
-                return <EducationWrap updateFormMeta={handleFormMeta}/>;
+                // return <EducationWrap updateFormMeta={handleFormMeta}/>;
             case 2:
-                return <WorkWrap updateFormMeta={handleFormMeta}/>;
+                // return <WorkWrap updateFormMeta={handleFormMeta}/>;
             case 3:
-                return <MoreInfoWrap updateFormMeta={handleFormMeta}/>;
+                // return <MoreInfoWrap updateFormMeta={handleFormMeta}/>;
             case 4:
+                // return (<span>{steps[step]}</span>);
             case 5:
-                return (<span>{steps[step]}</span>);
+                return <SelfStatement updateFormMeta={handleFormMeta}/>
             default:
                 throw new Error('Unknown Step!');
         }

@@ -7,7 +7,7 @@ const moreDB = await JSONFilePreset(db_file, { mores: [] });
 moreDB.initDB = async () => {
     console.log('Init (MoreInfoDB)');
     const { mores } = moreDB.data;
-    if (!(mores.find((head) => head.phone === '00'))) {
+    if (!(mores.find((more) => more.phone === '00'))) {
         console.log('No admin more found, create one ...');
         await moreDB.update(({ mores }) => mores.push({
             phone: "00",

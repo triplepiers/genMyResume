@@ -3,13 +3,15 @@ import headDB from "./HeadDB.js";
 import eduDB from "./EduDB.js";
 import workDB from "./WorkDB.js";
 import moreDB from "./MoreDB.js";
+import ssDB from './SelfStatement.js'
 
 const DBList = [
     userDB,
     headDB,
     eduDB,
     workDB,
-    moreDB
+    moreDB,
+    ssDB
 ]
 
 function initDBs() {

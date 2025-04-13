@@ -4,7 +4,7 @@ import 'dotenv/config';
 const openai = new OpenAI({
     baseURL: process.env.MODEL_URL,
     apiKey:  process.env.MODEL_KEY,
-    temprature: 1.0,
+    temprature: 2.0,
 });
 
 function genMsgs(userInfo) {
@@ -13,9 +13,11 @@ function genMsgs(userInfo) {
         { role: "user",   content: 
             `I am a recent graduate, currently seeking job opportunities in the e-commerce field in Hong Kong.<br>
 
-            This is my personal info ${userInfo}.<br>
+            This is my personal info:\n ${userInfo}.<br>
             
-            Can you summarize a short self-statement for me in 2~3 sentences? Please don't output message that is not required.` },
+            Can you summarize a short self-statement for me in 2~3 sentences?
+            
+            Please don't output message that is not required, just show me the result.` },
     ];
 }
 
@@ -30,11 +32,9 @@ async function getCompletion(msgs) {
 
 async function genSelfStatement(userInfo) {
     let res = await getCompletion(genMsgs(userInfo));
-    // let res = await getCompletion([
-    //     {role:"user", content:"hello"}
-    // ]);
     return res;
 }
 
-let res = await genSelfStatement("");
-console.log(res);
+export {
+  genSelfStatement
+}

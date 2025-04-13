@@ -7,11 +7,13 @@ const head_db_file = join(__dirname, 'Head.json');
 const edu_db_file  = join(__dirname, 'Education.json');
 const work_db_file = join(__dirname, 'Work.json');
 const more_db_file = join(__dirname, 'More.json');
+const ss_db_file = join(__dirname, 'SelfStatement.json');
 
 export {
     user_db_file,
     head_db_file,
     edu_db_file,
     work_db_file,
-    more_db_file
+    more_db_file,
+    ss_db_file
 }
