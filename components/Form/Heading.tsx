@@ -31,7 +31,7 @@ export const Heading = (props: { updateFormMeta: Function, updateFormStatus: Fun
   useEffect(() => {
     // let data = localStorage.getItem('1');
     axios.get('/head').then((res) => {
-      if(res.status === 200) {
+      if(res.status === 200 && res.data.head.length>0) {
         for (let [key, val] of Object.entries(JSON.parse(res.data.head)) ) {
           form.setValue(key as formKey, val as string)
         }

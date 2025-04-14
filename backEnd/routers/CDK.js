@@ -24,6 +24,7 @@ cdkRouter.post('/', (ctx, nxt) => {
     let uid = ctx.phone;
     let { tid } = ctx.request.body;
     let cdk = genCDK(uid, tid);
+    console.log(`[INFO] CDK for user(${uid}) purchasing ${tid}: ${cdk}`)
     ctx.response.body = cdk;
     nxt();
 })

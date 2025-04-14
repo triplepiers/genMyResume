@@ -8,34 +8,24 @@ export default function Test(props: any[]) {
   const download = () => {
     // axios.get('/', {})
     // .then((res:any) => {console.log(res)})
-    axios.post('/head', {
-        data:      'trtt'
-    }).then((res) => {
+    axios.get('/head').then((res) => {
       console.log(res)
-      
-  })
+      // if(res.status === 200) {
+      //   console.log(res.data)
+      // }
+    }) 
     // if (checkPurcahased()) {
     //   // down
     // } else {
     //   setShowOPT(true);
     // }
   }
-  // 检查是否已经购买
-  const checkPurcahased = () => {
-    return false;
-  }
-  // 关闭 Purchase Card
-  const handleUpdateShowOPT = (neoShowOPT:boolean) => {
-    setShowOPT(neoShowOPT);
-  }
+
 
   return (
     <div className="flex flex-col items-center justify-center gap-y-[2rem]
       w-screen h-[calc(100vh-var(--header-height))] p-20">
-      <button onClick={download}>发请求</button>
-      {
-        showOPT ? (< PurchaseCard updateShow={handleUpdateShowOPT}/>) : (<></>)
-      }
+      <button onClick={download}>登录</button>
     </div>
   )
 }

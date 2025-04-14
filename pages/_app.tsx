@@ -19,7 +19,7 @@ export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter()
 
   useEffect(() => {
-    localStorage.setItem('account', '00')
+    // localStorage.setItem('account', '00')
     // localStorage.setItem('isVIP', 'true')
     const handleRouteChange = (url:string) => {
       // 不能阻止直接通过 URL 访问的
@@ -27,7 +27,7 @@ export default function App({ Component, pageProps }: AppProps) {
       if (!localStorage.getItem('account') &&
         url!=='/' && url!=='/login'
       ) {
-        // router.push('/login'); // 这个要放出来
+        router.push('/login'); // 这个要放出来
       }
     }
     router.events.on('routeChangeStart', handleRouteChange)

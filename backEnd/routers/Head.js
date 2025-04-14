@@ -27,11 +27,12 @@ headRouter.use((ctx, nxt) => {
 headRouter.get('/', (ctx, nxt) => {
     let phone = ctx.phone;
     if (!headExist(phone)) {
-        return ctx.status = 202
+        // return ctx.status = 202
+        ctx.response.body = JSON.stringify({ head: "" });
     } else {
         ctx.response.body = JSON.stringify({ head: getHead(phone) });
-        return ctx.status = 200
     }
+    return ctx.status = 200
 }) 
 
 // 更新

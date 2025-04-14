@@ -31,11 +31,9 @@ export const LoginForm = () => {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
     })
-    async function onSubmit(values: z.infer<typeof formSchema>) {
-
+    function onSubmit(values: z.infer<typeof formSchema>) {
         setBtnType(BtnType.wait);
-
-        await axios.post('/usr', {
+        axios.post('/usr', {
             phone:    values.phone,
             pwd:      values.password
         }).then((res) => {
