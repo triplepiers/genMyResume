@@ -5,7 +5,6 @@ import {
     canGen,
     genSS
 } from "../Controller/SelfStatement.js";
-import { resolve } from "path";
 
 const ssRouter = new Router({
     prefix: '/ss'

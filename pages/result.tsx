@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { PdfGenerator } from "@/components/PdfGenerator";
 import { Palette } from "@/components/Editor/Palette";
@@ -9,6 +9,7 @@ import { FaFileLines, FaPaintRoller, FaCirclePlus, FaDownload } from "react-icon
 export default function Result(props: any[]) {
     // 下载按钮相关内容
     const [showOPT, setShowOPT] = useState(false);
+
     const handleDownload = {
         download: () => {
             if (handleDownload.checkPurcahased()) {

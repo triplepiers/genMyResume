@@ -5,6 +5,7 @@ import eduRouter from "./Education.js";
 import workRouter from "./Work.js";
 import moreRouter from "./More.js";
 import ssRouter from "./SelfStatement.js";
+import tpRouter from "./Template.js";
 
 const routers = [
     cdkRouter,
@@ -13,7 +14,8 @@ const routers = [
     eduRouter,
     workRouter,
     moreRouter,
-    ssRouter
+    ssRouter,
+    tpRouter
 ]
 
 export default routers;
