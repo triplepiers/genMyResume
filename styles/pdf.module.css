@@ -17,10 +17,4 @@
     width: calc(250px * var(--quality));
     box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
     border: 1px solid #eee;
-    padding: 30px 55px;
-    display: flex;
-    flex-direction: column;
-    justify-content: start;
-    align-items: center;
-    font-family: 'Times New Roman', Times, serif;
 }

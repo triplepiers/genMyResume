@@ -21,9 +21,10 @@ export default function App({ Component, pageProps }: AppProps) {
   useEffect(() => {
     // localStorage.setItem('account', '00')
     // localStorage.setItem('isVIP', 'true')
+    // localStorage.setItem('tid', 'S01')
     const handleRouteChange = (url:string) => {
       // 不能阻止直接通过 URL 访问的
-      console.log(`Route is changing to ${url}`)
+      // console.log(`Route is changing to ${url}`)
       if (!localStorage.getItem('account') &&
         url!=='/' && url!=='/login'
       ) {

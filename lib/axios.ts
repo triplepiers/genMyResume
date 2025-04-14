@@ -9,7 +9,6 @@ const apiClient = axios.create({
 // 请求拦截器：给 GET / POST 统一塞 phone
 apiClient.interceptors.request.use((config: any) => {
     let phone = localStorage.getItem('account');
-    console.log('get phone:', phone)
     if (phone) {
         if (config.method === 'get') {
             config.params = {

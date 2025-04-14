@@ -1,11 +1,12 @@
 import Link from "next/link";
-import { useEffect } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { Flame } from "lucide-react";
 
 import { PurchaseCard } from "@/components/Cards/PurchaseCard";
 
 export const Header = () => {
+    const router = useRouter();
     const [account, setAccount] = useState("");
     const [isVIP, setIsVIP] = useState(false)
     const [showCard, setShowCard] = useState(false);
@@ -31,6 +32,7 @@ export const Header = () => {
         // 触发重新渲染
         setAccount("");
         setIsVIP(false);
+        router.push('/')
     }
 
     const beVIP = () => {

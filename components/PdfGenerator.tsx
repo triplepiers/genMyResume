@@ -8,30 +8,28 @@ import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import axios from '@/lib/axios';
 
-import genTemplate from '@/templates/Single/01';
 import { handleProfile } from '@/lib/utils';
+import templates from '@/templates';
 
-export const PdfGenerator = (props:{}) => {
-    const [headPF, setHeadPF] = useState({})
-    const [eduPF, setEduPF] = useState([])
-    const [wkPF, setWkPF] = useState([])
-    const [awardPF, setAwardPF] = useState('')
-    const [skillPF, setSkillPF] = useState({lans: [] as any[], customs: [] as any[]})
-    const [ssPF, setSSPF] = useState('')
 
+export const PdfGenerator = (props:{ tid: string }) => {
+    const [result, setResult] = useState<any>()
+
+
+    const loadTemplate = (tid: string, profile: any) => {
+        if(tid.length===0) return
+        let { head, edus, works, skill, award, ss } = profile;
+        let renderer = templates[tid] as Function;
+        setResult(renderer(head, edus, works, award, skill, ss))
+    }
+    
     useEffect(() => {
         axios.get('/tp/profile').then((res) => {
             if (res.status === 200) { return res.data.profile}
         }).then((tmp) => {
-            let { head, edus, works, skill, award, ss } = handleProfile(tmp)
-            setHeadPF(head)
-            setEduPF(edus)
-            setWkPF(works)
-            setAwardPF(award)
-            setSkillPF(skill)
-            setSSPF(ss)
+            loadTemplate(props.tid, handleProfile(tmp))
         })
-    }, [])
+    }, [props.tid])
 
     const quality = 3.3; // 必须和央视表对应
     const generate = (isPDF: boolean) => {
@@ -62,7 +60,7 @@ export const PdfGenerator = (props:{}) => {
     return (
         <>
         <div id="pdf" className={`${styles.pdf} gap-1`}>
-            {genTemplate(headPF, eduPF, wkPF, awardPF, skillPF, ssPF)}
+            {result}
         </div>
         <button id='PDF' onClick={() => generate(true)} className='w-0 h-0 hidden'>PDF</button>
         <button id='PNG' onClick={() => generate(false)} className='w-0 h-0 hidden'>PNG</button>
