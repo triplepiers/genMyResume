@@ -22,18 +22,27 @@ function genMsgs(userInfo) {
 }
 
 async function getCompletion(msgs) {
-  const completion = await openai.chat.completions.create({
-    messages: msgs,
-    model:    process.env.MODEL_NAME,
+  return new Promise((resolve, reject) => {
+    openai.chat.completions.create({
+      messages: msgs,
+      model:    process.env.MODEL_NAME,
+    }).then((completion) => {
+      resolve(completion.choices[0].message.content);
+    }).catch((err) => {
+      console.error(err);
+      reject(err);
+    });
   });
-
-  return completion.choices[0].message.content;
 }
 
 async function genSelfStatement(userInfo) {
-    let res = await getCompletion(genMsgs(userInfo));
-    return res;
-}
+  return new Promise((resolve) => {
+    getCompletion(genMsgs(userInfo))
+    .then((res) => {
+      resolve(res);
+    })
+  })
+};
 
 export {
   genSelfStatement

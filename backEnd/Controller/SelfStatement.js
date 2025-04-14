@@ -4,6 +4,7 @@ import { getAllEdus } from "./Education.js";
 import { getAllWorks } from "./Work.js";
 import { getAllSkills } from "./More.js"
 import { genSelfStatement } from "../utils/llm.js";
+import { resolve } from "path";
 
 const { SSs } = ssDB.data;
 
@@ -104,13 +105,14 @@ async function genSS(phone) {
     if(!canGen(phone)) {
         return "You have used the generation function, please update your self-statement manually."
     }
-    let res = await genSelfStatement(getProfile(phone));
     hasGen(phone);
-    return res
+    return new Promise((resolve) => {
+        genSelfStatement(getProfile(phone))
+        .then((res) => {
+            resolve(res)
+        })
+    })
 }
-
-// let ss = await genSS("00")
-// console.log(ss)
 
 export {
     getSS,

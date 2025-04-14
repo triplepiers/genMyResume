@@ -3,6 +3,7 @@ import axios from "axios";
 // 统一配置代理
 const apiClient = axios.create({
     baseURL: 'http://localhost:8080',
+    timeout: 60000 // 60s
 })
 
 // 请求拦截器：给 GET / POST 统一塞 phone

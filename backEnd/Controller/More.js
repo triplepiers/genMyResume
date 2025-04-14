@@ -49,7 +49,6 @@ function addSkill(phone, data) {
     let neo_data;
     if (moreExist(phone)) { // append
         neo_data = [...getAllSkills(phone), data];
-        console.log('new', data)
         moreDB.update(
             ({ mores }) => mores.find((more) => more.phone === phone).skills = neo_data
         )

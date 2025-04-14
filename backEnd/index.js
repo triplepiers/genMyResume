@@ -16,9 +16,9 @@ app.use(cors());
 app.use(bodyParser());
 
 // Logger
-app.use((ctx, nxt) => {
+app.use(async (ctx, nxt) => {
     console.log(`[${ctx.request.method}]  ${ctx.request.url}`);
-    nxt(); // tmd 忘记 next 了
+    await nxt(); // tmd 忘记 next 了
 });
 
 
@@ -34,7 +34,6 @@ for (let subrouter of routers) {
 }
 
 app.use(router.routes()).use(router.allowedMethods());
-
 
 // listen to Port: 8080, do sth. afer init
 app.listen(8080, () => {

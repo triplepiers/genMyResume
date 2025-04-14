@@ -5,6 +5,7 @@ import { Heading } from "@/components/Form/Heading";
 import { EducationWrap } from "@/components/Form/EduWrap";
 import { WorkWrap } from "@/components/Form/WorkWrap";
 import { MoreInfoWrap } from "@/components/Form/MoreInfoWrap";
+import { AdditionalWrap } from "@/components/Form/AdditionalWrap";
 import { SelfStatement } from "@/components/Form/SlefStatement";
 import { ChevronRight } from "lucide-react";
 
@@ -33,15 +34,15 @@ export default function Checkout(props: any[]) {
     function getStepContent(step: number) {
         switch (step) {
             case 0:
-                // return <Heading updateFormMeta={handleFormMeta} updateFormStatus={goNextStep}/>;
+                return <Heading updateFormMeta={handleFormMeta} updateFormStatus={goNextStep}/>;
             case 1:
-                // return <EducationWrap updateFormMeta={handleFormMeta}/>;
+                return <EducationWrap updateFormMeta={handleFormMeta}/>;
             case 2:
-                // return <WorkWrap updateFormMeta={handleFormMeta}/>;
+                return <WorkWrap updateFormMeta={handleFormMeta}/>;
             case 3:
-                // return <MoreInfoWrap updateFormMeta={handleFormMeta}/>;
+                return <MoreInfoWrap updateFormMeta={handleFormMeta}/>;
             case 4:
-                // return (<span>{steps[step]}</span>);
+                return <AdditionalWrap updateFormMeta={handleFormMeta}/>;
             case 5:
                 return <SelfStatement updateFormMeta={handleFormMeta}/>
             default:
@@ -110,7 +111,7 @@ export default function Checkout(props: any[]) {
             </div>
             </div>
             <div className="grow-1 w-100%
-            flex flex-col items-center">
+            flex flex-col items-center justify-center">
                 <h1 className="text-3xl font-bold">{formTitle}</h1>
                 <p dangerouslySetInnerHTML={{ __html: formDesc}} className="mt-2 mb-5"></p>
                 <div className="w-full max-w-190 flex justify-center">

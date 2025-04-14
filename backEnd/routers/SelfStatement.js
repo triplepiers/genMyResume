@@ -5,6 +5,7 @@ import {
     canGen,
     genSS
 } from "../Controller/SelfStatement.js";
+import { resolve } from "path";
 
 const ssRouter = new Router({
     prefix: '/ss'
@@ -13,7 +14,7 @@ const ssRouter = new Router({
 /* 拦截，统一 check user是否存在
    201 { 没带 }
 */
-ssRouter.use((ctx, nxt) => {
+ssRouter.use(async (ctx, nxt) => {
     if (ctx.method == 'GET') {
         var { phone }  = ctx.query;
     } else {
@@ -24,7 +25,7 @@ ssRouter.use((ctx, nxt) => {
     } else {
         ctx.phone = phone;
     }
-    nxt();
+    await nxt();
 })
 
 // 返回 ss
@@ -50,9 +51,13 @@ ssRouter.get('/gen', (ctx, nxt) => {
 // 生成
 ssRouter.post('/gen', async (ctx, nxt) => {
     let phone = ctx.phone;
-    let res = await genSS(userInfo);
-    ctx.response.body = JSON.stringify({ data: res });
-    return ctx.status = 200
+    return await new Promise((resolve) => {
+        genSS(phone).then((res) => {
+            ctx.response.body = JSON.stringify({ ss: res.slice(1,-1) });
+            ctx.status = 200
+            resolve()
+        })
+    })
 })
 
 export default ssRouter;

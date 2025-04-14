@@ -5,38 +5,42 @@ import { string, z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 
 import { Form, FormItem, FormField, FormLabel, FormControl, FormMessage } from "../ui/form";
-import { Textarea } from "../ui/textarea";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
 
 import axios from "@/lib/axios";
 
-const formSchema = z.object({
+enum BtnType {
+    norm, wait
+};
 
+const formSchema = z.object({
+    selfStatement: z.string()
 })
-type formKey = "institution" | "location" | "degree" | "neodegree" | "field" | "bg_month" | "bg_year" | "ed_month" | "ed_year";
 
 export const SelfStatement = (props: { updateFormMeta: Function }) => {
-    const [ canGen, setCanGen ] = useState(false)
-    const [ SS, setSS ] = useState("")
+    const [canGen, setCanGen] = useState(false)
+    const [btnType, setBtnType]  = useState(BtnType.norm);
     useEffect(() => {
         props.updateFormMeta({
             title: 'Self Statement',
             desc: 'A brief summary of your skills, experience, and career goals.',
         })
     }, [])
+
     useEffect(() => {
-        // init self statement
-        axios.get('/ss')
-            .then((res) => {
-                if (res.status === 200) {
-                    setSS(res.data.ss)
-                }
-            })
-        axios.get('/ss/gen')
-        .then((res) => {
+        axios.get('/ss').then((res) => {
             if (res.status === 200) {
-                setCanGen(res.data.canGen)
+                form.setValue('selfStatement', res.data.ss)
             }
         })
+        axios.get('/ss/gen')
+            .then((res) => {
+                if (res.status === 200) {
+                    setCanGen(res.data.canGen)
+                }
+            })
     }, [])
     // gen完之后也要reset canGen
 
@@ -45,29 +49,75 @@ export const SelfStatement = (props: { updateFormMeta: Function }) => {
     })
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
-                                 
+        axios.post('/ss', { data: values.selfStatement }) // save
     }
 
-    const Clear = () => {
-
+    const genSS = () => {
+        if (!canGen) return;
+        setBtnType(BtnType.wait)
+        axios.post('/ss/gen')
+        .then((res) => {
+            if (res.status === 200) {
+                form.setValue('selfStatement', res.data.ss)
+                setBtnType(BtnType.norm)
+                axios.get('/ss/gen').then((res) => {
+                    if (res.status === 200) {
+                        setCanGen(res.data.canGen)
+                    }
+                })
+            }
+        })
     }
+
     return (
-        <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)}
-                className="flex flex-col gap-4">
-                <div className="border-1">
-                    {SS}
-                </div>
-                <button type="submit" id='GO' 
-                    className={`cursor-pointer rounded-md font-medium 
-                        bg-[var(--pink})]
-                        text-[var(--back}ground)]
-                        block px-4 py-[0.2rem] min-w-[6rem]`}>
+        <div className="flex flex-col gap-2 w-full items-center">
+            <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)}
+                    className="w-full max-w-120">
+                    <FormField
+                        control={form.control}
+                        name="selfStatement"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormControl>
+                                    <Textarea
+                                        placeholder="Your self-statement."
+                                        className="resize-none min-h-40 max-h-40"
+                                        {...field}
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <button id='GO'></button>
+                </form>
+            </Form>
+            <div className="flex gap-5 justify-center">
+                <Button disabled={btnType===BtnType.wait||!canGen} 
+                 className={`cursor-pointer rounded-md font-medium 
+                        bg-${canGen?'[var(--green)]':'gray-500'}
+                        text-[var(--background)]
+                        block px-4 py-[0.2rem] min-w-[6rem] flex gap-1 justify-center items-center`}
+                 onClick={genSS}>
+                    {
+                        (btnType===BtnType.wait) ? (<>
+                            <Loader2 className="animate-spin" />
+                            Wait
+                        </>):(<>Generate</>)
+                    }
+                </Button>
+                <button 
+                    onClick={() => {
+                        document.getElementById('GO')?.click()
+                    }}
+                    className="cursor-pointer rounded-md font-medium 
+                        bg-[var(--pink)]
+                        text-[var(--background)]
+                        block px-4 py-[0.2rem] min-w-[6rem]">
                     Save
                 </button>
-                {/* TODO: check VIP & 使用次数 */}
-                <div>AutoGen {canGen.toString()}</div>
-            </form>
-        </Form>
+            </div>
+        </div>
     )
 }
