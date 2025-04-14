@@ -49,7 +49,7 @@ const formSchema = z.object({
     ed_year: z.string().optional(),
     more:    z.string().optional()
 })
-type formKey = "institution" | "location" | "degree" | "neodegree" | "field" | "bg_month" | "bg_year" | "ed_month" | "ed_year";
+type formKey = "institution" | "location" | "degree" | "neodegree" | "field" | "bg_month" | "bg_year" | "ed_month" | "ed_year";         
 
 export const Education = (props: { edit: number, updateFormStatus: Function }) => {
     const [degree, setDegree] = useState("")
@@ -58,7 +58,6 @@ export const Education = (props: { edit: number, updateFormStatus: Function }) =
     const [edMonth, setedMonth] = useState("")
     const [edYear,  setedYear]  = useState("")
     useEffect(() => {
-        Clear()
         if (props.edit !== -1)  {
             axios.get('/edu', {
                 params: {
@@ -66,7 +65,8 @@ export const Education = (props: { edit: number, updateFormStatus: Function }) =
                 }
             }).then((res) => {
                 if(res.status === 200) {
-                    for (let [key, val] of Object.entries(JSON.parse(res.data.edu))) {
+                    let edu = JSON.parse(res.data.edu);
+                    for (let [key, val] of Object.entries(edu)) {
                         if (key === 'degree') { setDegree(val as string) } 
                         else if (key === 'bg_month') { setbgMonth(val as string) }
                         else if (key === 'bg_year')  { setbgYear(val as string) }
@@ -74,8 +74,11 @@ export const Education = (props: { edit: number, updateFormStatus: Function }) =
                         else if (key === 'ed_year')  { setedYear(val as string) }
                         else { form.setValue(key as formKey, val as string) }
                     }
+                    form.clearErrors()
                 }
             })
+        } else {
+            Clear()
         }
     }, [props.edit])
 

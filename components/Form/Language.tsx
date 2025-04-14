@@ -27,10 +27,8 @@ type formKey = "lan" | "level";
 
 export const Language = (props: { edit: number, updateFormStatus: Function }) => {
     const [ selectVal, setSelectVal ] = useState("")
-    useEffect(() => {
-        Clear()
+    useEffect(() => {   
         if (props.edit !== -1)  {
-            console.log(props.edit)
             axios.get('/more/skill', {
                 params: { 
                     idx:   props.edit
@@ -40,8 +38,11 @@ export const Language = (props: { edit: number, updateFormStatus: Function }) =>
                     let data = JSON.parse(res.data.skill)
                     form.setValue("lan", data.lan)
                     setSelectVal(data.level)
+                    form.clearErrors()
                 }
             })
+        } else {
+            Clear()
         }
     }, [props.edit])
 

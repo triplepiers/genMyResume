@@ -22,7 +22,7 @@ export const WorkWrap = (props: { updateFormMeta: Function }) => {
     }, [])
 
     const updateFormStatus = () => {
-        setwkList([])
+        // setwkList([])
         axios.get('/work/all').then((res) => {
             if(res.status === 200) {
                 setwkList(res.data.work)

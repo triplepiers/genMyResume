@@ -22,7 +22,7 @@ export const EducationWrap = (props: { updateFormMeta: Function }) => {
     }, [])
 
     const updateFormStatus = () => {
-        setEduList([])
+        // setEduList([])
         axios.get('/edu/all').then((res) => {
             if(res.status === 200) {
                 setEduList(res.data.edu)

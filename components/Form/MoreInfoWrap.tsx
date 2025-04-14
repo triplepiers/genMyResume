@@ -35,7 +35,6 @@ export const MoreInfoWrap = (props: { updateFormMeta: Function }) => {
             if(res.status === 200) {
                 // 后端处理不了，前端自己 parse
                 // setSkillList(res.data.skill)
-                console.log(res.data.skill)
                 setSkillList(res.data.skill.map((item:string)=>JSON.parse(item)))
             }
         })
@@ -57,6 +56,7 @@ export const MoreInfoWrap = (props: { updateFormMeta: Function }) => {
     }
     const changeSkillInfo = (e: any, idx: number) => {
         // setEditIdx(parseInt(e.target.dataset.id))
+        setMode(skillList[idx].isLan?"lan":"else")
         setEditIdx(idx)
     }
     const removeSkillInfo = (e: any, idx: number) => {
@@ -136,7 +136,7 @@ export const MoreInfoWrap = (props: { updateFormMeta: Function }) => {
                                 <TabsTrigger value="lan" className="cursor-pointer"
                                     onClick={() => {setEditIdx(-1); setMode("lan")}}>Language</TabsTrigger>
                                 <TabsTrigger value="else" className="cursor-pointer"
-                                    onClick={() => {setEditIdx(-1);setMode("else")}}>Customize</TabsTrigger>
+                                    onClick={() => {setEditIdx(-1); setMode("else")}}>Customize</TabsTrigger>
                             </TabsList>
                             <TabsContent value="lan" className="px-5">
                                 <Language isLan={mode==="lan"} edit={editIdx} updateFormStatus={updateFormStatus}/>

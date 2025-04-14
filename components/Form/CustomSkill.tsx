@@ -21,10 +21,8 @@ type formKey = "title" | "desc";
 
 export const Customize = (props: { edit: number, updateFormStatus: Function }) => {
     const [ selectVal, setSelectVal ] = useState("")
-    useEffect(() => {
-        Clear()
+    useEffect(() => {    
         if (props.edit !== -1)  {
-            console.log(props.edit)
             axios.get('/more/skill', {
                 params: { 
                     idx:   props.edit
@@ -34,8 +32,11 @@ export const Customize = (props: { edit: number, updateFormStatus: Function }) =
                     let data = JSON.parse(res.data.skill)
                     form.setValue("title", data.title)
                     form.setValue("desc", data.desc)
+                    form.clearErrors()
                 }
             })
+        } else {
+            Clear()
         }
     }, [props.edit])
 

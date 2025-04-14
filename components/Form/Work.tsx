@@ -39,7 +39,7 @@ export const Work = (props: { edit: number, updateFormStatus: Function }) => {
     const [edMonth, setedMonth] = useState("")
     const [edYear,  setedYear]  = useState("")
     useEffect(() => {
-        Clear()
+        
         if (props.edit !== -1)  {
             axios.get('/work', {
                 params: { 
@@ -54,8 +54,11 @@ export const Work = (props: { edit: number, updateFormStatus: Function }) => {
                         else if (key === 'ed_year')  { setedYear(val as string) }
                         else { form.setValue(key as formKey, val as string) }
                     }
+                    form.clearErrors()
                 }
             })
+        } else {
+            Clear()
         }
     }, [props.edit])
 
