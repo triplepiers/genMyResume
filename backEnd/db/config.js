@@ -8,6 +8,7 @@ const edu_db_file  = join(__dirname, 'Education.json');
 const work_db_file = join(__dirname, 'Work.json');
 const more_db_file = join(__dirname, 'More.json');
 const ss_db_file = join(__dirname, 'SelfStatement.json');
+const tp_db_file = join(__dirname, 'Template.json');
 
 export {
     user_db_file,
@@ -15,5 +16,6 @@ export {
     edu_db_file,
     work_db_file,
     more_db_file,
-    ss_db_file
+    ss_db_file,
+    tp_db_file
 }

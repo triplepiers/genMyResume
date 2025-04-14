@@ -1,10 +1,9 @@
-import ssDB from "../db/SelfStatement.js";
+import ssDB from "../db/SelfStatementDB.js";
 import { isVIP } from "./User.js";
 import { getAllEdus } from "./Education.js";
 import { getAllWorks } from "./Work.js";
 import { getAllSkills } from "./More.js"
 import { genSelfStatement } from "../utils/llm.js";
-import { resolve } from "path";
 
 const { SSs } = ssDB.data;
 

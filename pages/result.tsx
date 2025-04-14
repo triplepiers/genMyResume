@@ -1,38 +1,50 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 
 import { PdfGenerator } from "@/components/PdfGenerator";
 import { Palette } from "@/components/Editor/Palette";
 import { PurchaseCard } from "@/components/Cards/PurchaseCard";
+import { DownloadCard } from "@/components/Cards/DownLoadCard";
 import { FaFileLines, FaPaintRoller, FaCirclePlus, FaDownload } from "react-icons/fa6";
+
+import axios from '@/lib/axios';
 
 
 export default function Result(props: any[]) {
     // 下载按钮相关内容
     const [showOPT, setShowOPT] = useState(false);
+    const [showDown, setShowDown] = useState(false);
 
     const handleDownload = {
         download: () => {
-            if (handleDownload.checkPurcahased()) {
-                // down
-            } else { setShowOPT(true); }
+            // check purchased
+            axios.get('/tp/down',{
+                params: {tid: 'tid'}
+            }).then((res) => {
+                let canDown = res.data.canDown
+                if (canDown) {
+                    setShowDown(true)
+                } else {
+                    setShowOPT(true);
+                }
+            })
         },
-        // 检查是否已经购买
-        checkPurcahased: () => {
-            return false;
-        },
+
         // 关闭 Purchase Card
         handleUpdateShowOPT: (neoShowOPT: boolean) => {
             setShowOPT(neoShowOPT);
         }
+    }
+    const handleUpdateShowDown = (neoShowDown: boolean) => {
+        setShowDown(neoShowDown);
     }
 
     return (
         <div className="relative">
             {/* body */}
             <div className="w-screen min-h-[calc(100vh-var(--header-height))] 
-            px-10 py-5 pb-10 relative">
+            px-10 py-5 pb-10 relative flex flex-col items-center">
                 <h2 className="font-medium text-xl mb-2">
-                    Resume Preview
+                    Result Preview
                 </h2>
                 <PdfGenerator />
                 {/* <Palette /> */}
@@ -69,6 +81,11 @@ export default function Result(props: any[]) {
                     tid="tid" title="Oops! You haven't bought this template yet"
                     updateShow={handleDownload.handleUpdateShowOPT}
                 />) : (<></>)
+            }
+            {
+                showDown ? (
+                    <DownloadCard tid="tid" updateShow={handleUpdateShowDown}/>
+                ):(<></>)
             }
         </div>
     );

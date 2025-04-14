@@ -23,11 +23,10 @@ export const PurchaseCard = (props: {
     updateShow: Function, 
     tid: string, title: string
 }) => {
-    var uid = localStorage.getItem('account') || '00';
     var tid = props.tid;
     useEffect(() => {
         // buy CDK: 没用，只是在后台把 CDK 打出来
-        axios.post('/cdk', { uid, tid }) // TODO：这个需要放出来
+        axios.post('/cdk', { tid }) // TODO：这个需要放出来
     }, [])
     
     const [OTPVal,  setOTPVal]   = useState("");
@@ -60,7 +59,7 @@ export const PurchaseCard = (props: {
 
         await axios.post('/cdk/check', {
             cdk: OTPVal, 
-            uid, tid
+            tid
         }).then(res => {
             if (res.status === 200) {
                 if (res.data) {

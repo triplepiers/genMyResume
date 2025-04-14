@@ -12,15 +12,12 @@
 }
 
 .pdf {
-    --quality: 2.5;
+    --quality: 3;
     aspect-ratio: 2/3;
     width: calc(250px * var(--quality));
-    /* width: 100%; */
-    max-width: 700px;
-    min-width: 100px;
     box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
     border: 1px solid #eee;
-    padding: 2% 3%;
+    padding: 30px 55px;
     display: flex;
     flex-direction: column;
     justify-content: start;
