@@ -17,13 +17,13 @@ function genHead(headPF: any) {
                 headPF.showContact ? (
                     <div className='flex gap-2'>
                         <div>
-                            <b>Tel:</b> {headPF.phone}
+                            <b>Tel:</b> <a href={`tel:${headPF.phone}`}>{headPF.phone}</a>
                         </div>
                         {
                             headPF.divContact ? (<div>|</div>) : (<></>)
                         }
                         <div>
-                            <b>Email:</b> {headPF.email}
+                            <b>Email:</b> <a href={`mailto:${headPF.email}`}>{headPF.email}</a>
                         </div>
                     </div>
                 ) : (<></>)

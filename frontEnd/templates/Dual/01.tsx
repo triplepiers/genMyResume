@@ -1,7 +1,4 @@
 import { capitalized, formDate } from '@/lib/utils';
-import { content } from 'html2canvas/dist/types/css/property-descriptors/content';
-import { title } from 'process';
-import { string } from 'zod';
 
 function genHead(headPF: any) {
     return (
@@ -25,11 +22,11 @@ function genPersonalInfo(headPF: any) {
         content: (<>
             <div className='text-sm flex flex-col gap-0.8'>
                 <h3 className='text-white'><b>Phone</b></h3>
-                <div className='text-xs'>{headPF.phone}</div>
+                <div className='text-xs'><a href={`tel:${headPF.phone}`}>{headPF.phone}</a></div>
             </div>
             <div className='text-sm flex flex-col gap-0.8'>
                 <h3 className='text-white'><b>E-mail</b></h3>
-                <div className='text-xs'>{headPF.email}</div>
+                <div className='text-xs'><a href={`mailto:${headPF.email}`}>{headPF.email}</a></div>
             </div>
         </>)
     }
