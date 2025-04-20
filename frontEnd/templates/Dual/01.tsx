@@ -1,4 +1,4 @@
-import { capitalized, formDate } from '@/lib/utils';
+import { capitalized, formDate, darkenColor } from '@/lib/utils';
 
 function genHead(headPF: any) {
     return (
@@ -126,9 +126,10 @@ function genSkill(skillPF: any, theme_clr: string) {
                             {
                                 lan.level.length > 0? (<div className='pt-1 w-full flex flex-col gap-1 items-end'>
                                     <div className='w-full h-[8px] relative'>
-                                        <div className='w-full h-full brightness-60'
-                                        style={{ backgroundColor: theme_clr }}></div>
-                                        <div className={`h-full bg-white absolute left-0 top-0 w-[${levelToIdx(lan.level)}]`}></div>
+                                        <div className='w-full h-full'
+                                        style={{ backgroundColor: darkenColor(theme_clr, 0.4)}}></div>
+                                        <div className='h-full bg-white absolute left-0 top-0'
+                                        style={{ width: levelToIdx(lan.level)}}></div>
                                     </div>
                                     <div>{lan.level}</div>
                                 </div>):(<></>)
@@ -192,8 +193,8 @@ const genTemplate = (headPF: any, eduPF: any, wkPF: any, awardPF: any, skillPF: 
                         return (
                         <div key={idx}>
                             <div className='relative'>
-                                <div className='w-full h-[2.5rem]  brightness-60'
-                                style={{ backgroundColor: theme_clr }}></div>
+                                <div className='w-full h-[2.5rem]'
+                                style={{ backgroundColor: darkenColor(theme_clr, 0.4)}}></div>
                                 <div className='absolute top-[50%] -translate-y-[50%] px-[20px] font-bold text-lg'>
                                     {upperTitle ? block.title.toUpperCase() : block.title}
                                 </div>

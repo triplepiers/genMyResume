@@ -18,31 +18,6 @@ function genHead(headPF: any, theme_clr: string) {
                     </div>
                 ) : (<></>)
             }
-            {
-                headPF.showContact ? (
-                <div className='w-full text-[var(--foreground)] flex my-2'>
-                    {
-                        headPF.phone.length>0?(
-                        <div className='flex-1 flex items-center text-sm gap-2'>
-                            <div className='rounded-full flex justify-center items-center w-[1.2rem] h-[1.2rem]'
-                            style={{ backgroundColor: theme_clr }}>
-                                < PhoneIcon className='text-white w-[65%] h-[65%]' />
-                            </div>
-                            <div><a href={`tel:${headPF.phone}`}>{headPF.phone}</a></div>
-                        </div>):(<></>)
-                    }
-                    {
-                        headPF.email.length>0?(
-                            <div className='flex-1 flex items-center text-sm gap-2'>
-                                <div className='rounded-full flex justify-center items-center w-[1.2rem] h-[1.2rem]'
-                                style={{ backgroundColor: theme_clr }}>
-                                    < MailIcon className='text-white w-[65%] h-[65%]' />
-                                </div>
-                                <div><a href={`mailto:${headPF.email}`}>{headPF.email}</a></div>
-                            </div>):(<></>)
-                    }
-                </div>):(<></>)
-            }
         </div>
     )
 }

@@ -1,4 +1,4 @@
-import { capitalized, formDate } from '@/lib/utils';
+import { capitalized, formDate, darkenColor } from '@/lib/utils';
 import { 
     MailIcon, PhoneIcon,
     BriefcaseBusinessIcon, GraduationCapIcon, SpeechIcon, ShapesIcon, TrophyIcon
@@ -8,7 +8,8 @@ function genHead(headPF: any, theme_clr: string) {
     return (
         <div className='w-full flex flex-col items-start gap-1 px-[20px] pt-[20px]'
             style={{ color: theme_clr }}>
-            <div className='text-3xl font-extrabold brightness-60'>
+            <div className='text-3xl font-extrabold'
+                style={{ color: darkenColor(theme_clr, 0.4)}}>
                 {headPF.name} {headPF.surname}
             </div>
             {
@@ -190,7 +191,7 @@ function genSkill(skillPF: any, theme_clr: string) {
                                 w-3 h-3 rounded-full' style={{ backgroundColor: theme_clr }}></div>
                             </div>
                             {
-                                cst.desc.length > 0? (<div>{cst.desc}</div>):(<></>)
+                                cst.desc.length > 0? (<div className='pt-1'>{cst.desc}</div>):(<></>)
                             }
                         </div>)                       
                     })
@@ -225,8 +226,8 @@ const genTemplate = (headPF: any, eduPF: any, wkPF: any, awardPF: any, skillPF: 
     return (
         <div className='w-full h-full flex'
             style={{ fontFamily: 'sans-serif' }}>
-            <div className={`w-[18%] shrink-0 h-full text-white brightness-60`}
-                style={{ backgroundColor: theme_clr }}>
+            <div className='w-[18%] shrink-0 h-full text-white'
+                style={{ backgroundColor: darkenColor(theme_clr, 0.4)}}>
             </div>
             <div className='grow-1'>
                 <div className='pb-[20px]'>

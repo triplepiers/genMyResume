@@ -20,6 +20,34 @@ export function formDate(month: string, year: string, mFirst: boolean=true, show
     return mFirst ? `${month}.${year}` : `${year}.${month}`;
 }
 
+export function darkenColor(hex: string, percent: number) {
+  // 去除#号（如果存在）
+  hex = hex.replace(/^#/, '');
+  
+  // 解析为r, g, b
+  const r = parseInt(hex.substring(0, 2), 16);
+  const g = parseInt(hex.substring(2, 4), 16);
+  const b = parseInt(hex.substring(4, 6), 16);
+  
+  // 计算加深后的值
+  const darkenedR = Math.floor(r * (1 - percent));
+  const darkenedG = Math.floor(g * (1 - percent));
+  const darkenedB = Math.floor(b * (1 - percent));
+  
+  // 转换回16进制
+  const toHex = (c: any) => {
+      const hex = c.toString(16);
+      return hex.length === 1 ? '0' + hex : hex;
+  };
+  
+  return `#${toHex(darkenedR)}${toHex(darkenedG)}${toHex(darkenedB)}`;
+}
+
+// 使用示例
+const originalColor = '#3366FF';
+const darkenedColor = darkenColor(originalColor, 0.2); // 加深20%
+console.log(darkenedColor);
+
 export function handleProfile(pfObj: any) {
   let head = JSON.parse(pfObj.head)
   head.showProf = head.profession && head.profession.length > 0
