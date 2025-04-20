@@ -190,7 +190,7 @@ function genSkill(skillPF: any, theme_clr: string) {
                                 w-3 h-3 rounded-full' style={{ backgroundColor: theme_clr }}></div>
                             </div>
                             {
-                                cst.desc.length > 0? (<div className='pt-1'>{cst.desc}</div>):(<></>)
+                                cst.desc.length > 0? (<div>{cst.desc}</div>):(<></>)
                             }
                         </div>)                       
                     })
