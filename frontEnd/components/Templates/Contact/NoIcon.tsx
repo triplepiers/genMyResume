@@ -6,7 +6,7 @@ export const NoIconContact = (props: {
     const { inline, phone, email } = props;
     const ftClr = props.ftClr?props.ftClr:'#FFF';
     return (
-        <div className={`w-full text-sm flex my-2 ${inline?'':'flex-col gap-1'}`}
+        <div className={`w-full text-sm flex ${inline?'':'flex-col gap-1'}`}
         style={{ color: ftClr }}>
         {
             phone.length>0?(
