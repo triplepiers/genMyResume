@@ -1,131 +1,56 @@
-import { capitalized, formDate } from '@/lib/utils';
+import { genItemTitle } from '@/lib/utils';
 import { 
-    MailIcon, PhoneIcon,
     BriefcaseBusinessIcon, GraduationCapIcon, SpeechIcon, ShapesIcon, TrophyIcon, UserIcon
 } from 'lucide-react';
 
-function genDateBlock(
-    showDate: boolean,
-    bg_month: string, bg_year: string, ed_month: string, ed_year: string,
-    divDate: boolean, mFirst: boolean=false, showNum?: boolean
-) {
-    return (
-    <div className='text-xs font-mono w-36 pt-2'>
-        {
-            showDate ? (<>
-            {formDate(bg_month, bg_year, mFirst)}{divDate ? ' - ' : ''}{formDate(ed_month, ed_year, mFirst)}
-            </>):(<></>)
-        }
-    </div>)
-}
+import { FullDarkHeader } from '@/components/Templates/Header/FullDark';
+import { IconTitle } from '@/components/Templates/BlockTitle/Icon';
+import { LevelDot } from '@/components/Templates/showLevel/Dot';
+import { LRItem } from '@/components/Templates/Item/LR';
 
-function genHead(headPF: any, theme_clr: string) {
-    return (
-        <div className='w-full flex flex-col items-start gap-1'
-            style={{ color: theme_clr }}>
-            <div className='text-3xl font-extrabold brightness-60'>
-                {headPF.name} {headPF.surname}
-            </div>
-            {
-                headPF.showProf ? (
-                    <div>
-                        {headPF.profession}
-                    </div>
-                ) : (<></>)
-            }
-            {
-                headPF.showContact ? (
-                <div className='w-[80%] text-[var(--foreground)] flex my-3'>
-                    {
-                        headPF.phone.length>0?(
-                        <div className='flex-1 flex items-center text-sm gap-2'>
-                            <div className='flex justify-center items-center w-[1.2rem] h-[1.2rem]'
-                            style={{ backgroundColor: theme_clr }}>
-                                < PhoneIcon className='text-white w-[65%] h-[65%]' />
-                            </div>
-                            <div><a href={`tel:${headPF.phone}`}>{headPF.phone}</a></div>
-                        </div>):(<></>)
-                    }
-                    {
-                        headPF.email.length>0?(
-                            <div className='flex-1 flex items-center text-sm gap-2'>
-                                <div className='flex justify-center items-center w-[1.2rem] h-[1.2rem]'
-                                style={{ backgroundColor: theme_clr }}>
-                                    < MailIcon className='text-white w-[65%] h-[65%]' />
-                                </div>
-                                <div><a href={`mailto:${headPF.email}`}>{headPF.email}</a></div>
-                            </div>):(<></>)
-                    }
-                </div>):(<></>)
-            }
-        </div>
-    )
-}
+const upperTitle = false
+const mFirst = false
+const rounded = false
+const outlined = false
+const inlineTime = true
 
 function genEdu(eduPF: any, theme_clr: string) {
+    const genTitle = genItemTitle.EDU.Title;
+    const genSubTitle = genItemTitle.EDU.SubTitle;
     return {
         icon: (<><GraduationCapIcon /></>),
         title: 'Education',
         content: eduPF.map((edu: any) => {
             return (
-                <div className='flex'>
-                    <>
-                        {genDateBlock(
-                            edu.showDate,
-                            edu.bg_month, edu.bg_year, edu.ed_month, edu.ed_year,
-                            edu.divDate
-                        )}
-                    </>
-                    <div className='flex flex-col'>
-                        <div className='w-full text-lg font-bold'>
-                            {edu.degree ? ` ${edu.degree === 'Enter your own' ? edu.neodegree : edu.degree}` : ''}{
-                                edu.degree.length>0 ? ', ': ''
-                            }{edu.institution}
-                        </div>
-                        <div className='text-sm my-1'>
-                            <i>{capitalized(edu.field)}{edu.location}</i>
-                        </div>
-                        {
-                            edu.showMore ? (<div className='text-sm'>{edu.more}</div>) : (<></>)
-                        }
-                    </div>
-                </div>
+                <LRItem
+                    inlineTime={inlineTime}
+                    showDate={edu.showDate} divDate={edu.divDate} mFirst={mFirst}
+                    bg_month={edu.bg_month} bg_year={edu.bg_year} ed_month={edu.ed_month} ed_year={edu.ed_year}
+                    title={ edu.degree ? genTitle(edu.degree, edu.neodegree, edu.institution): '' }
+                    subTitle={ genSubTitle(edu.field, edu.location) }
+                    showDetail={edu.showMore}
+                    details={edu.more}
+                />
             )
         })
     }
 }
 function genWork(wkPF: any ,theme_clr: string) {
+    const genSubTitle = genItemTitle.WORK.SubTitle;
     return {
         icon: (<><BriefcaseBusinessIcon /></>),
         title: 'Work Experience', 
         content: wkPF.map((work: any) => {
             return (
-                <div className='flex'>
-                    <>
-                        {genDateBlock(
-                            work.showDate,
-                            work.bg_month, work.bg_year, work.ed_month, work.ed_year,
-                            work.divDate
-                        )}
-                    </>
-                    <div className='flex flex-col'>
-                        <div className='w-full text-lg font-bold'>
-                            {work.title}
-                        </div>
-                        {
-                            work.showComp ? (
-                                <div className='text-sm my-1'>
-                                    <i>{capitalized(work.company)}{
-                                        work.company.length>0&&work.location.length>0?', ':''
-                                    }{work.location}</i>
-                                </div>
-                            ):(<></>)
-                        }
-                        {
-                            work.showMore ? (<div className='text-sm'>{work.more}</div>) : (<></>)
-                        }
-                    </div>
-                </div>
+                <LRItem
+                    inlineTime={inlineTime}
+                    showDate={work.showDate} divDate={work.divDate} mFirst={mFirst}
+                    bg_month={work.bg_month} bg_year={work.bg_year} ed_month={work.ed_month} ed_year={work.ed_year}
+                    title={ work.title } 
+                    subTitle={ genSubTitle(work.company, work.location) }
+                    showDetail={work.showMore}
+                    details={work.more}
+                />
             )
         })
     }
@@ -143,20 +68,6 @@ function genAward(awardPF: any, theme_clr: string) {
     }
 }
 function genSkill(skillPF: any, theme_clr: string) {
-    function levelToIdx(level: string) {
-        switch(level) {
-            case 'Elementary':
-                return 1
-            case 'Limited':
-                return 2
-            case 'Professional':
-                return 3
-            case 'Full Professional':
-                return 4
-            case 'Native':
-                return 5
-        }
-    }
     return [
         {
             icon: (<><SpeechIcon /></>),
@@ -166,23 +77,16 @@ function genSkill(skillPF: any, theme_clr: string) {
                     skillPF.lans.map((lan: any, idx: number) => {
                         return (
                         <div key={idx} className='w-full text-sm flex justify-between'>
-                           <div className='w-36'></div>
+                           <div className={`w-${inlineTime?'36':'20'}`}></div>
                            <div className='grow-1 flex items-start'>
                                 <div><b>{lan.lan}</b></div>
                                 {
                                     lan.level.length > 0? (<div className='w-full flex flex-col gap-1 items-end'>
-                                        <div className='flex gap-1 pt-1'>
-                                            {
-                                                [1,2,3,4,5].map((idx: number) => {
-                                                    return (<div className='w-3 h-3'
-                                                    style={{ 
-                                                        backgroundColor: levelToIdx(lan.level)>idx?theme_clr:'#BBBBBB',
-                                                        borderColor: theme_clr   
-                                                    }}></div> // bg-gray-300
-                                                    )})
-                                            }
-                                        </div>
-                                        <div className='text-xs'>{lan.level}</div>
+                                        <LevelDot 
+                                            level={lan.level}
+                                            rounded={rounded} outlined={outlined}
+                                            ftClr={theme_clr} bgClr='#BBB'
+                                        />
                                     </div>):(<></>)
                                 }
                            </div>
@@ -198,12 +102,15 @@ function genSkill(skillPF: any, theme_clr: string) {
                     skillPF.customs.map((cst:any, idx: number) => {
                         return (
                         <div key={idx} className='w-full text-sm flex justify-between'>
-                            <div className='w-36'></div>
+                            <div className={`w-${inlineTime?'36':'20'}`}></div>
                             <div className='grow-1'>
-                                <div><b>{cst.title}</b></div>
-                                {
-                                    cst.desc.length > 0? (<div>{cst.desc}</div>):(<></>)
-                                }
+                                <div>
+                                    <b>{cst.title}</b>
+                                    {
+                                        cst.desc.length > 0? (<> - {cst.desc}</>):(<></>)
+                                    }
+                                </div>
+                                
                             </div>
                         </div>)                       
                     })
@@ -214,7 +121,7 @@ function genSkill(skillPF: any, theme_clr: string) {
 }
 function genSS(ssPF: any, theme_clr: string) {
     return (
-        <div className='w-full text-justify text-sm my-2'>
+        <div className='w-full text-justify text-sm my-2 px-[40px]'>
             <div className='font-bold pb-1'
             style={{ color: theme_clr }}>Self Statement</div>
             <div className='indent-4 leading-tight'>{ssPF}</div>
@@ -231,34 +138,33 @@ function genSections(headPF: any, eduPF: any, wkPF: any, awardPF: any, skillPF: 
     return blocks;
 }
 
-const upperTitle = false
-const mFirst = false
+
 const genTemplate = (headPF: any, eduPF: any, wkPF: any, awardPF: any, skillPF: any, ssPF: any, theme_clr: string='#333333') => {
     let blocks = genSections(headPF, eduPF, wkPF, awardPF, skillPF, ssPF, theme_clr)
     return (
-        <div className='w-full h-full flex flex-col px-[40px] pt-[40px]'
+        <div className='w-full h-full flex flex-col '
             style={{ fontFamily: 'sans-serif' }}>
-
                 <div className='pb-[20px]'>
-                <>{genHead(headPF, theme_clr)}</>
-                <>{genSS(ssPF, theme_clr)}</>
+                    <FullDarkHeader 
+                        ftClr={theme_clr} bgClr='transparent'
+                        subClr={theme_clr}
+                        headPF={headPF} inlineContact={true} 
+                        contactIcon={true} contactIconBgClr={theme_clr} contactIconFtClr='#FFF'
+                        contactClr='var(--foreground)' 
+                    />
+                    <>{genSS(ssPF, theme_clr)}</>
                 </div>
-                <div>
+                <div className='px-[40px] pb-[40px]'>
                 {
                     blocks.map((block: any, idx: number) => {
                         return (
                             <div className='mb-4'>
-                                <div className='w-full flex items-center gap-3 pb-1.5 border-b-1'>
-                                    <div className='w-[2rem] h-[2rem] 
-                                    flex items-center justify-center text-white'
-                                        style={{ backgroundColor: theme_clr }}>
-                                        {block.icon}
-                                    </div>
-                                    <div className={`font-black text-xl`}
-                                        style={{ color: theme_clr }}>
-                                        {upperTitle ? block.title.toUpperCase() : block.title}
-                                    </div>
-                                </div>
+                                <IconTitle
+                                    icon={block.icon} rounded={rounded}
+                                    underLine={true} topLine={false}
+                                    ftClr='var(--foreground)' bgClr='transparent' iconClr='#FFF'
+                                    title={block.title} upperCase={upperTitle}
+                                />
                                 <div className='w-full flex flex-col gap-1 pt-4'>{block.content}</div>
                             </div>)
                     })
