@@ -40,7 +40,6 @@ export const FullDarkHeader = (props: {
                 showContactBlock&&headPF.showContact ? (
                     contactIcon ? (<>
                         <IconContact
-                            inline={inlineContact}
                             phone={headPF.phone} email={headPF.email}
                             iconFtClr={contactIconFtClr} iconBgClr={contactIconBgClr}
                             ftClr={contactClr}

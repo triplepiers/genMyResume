@@ -1,17 +1,19 @@
 import { MailIcon, PhoneIcon } from 'lucide-react';
 
 export const IconContact = (props: {
-    inline: boolean,
+    vertical?: boolean,
     phone: string, email: string,
     iconFtClr?: string, iconBgClr?: string,
     ftClr?: string
 }) => {
-    const { inline, phone, email } = props;
+    const { phone, email } = props;
+    const vertical = props.vertical?true:false;
     const ftClr = props.ftClr?props.ftClr:'#FFF';
     const iconFtClr = props.iconFtClr?props.iconFtClr:'#FFF';
     const iconBgClr = props.iconBgClr?props.iconBgClr:'var(--foreground)';
     return (
-        <div className='w-full text-[var(--foreground)] flex my-2' style={{ color: ftClr }}>
+        <div className={`w-full text-[var(--foreground)] flex ${vertical?'flex-col gap-2':''}`} 
+            style={{ color: ftClr }}>
         {
             phone.length>0?(
             <div className='flex-1 flex items-center text-sm gap-2'>

@@ -1,9 +1,13 @@
 import "@/styles/globals.css";
 import '@/styles/customTailWind.css';
-// import { Hanken_Grotesk } from "next/font/google";
-// const ft_HKGrotesk = Hanken_Grotesk({
-//   variable: "--font-HKGrotesk"
-// });
+
+import { Hanken_Grotesk, Satisfy } from "next/font/google";
+const ft_HKGrotesk = Hanken_Grotesk({
+  variable: "--font-HKGrotesk"
+});
+const ft_Satisfy = Satisfy({
+  weight: ['400']
+})
 
 import { useEffect } from "react";
 import { useRouter } from "next/router";
