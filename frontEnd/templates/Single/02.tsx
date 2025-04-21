@@ -1,4 +1,4 @@
-import { capitalized, formDate, darkenColor, genItemTitle } from '@/lib/utils';
+import { formDate, darkenColor, genItemTitle } from '@/lib/utils';
 import { 
     BriefcaseBusinessIcon, GraduationCapIcon, SpeechIcon, ShapesIcon, TrophyIcon
 } from 'lucide-react';
@@ -96,20 +96,6 @@ function genAward(awardPF: any, theme_clr: string) {
     }
 }
 function genSkill(skillPF: any, theme_clr: string) {
-    function levelToIdx(level: string) {
-        switch(level) {
-            case 'Elementary':
-                return 1
-            case 'Limited':
-                return 2
-            case 'Professional':
-                return 3
-            case 'Full Professional':
-                return 4
-            case 'Native':
-                return 5
-        }
-    }
     return [
         {
             icon: (<><SpeechIcon /></>),

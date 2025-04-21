@@ -22,9 +22,9 @@ export const FullDarkHeader = (props: {
     const contactIconFtClr = props.contactIconFtClr?props.contactIconFtClr:'#FFF';
     const contactClr = props.contactClr?props.contactClr:'var(--foreground)';
 
-    const classList = props.classList?props.classList:'px-[40px] pt-[30px]';
+    const classList = props.classList?props.classList:'px-[40px] pt-[30px] pb-[10px]';
     return (
-        <div className={`${classList} w-full flex flex-col pb-[10px]`}
+        <div className={`${classList} w-full flex flex-col`}
             style={{ backgroundColor: bgClr, color: ftClr  }}>
             <div className='text-3xl font-extrabold'>
                 {headPF.name} {headPF.surname}

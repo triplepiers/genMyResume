@@ -14,7 +14,7 @@ function levelToIdx(level: string) {
 }
 
 export const LevelDot = (props: {
-    level: string,
+    level: string, rotate?: boolean,
     rounded: boolean, outlined: boolean,
     ftClr: string, bgClr: string
 }) => {
@@ -23,16 +23,18 @@ export const LevelDot = (props: {
         rounded, outlined,
         ftClr, bgClr
     } = props;
+    const rotate = props.rotate?true:false;
     return (
-    <div className='pt-1 w-full flex flex-col gap-1 items-end'
+    <div className='pt-1 w-full flex flex-col items-end gap-1'
         style={{ color: ftClr }}>
-        <div className='flex gap-1'>
+        <div className={`flex gap-${rotate?'2':'1'}`}>
             {
                 [1,2,3,4,5].map((idx: number) => {
-                    return (<div className={`${rounded?'rounded-full':''} w-3 h-3 border-1`}
+                    return (<div className={`${rounded?'rounded-full':''} w-${rotate?'2.5':'3'} h-${rotate?'2.5':'3'} border-1`}
                     style={{ 
                         backgroundColor: levelToIdx(level)>idx?ftClr:outlined?'transparent':bgClr,
-                        borderColor:  outlined?ftClr:levelToIdx(level)>idx?ftClr:bgClr
+                        borderColor:  outlined?ftClr:levelToIdx(level)>idx?ftClr:bgClr,
+                        transform: rotate?'rotate(45deg)':''
                      }}></div>
                     )})
             }
