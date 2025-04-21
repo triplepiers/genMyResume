@@ -43,11 +43,6 @@ export function darkenColor(hex: string, percent: number) {
   return `#${toHex(darkenedR)}${toHex(darkenedG)}${toHex(darkenedB)}`;
 }
 
-// 使用示例
-const originalColor = '#3366FF';
-const darkenedColor = darkenColor(originalColor, 0.2); // 加深20%
-console.log(darkenedColor);
-
 export function handleProfile(pfObj: any) {
   let head = JSON.parse(pfObj.head)
   head.showProf = head.profession && head.profession.length > 0
@@ -86,5 +81,23 @@ export function handleProfile(pfObj: any) {
     skill,
     award: pfObj.award,
     ss:    pfObj.ss
+  }
+}
+
+export const genItemTitle = {
+  EDU: {
+    Title: (degree: string, neodegree: string, institution: string) => {
+      return `${degree === 'Enter your own' ? neodegree : degree}${degree.length > 0 ? ', ' : ''}${institution}`
+    },
+    SubTitle: (field: string, location: string) => {
+      const showGap = field.length > 0 && location.length > 0
+      return `${capitalized(field)}${showGap ? ', ' : ''}${location}`
+    }
+  },
+  WORK: {
+    SubTitle: (company: string, location: string) => {
+      const showGap = company.length > 0 && location.length > 0
+      return `${capitalized(company)}${showGap ? ', ' : ''}${location}`
+    }
   }
 }

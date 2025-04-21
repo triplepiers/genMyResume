@@ -1,4 +1,4 @@
-import { capitalized, formDate } from '@/lib/utils';
+import { genItemTitle } from '@/lib/utils';
 import { FullDarkHeader } from '@/components/Templates/Header/FullDark';
 import { NoIconTitle } from '@/components/Templates/BlockTitle/NoIcon';
 import { LRItem } from '@/components/Templates/Item/LR';
@@ -9,29 +9,9 @@ const mFirst = false;
 const inlineTime = true;
 const inlineLevel = false;
 
-function genDateBlock(
-    showDate: boolean,
-    bg_month: string, bg_year: string, ed_month: string, ed_year: string,
-    divDate: boolean, mFirst: boolean=false, showNum?: boolean
-) {
-    return (
-    <div className={`text-xs font-mono pt-2 w-${inlineTime?'36':'20'}`}>
-        {
-            showDate ? (<>
-            {formDate(bg_month, bg_year, mFirst)}{divDate ? ' - ' : ''}{formDate(ed_month, ed_year, mFirst)}
-            </>):(<></>)
-        }
-    </div>)
-}
-
 function genEdu(eduPF: any, theme_clr: string) {
-    const genTitle = (degree: string, neodegree: string, institution: string) =>  {
-        return `${degree==='Enter your own'?neodegree:degree}${degree.length>0 ? ', ': ''}${institution}`
-    }
-    const genSubTitle = (field: string, location: string) => {
-        const showGap = field.length>0 && location.length>0
-        return `${capitalized(field)}${showGap?', ': ''}${location}`
-    }
+    const genTitle = genItemTitle.EDU.Title;
+    const genSubTitle = genItemTitle.EDU.SubTitle;
     return {
         title: 'Education',
         content: eduPF.map((edu: any) => {
@@ -50,10 +30,7 @@ function genEdu(eduPF: any, theme_clr: string) {
     }
 }
 function genWork(wkPF: any ,theme_clr: string) {
-    const genSubTitle = (company: string, location: string) => {
-        const showGap = company.length>0&&location.length>0
-        return `${capitalized(company)}${showGap?', ':''}${location}`
-    }
+    const genSubTitle = genItemTitle.WORK.SubTitle;
     return {
         title: 'Work Experience', 
         content: wkPF.map((work: any) => {
@@ -171,8 +148,10 @@ const genTemplate = (headPF: any, eduPF: any, wkPF: any, awardPF: any, skillPF: 
                                 <div className='mb-4'>
                                     <NoIconTitle 
                                         underLine={true} topLine={false}
-                                        clr='var(--foreground)'
+                                        alignCenter={false}
+                                        ftClr='var(--foreground)' bgClr='transparent'
                                         title={block.title} upperCase={upperTitle}
+                                        classList=''
                                     />
                                     <div className='w-full flex flex-col gap-1 pt-4'>{block.content}</div>
                                 </div>)

@@ -3,15 +3,18 @@ import { NoIconContact } from "../Contact/NoIcon";
 export const FullDarkHeader = (props: {
     ftClr: string, bgClr: string,
     headPF: any,
-    inlineContact: boolean
+    showContactBlock?: boolean, inlineContact?: boolean,
+    classList?: string
 }) => {
-    const { ftClr, bgClr, headPF, inlineContact } = props;
+    const { ftClr, bgClr, headPF } = props;
+    const showContactBlock = props.showContactBlock !== undefined?props.showContactBlock:true;
+    const inlineContact = props.inlineContact !== undefined?props.inlineContact:true;
+    const classList = props.classList?props.classList:'px-[40px] pt-[30px]';
     return (
-        <div className='w-full flex flex-col px-[40px] pt-[30px] pb-[10px]'
+        <div className={`${classList} w-full flex flex-col pb-[10px]`}
             style={{ backgroundColor: bgClr, color: ftClr  }}>
             <div className='text-3xl font-extrabold'>
                 {headPF.name} {headPF.surname}
-
             </div>
             {
                 headPF.showProf ? (
@@ -21,7 +24,7 @@ export const FullDarkHeader = (props: {
                 ) : (<></>)
             }
             {
-                headPF.showContact ? (<>
+                showContactBlock&&headPF.showContact ? (<>
                     <NoIconContact 
                         inline={inlineContact}
                         phone={headPF.phone} email={headPF.email} 
