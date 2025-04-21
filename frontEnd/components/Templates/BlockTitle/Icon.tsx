@@ -10,10 +10,12 @@ export const IconTitle = (props: {
         icon, rounded,
         underLine, topLine, 
         ftClr, bgClr, iconClr,
-        title, upperCase, classList } = props;
+        title, upperCase
+    } = props;
     const fontSize = props.fontSize?props.fontSize:'xl'
+    const classList = props.classList?props.classList:'pb-1';
     return (
-        <div className={`w-full flex items-center gap-4 pb-1 ${underLine?'border-b-1':''} ${topLine?'border-t-1':''}`}>
+        <div className={`w-full flex items-center gap-4 ${underLine?'border-b-1':''} ${topLine?'border-t-1':''} ${classList}`}>
             <div className={`${rounded?'rounded-full':''} w-[2rem] h-[2rem] 
             flex items-center justify-center text-white`}
                 style={{ color: iconClr, backgroundColor: ftClr }}>

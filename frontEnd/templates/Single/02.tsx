@@ -1,53 +1,20 @@
-import { capitalized, formDate, darkenColor } from '@/lib/utils';
+import { capitalized, formDate, darkenColor, genItemTitle } from '@/lib/utils';
 import { 
-    MailIcon, PhoneIcon,
     BriefcaseBusinessIcon, GraduationCapIcon, SpeechIcon, ShapesIcon, TrophyIcon
 } from 'lucide-react';
 
-function genHead(headPF: any, theme_clr: string) {
-    return (
-        <div className='w-full flex flex-col items-start gap-1 px-[20px] pt-[20px]'
-            style={{ color: theme_clr }}>
-            <div className='text-3xl font-extrabold'
-                style={{ color: darkenColor(theme_clr, 0.4)}}>
-                {headPF.name} {headPF.surname}
-            </div>
-            {
-                headPF.showProf ? (
-                    <div>
-                        {headPF.profession}
-                    </div>
-                ) : (<></>)
-            }
-            {
-                headPF.showContact ? (
-                <div className='w-full text-[var(--foreground)] flex my-2'>
-                    {
-                        headPF.phone.length>0?(
-                        <div className='flex-1 flex items-center text-sm gap-2'>
-                            <div className='rounded-full flex justify-center items-center w-[1.2rem] h-[1.2rem]'
-                            style={{ backgroundColor: theme_clr }}>
-                                < PhoneIcon className='text-white w-[65%] h-[65%]' />
-                            </div>
-                            <div><a href={`tel:${headPF.phone}`}>{headPF.phone}</a></div>
-                        </div>):(<></>)
-                    }
-                    {
-                        headPF.email.length>0?(
-                            <div className='flex-1 flex items-center text-sm gap-2'>
-                                <div className='rounded-full flex justify-center items-center w-[1.2rem] h-[1.2rem]'
-                                style={{ backgroundColor: theme_clr }}>
-                                    < MailIcon className='text-white w-[65%] h-[65%]' />
-                                </div>
-                                <div><a href={`mailto:${headPF.email}`}>{headPF.email}</a></div>
-                            </div>):(<></>)
-                    }
-                </div>):(<></>)
-            }
-        </div>
-    )
-}
+import { FullDarkHeader } from '@/components/Templates/Header/FullDark';
+import { IconTitle } from '@/components/Templates/BlockTitle/Icon';
+import { LevelDot } from '@/components/Templates/showLevel/Dot';
+
+const upperTitle = false
+const mFirst = false
+const rounded = true
+const outlined = false
+
 function genEdu(eduPF: any, theme_clr: string) {
+    const genTitle = genItemTitle.EDU.Title;
+    const genSubTitle = genItemTitle.EDU.SubTitle;
     return {
         icon: (<><GraduationCapIcon /></>),
         title: 'Education',
@@ -65,13 +32,11 @@ function genEdu(eduPF: any, theme_clr: string) {
                         </div>) : (<></>)
                         }
                         <div className='w-full text-lg font-bold'>
-                            {edu.degree ? ` ${edu.degree === 'Enter your own' ? edu.neodegree : edu.degree}` : ''}{
-                                edu.degree.length>0 ? ', ': ''
-                            }{edu.institution}
+                            { edu.degree ? genTitle(edu.degree, edu.neodegree, edu.institution): '' }
                         </div>
                     </div>
                     <div className='text-sm my-1'>
-                        <i>{capitalized(edu.field)}{edu.location}</i>
+                        <i>{ genSubTitle(edu.field, edu.location) }</i>
                     </div>                
                     {
                         edu.showMore ? (<div className='text-sm'>{edu.more}</div>) : (<></>)
@@ -82,6 +47,7 @@ function genEdu(eduPF: any, theme_clr: string) {
     }
 }
 function genWork(wkPF: any ,theme_clr: string) {
+    const genSubTitle = genItemTitle.WORK.SubTitle;
     return {
         icon: (<><BriefcaseBusinessIcon /></>),
         title: 'Work Experience', content: wkPF.map((work: any) => {
@@ -104,9 +70,7 @@ function genWork(wkPF: any ,theme_clr: string) {
                     {
                         work.showComp ? (
                             <div className='text-sm my-1'>
-                                <i>{capitalized(work.company)}{
-                                    work.company.length>0&&work.location.length>0?', ':''
-                                }{work.location}</i>
+                                <i>{ genSubTitle(work.company, work.location) }</i>
                             </div>
                         ):(<></>)
                     }
@@ -161,17 +125,13 @@ function genSkill(skillPF: any, theme_clr: string) {
                                 w-3 h-3 rounded-full' style={{ backgroundColor: theme_clr }}></div>
                             </div>
                             {
-                                lan.level.length > 0? (<div className='pt-1 w-full flex flex-col gap-1 items-end'>
-                                    <div className='flex gap-1'>
-                                        {
-                                            [1,2,3,4,5].map((idx: number) => {
-                                                return (<div className='rounded-full w-3 h-3'
-                                                style={{ backgroundColor: levelToIdx(lan.level)>idx?theme_clr:'#D1d5db' }}></div> // bg-gray-300
-                                                )})
-                                        }
-                                    </div>
-                                    <div className='text-xs'>{lan.level}</div>
-                                </div>):(<></>)
+                                lan.level.length > 0? (
+                                    <LevelDot 
+                                        level={lan.level}
+                                        rounded={rounded} outlined={outlined}
+                                        ftClr={theme_clr} bgClr='#D1d5db'
+                                    />
+                                ):(<></>)
                             }
                         </div>)
                         })
@@ -191,7 +151,7 @@ function genSkill(skillPF: any, theme_clr: string) {
                                 w-3 h-3 rounded-full' style={{ backgroundColor: theme_clr }}></div>
                             </div>
                             {
-                                cst.desc.length > 0? (<div className='pt-1'>{cst.desc}</div>):(<></>)
+                                cst.desc.length > 0? (<div>{cst.desc}</div>):(<></>)
                             }
                         </div>)                       
                     })
@@ -219,8 +179,6 @@ function genSections(headPF: any, eduPF: any, wkPF: any, awardPF: any, skillPF: 
     return blocks;
 }
 
-const upperTitle = false
-const mFirst = false
 const genTemplate = (headPF: any, eduPF: any, wkPF: any, awardPF: any, skillPF: any, ssPF: any, theme_clr: string='#003D75') => {
     let blocks = genSections(headPF, eduPF, wkPF, awardPF, skillPF, ssPF, theme_clr)
     return (
@@ -231,25 +189,28 @@ const genTemplate = (headPF: any, eduPF: any, wkPF: any, awardPF: any, skillPF: 
             </div>
             <div className='grow-1'>
                 <div className='pb-[20px]'>
-                <>{genHead(headPF, theme_clr)}</>
-                <>{genSS(ssPF, theme_clr)}</>
+                    <FullDarkHeader 
+                        ftClr={darkenColor(theme_clr, 0.4)} bgClr='transparent'
+                        subClr={theme_clr}
+                        headPF={headPF} inlineContact={true} 
+                        classList='px-[20px] pt-[20px]'
+                        contactIcon={true} contactIconBgClr={theme_clr} contactIconFtClr='#FFF'
+                        contactClr='var(--foreground)' 
+                    />
+                    <>{genSS(ssPF, theme_clr)}</>
                 </div>
                 <div>
                 {
                     blocks.map((block: any, idx: number) => {
                         return (
                         <div className='px-[20px]'>
-                            <div className='w-full flex items-center gap-4'>
-                                <div className='rounded-full w-[2rem] h-[2rem] 
-                                flex items-center justify-center text-white'
-                                style={{ backgroundColor: theme_clr }}>
-                                    {block.icon}
-                                </div>
-                                <div className={`font-black text-xl`}
-                                    style={{ color: theme_clr}}>
-                                    {upperTitle ? block.title.toUpperCase() : block.title}
-                                </div>
-                            </div>
+                            <IconTitle
+                                icon={block.icon} rounded={rounded}
+                                underLine={false} topLine={false}
+                                ftClr={theme_clr} bgClr='transparent' iconClr='#FFF'
+                                title={block.title} upperCase={upperTitle}
+                                classList='pb-0'
+                            />
                             <div className='w-full relative pb-[20px]'>
                                 <div className='h-[calc(100%)] w-1 border-l-1
                                 absolute left-[1rem] top-0'></div>

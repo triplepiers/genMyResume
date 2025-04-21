@@ -125,9 +125,9 @@ function genSS(ssPF: any, theme_clr: string) {
 }
 function genSections(headPF: any, eduPF: any, wkPF: any, awardPF: any, skillPF: any, ssPF: any, theme_clr: string) {
     let leftBlocks = [
-        genWork(wkPF, theme_clr),
-        genEdu(eduPF, theme_clr),
-        genAward(awardPF, theme_clr),
+        genWork(wkPF),
+        genEdu(eduPF),
+        genAward(awardPF),
         
     ]
     let rightBlocks = [
