@@ -4,6 +4,7 @@ import D03 from './03'
 import D04 from './04'
 import D05 from './05'
 import D06 from './06'
+import D07 from './07'
 
 const Duals = {
     D01,
@@ -11,7 +12,8 @@ const Duals = {
     D03,
     D04,
     D05,
-    D06
+    D06,
+    D07
 }
 
 export default Duals
