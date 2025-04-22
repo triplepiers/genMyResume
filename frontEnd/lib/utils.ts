@@ -101,3 +101,32 @@ export const genItemTitle = {
     }
   }
 }
+
+export const handlePhone = (e: any, form: any, field: string) => {
+  let neo_ipt_ch = e.nativeEvent.data;
+  if (neo_ipt_ch) {
+    if (/^\d$/.test(neo_ipt_ch)) { // add & isNum
+      let prev = form.getValues(field);
+      if (!prev) {
+        form.setValue(field, neo_ipt_ch)
+      } else if (prev.length < 9) {
+        if (prev.length === 4) {
+          form.setValue(field, `${prev} ${neo_ipt_ch}`)
+        } else {
+          form.setValue(field, `${prev}${neo_ipt_ch}`)
+        }
+      }
+    }
+  } else { // delete
+    let prev = form.getValues(field);
+    if (prev) {
+      if (prev.length == 6) {
+        form.setValue(field, prev.slice(0,4))
+      } else {
+        if (prev.length>0) {
+          form.setValue(field, prev.slice(0,-1))
+        }
+      }
+    }
+  }
+}

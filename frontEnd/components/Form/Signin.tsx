@@ -1,4 +1,4 @@
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { string, z } from "zod"
@@ -7,8 +7,9 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Form, FormItem, FormField, FormLabel, FormControl, FormDescription, FormMessage } from "../ui/form";
 import { Loader2, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "../ui/input";
+import { Input, PhoneInput } from "../ui/input";
 
+import { handlePhone } from "@/lib/utils";
 import axios from "@/lib/axios";
 
 enum BtnType {
@@ -21,9 +22,9 @@ enum BtnType {
 const formSchema = z.object({
     // username:   z.string().min(2, { message: "Too short", }).max(10, { message: "Too long"})
     //              .regex(/^[0-9A-Za-z\_]+$/, { message: "Invalid input", }),
-    phone:      z.string().length(8).regex(/^[0-9]+$/, { message: "Contains ONLY numbers", }),
-    password:   z.string().min(5, { message: "Too short", }).max(10, { message: "Too long"})
-                 .regex(/^.*(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&*?]).*$/),
+    phone:      z.string(),
+    password:   z.string().min(5, { message: "Too short", }).max(15, { message: "Too long"})
+                 .regex(/^.*(?=.*\d)(?=.*[a-zA-Z])(?=.*[@#$%&*\+]).*$/),
     confirmpwd: z.string().min(1, { message: "Missing", })
 });
 
@@ -36,6 +37,17 @@ export const SigninForm = () => {
         resolver: zodResolver(formSchema),
     })
     async function onSubmit(values: z.infer<typeof formSchema>) {
+        // 检查用户名
+        let phone = values.phone;
+        if (phone.length === 0) {
+            form.setError('phone', { message: 'Required'})
+            return
+        } else if (phone.length < 9) {
+            form.setError('phone', { message: 'Incomplete'})
+            return
+        } else {
+            values.phone = `${phone.slice(0,4)}${phone.slice(5)}`
+        }
         // 检查两个密码是否相等
         if (values.password !== values.confirmpwd ) {
             form.setError('confirmpwd', { message: 'Inconsistent' });
@@ -69,7 +81,7 @@ export const SigninForm = () => {
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}
                 onChange={()=> {if(btnType===BtnType.error){setBtnType(BtnType.normal)}}}
-                className="w-full flex flex-col gap-3">
+                className="w-70 flex flex-col gap-3">
                 {/* <FormField
                     control={form.control}
                     name="username"
@@ -93,8 +105,13 @@ export const SigninForm = () => {
                         <FormItem>
                             <FormLabel>Phone Number*</FormLabel>
                             <FormControl>
-                                <Input placeholder="Should be Unique" {...field} />
+                                <PhoneInput placeholder="Should be Unique" 
+                                    {...field} onChange={(e) => handlePhone(e, form, 'phone')}
+                                />
                             </FormControl>
+                            <FormDescription>
+                                8-bit HongKong Phone Number
+                            </FormDescription>
                             <FormMessage />
                         </FormItem>
                     )}
@@ -108,9 +125,6 @@ export const SigninForm = () => {
                             <FormControl>
                                 <Input placeholder="Not your birthday" {...field} type="password"/>
                             </FormControl>
-                            <FormDescription>
-                                Characters & numbers & sth special 
-                            </FormDescription>
                             <FormMessage />
                         </FormItem>
                     )}
@@ -124,6 +138,10 @@ export const SigninForm = () => {
                             <FormControl>
                                 <Input placeholder="The same as above" {...field} type="password"/>
                             </FormControl>
+                            <FormDescription className="pl-2">
+                                <span>5~15 bit</span><br/>
+                                <span>Contains Numbers, Letters, Special Symbols (@#$%&*+) at the same time</span>
+                            </FormDescription>
                             <FormMessage />
                         </FormItem>
                     )}

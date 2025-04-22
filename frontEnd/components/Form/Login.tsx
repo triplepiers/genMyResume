@@ -1,4 +1,4 @@
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { string, z } from "zod"
@@ -7,8 +7,9 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Form, FormItem, FormField, FormLabel, FormControl, FormDescription, FormMessage } from "../ui/form";
 import { Loader2, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "../ui/input";
+import { Input, PhoneInput } from "../ui/input";
 
+import { handlePhone } from "@/lib/utils";
 import axios from "@/lib/axios";
 
 enum BtnType {
@@ -19,8 +20,8 @@ enum BtnType {
 };
 
 const formSchema = z.object({
-    phone:      z.string().length(8).regex(/^[0-9]+$/, { message: "Invalid Character", }),
-    password:   z.string().min(5, { message: "Too short", }).max(10, { message: "Too long"})
+    phone:      z.string(),
+    password:   z.string().min(5, { message: "Too short", }).max(15, { message: "Too long"})
 });
 
 export const LoginForm = () => {
@@ -60,7 +61,7 @@ export const LoginForm = () => {
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}
                 onChange={()=> {if(btnType===BtnType.error){setBtnType(BtnType.normal)}}}
-                className="flex flex-col justify-center h-full gap-3">
+                className="flex flex-col justify-center h-full gap-3 w-70">
                 <FormField
                     control={form.control}
                     name="phone"
@@ -68,8 +69,12 @@ export const LoginForm = () => {
                         <FormItem>
                             <FormLabel>Phone Number*</FormLabel>
                             <FormControl>
-                                <Input placeholder="Should be Unique" {...field} />
+                                <PhoneInput placeholder="eg. 1234 5678" 
+                                    {...field} onChange={(e) => handlePhone(e, form, 'phone')}/>
                             </FormControl>
+                            <FormDescription>
+                                8-bit HongKong Phone Number as your account
+                            </FormDescription>
                             <FormMessage />
                         </FormItem>
                     )}
@@ -83,6 +88,10 @@ export const LoginForm = () => {
                             <FormControl>
                                 <Input placeholder="Not your birthday" {...field} type="password"/>
                             </FormControl>
+                            <FormDescription className="pl-2">
+                                <span>5~15 bit</span><br/>
+                                <span>Contains Numbers, Letters, Special Symbols (@#$%&*+) at the same time</span>
+                            </FormDescription>
                             <FormMessage />
                         </FormItem>
                     )}

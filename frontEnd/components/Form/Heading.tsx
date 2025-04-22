@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Form, FormItem, FormField, FormLabel, FormControl, FormMessage } from "../ui/form";
 import { Input, PhoneInput } from "../ui/input";
 
+import { handlePhone } from "@/lib/utils";
 import axios from "@/lib/axios";
 
 type formKey = "name" | "surname" | "profession" | "city" | "province" | "postcode" | "phone" | "email";
@@ -68,33 +69,33 @@ export const Heading = (props: { updateFormMeta: Function, updateFormStatus: Fun
                                   
   }
 
-  const handlePhone = (e: any) => {
-    let neo_ipt_ch = e.nativeEvent.data;
-    if (neo_ipt_ch) {
-      if (/^\d$/.test(neo_ipt_ch)) { // add & isNum
-        let prev = form.getValues('phone');
-        if (!prev || prev.length < 9) {
-          if (prev?.length == 4) {
-            form.setValue('phone', `${prev} ${neo_ipt_ch}`)
-          } else {
-            form.setValue('phone', `${prev}${neo_ipt_ch}`)
-          }
-        }
-      }
-    } else { // delete
-      let prev = form.getValues('phone');
-      if (prev) {
-        if (prev.length == 6) {
-          form.setValue('phone', prev.slice(0,4))
-        } else {
-          console.log(typeof prev.slice(0,-1))
-          if (prev.length>0) {
-            form.setValue('phone', prev.slice(0,-1))
-          }
-        }
-      }
-    }
-  }
+  // const handlePhone = (e: any) => {
+  //   let neo_ipt_ch = e.nativeEvent.data;
+  //   if (neo_ipt_ch) {
+  //     if (/^\d$/.test(neo_ipt_ch)) { // add & isNum
+  //       let prev = form.getValues('phone');
+  //       if (!prev || prev.length < 9) {
+  //         if (prev?.length == 4) {
+  //           form.setValue('phone', `${prev} ${neo_ipt_ch}`)
+  //         } else {
+  //           form.setValue('phone', `${prev}${neo_ipt_ch}`)
+  //         }
+  //       }
+  //     }
+  //   } else { // delete
+  //     let prev = form.getValues('phone');
+  //     if (prev) {
+  //       if (prev.length == 6) {
+  //         form.setValue('phone', prev.slice(0,4))
+  //       } else {
+  //         console.log(typeof prev.slice(0,-1))
+  //         if (prev.length>0) {
+  //           form.setValue('phone', prev.slice(0,-1))
+  //         }
+  //       }
+  //     }
+  //   }
+  // }
 
   return (
     <Form {...form}>
@@ -188,7 +189,7 @@ export const Heading = (props: { updateFormMeta: Function, updateFormStatus: Fun
                 Phone <span className="text-gray-500 text-xs font-normal">(8-bit HongKong Phone Number)</span>
               </FormLabel>
               <FormControl>
-                <PhoneInput placeholder="e.g. 6789 0123" {...field} onChange={handlePhone} />
+                <PhoneInput placeholder="e.g. 6789 0123" {...field} onChange={(e) => handlePhone(e, form, 'phone')} />
               </FormControl>
               <FormMessage />
             </FormItem>
