@@ -8,9 +8,9 @@ export const FullDarkHeader = (props: {
     showContactBlock?: boolean, inlineContact?: boolean,
     classList?: string,
     // show Icon
-    contactIcon?: boolean, 
+    contactIcon?: boolean, verticalContact?: boolean,
     contactIconBgClr?: string, contactIconFtClr?: string,
-    contactClr?: string,
+    contactClr?: string, contactGapY?: string
 }) => {
     const { ftClr, bgClr, headPF } = props;
     const subClr = props.subClr?props.subClr: ftClr;
@@ -21,6 +21,8 @@ export const FullDarkHeader = (props: {
     const contactIconBgClr = props.contactIconBgClr?props.contactIconBgClr:'var(--foreground)';
     const contactIconFtClr = props.contactIconFtClr?props.contactIconFtClr:'#FFF';
     const contactClr = props.contactClr?props.contactClr:'var(--foreground)';
+    const verticalContact = props.verticalContact?true:false;
+    const contactGapY = props.contactGapY?props.contactGapY:'';
 
     const classList = props.classList?props.classList:'px-[40px] pt-[30px] pb-[10px]';
     return (
@@ -46,8 +48,9 @@ export const FullDarkHeader = (props: {
                         />
                     </>):(<>
                         <NoIconContact 
-                            inline={inlineContact}
-                            phone={headPF.phone} email={headPF.email} 
+                            inline={inlineContact} vertical={verticalContact}
+                            phone={headPF.phone} email={headPF.email}
+                            ftClr={contactClr} gapY={contactGapY}
                         />
                     </>)
                 ):(<></>)

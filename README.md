@@ -1,6 +1,10 @@
 # genMyResume
 > 什么，我居然能接外包
 
+## TODO 富文本编辑器
+
+- [TinyMice](https://juejin.cn/post/7124588377541705736)
+
 ## Bug
 
 header 的样式会变

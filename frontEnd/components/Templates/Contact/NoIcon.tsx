@@ -1,12 +1,15 @@
 export const NoIconContact = (props: {
     inline: boolean,
     phone: string, email: string,
-    ftClr?: string
+    ftClr?: string,
+    vertical?: boolean, gapY?: string
 }) => {
     const { inline, phone, email } = props;
     const ftClr = props.ftClr?props.ftClr:'#FFF';
+    const vertical = props.vertical?true:false;
+    const gapY = props.gapY?props.gapY:'';
     return (
-        <div className={`w-full text-sm flex ${inline?'':'flex-col gap-1'}`}
+        <div className={`${gapY} w-full text-sm flex ${inline?'':'flex-col gap-1'} ${vertical?'flex-col gap-1':''}`}
         style={{ color: ftClr }}>
         {
             phone.length>0?(
