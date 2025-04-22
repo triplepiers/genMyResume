@@ -7,6 +7,7 @@ export const FullDarkHeader = (props: {
     headPF: any,
     showContactBlock?: boolean, inlineContact?: boolean,
     classList?: string,
+    inclineSubTitle?: boolean,
     // show Icon
     contactIcon?: boolean, verticalContact?: boolean,
     contactIconBgClr?: string, contactIconFtClr?: string,
@@ -14,6 +15,8 @@ export const FullDarkHeader = (props: {
 }) => {
     const { ftClr, bgClr, headPF } = props;
     const subClr = props.subClr?props.subClr: ftClr;
+
+    const inclineSubTitle = props.inclineSubTitle?true:false;
 
     const showContactBlock = props.showContactBlock !== undefined?props.showContactBlock:true;
     const inlineContact = props.inlineContact !== undefined?props.inlineContact:true;
@@ -34,7 +37,10 @@ export const FullDarkHeader = (props: {
             {
                 headPF.showProf ? (
                     <div style={{ color: subClr }}>
-                        {headPF.profession}
+                        {
+                            inclineSubTitle?(<i>{headPF.profession}</i>):(<>{headPF.profession}</>)
+                        }
+                        
                     </div>
                 ) : (<></>)
             }
