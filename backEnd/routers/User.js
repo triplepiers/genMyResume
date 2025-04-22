@@ -10,18 +10,18 @@ const userRouter = new Router({
    202 { 不存在 }
 */
 userRouter.use((ctx, nxt) => {
-    // console.log()
     if (ctx.url.includes('signin')) {
         nxt();
-    }
-    let { phone } = ctx.request.body;
-    if (!phone) {
-        return ctx.status = 201;
-    }
-    if (userExist(phone)) {
-        nxt();
     } else {
-        return ctx.status = 202;
+        let { phone } = ctx.request.body;
+        if (!phone) {
+            return ctx.status = 201;
+        }
+        if (userExist(phone)) {
+            nxt();
+        } else {
+            return ctx.status = 202;
+        }
     }
 })
 

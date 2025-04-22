@@ -33,6 +33,17 @@ export const LoginForm = () => {
         resolver: zodResolver(formSchema),
     })
     function onSubmit(values: z.infer<typeof formSchema>) {
+        // 检查用户名
+        let phone = values.phone;
+        if (phone.length === 0) {
+            form.setError('phone', { message: 'Required'})
+            return
+        } else if (phone.length < 9) {
+            form.setError('phone', { message: 'Incomplete'})
+            return
+        } else {
+            values.phone = `${phone.slice(0,4)}${phone.slice(5)}`
+        }
         setBtnType(BtnType.wait);
         axios.post('/usr', {
             phone:    values.phone,
@@ -49,8 +60,8 @@ export const LoginForm = () => {
                 }, 2000);
             } else {
                 setBtnType(BtnType.error);
-                if (res.status===204) {
-                    setErrMsg('Phone Exists')
+                if (res.status===202) {
+                    setErrMsg('Account doesn\'t exists')
                 } else if (res.status===203) {
                     setErrMsg('Wrong Info')
                 }
