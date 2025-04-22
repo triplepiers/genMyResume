@@ -6,6 +6,7 @@ import { Flame } from "lucide-react";
 import { PurchaseCard } from "@/components/Cards/PurchaseCard";
 
 export const Header = () => {
+    const logoURL = './Logo.png';
     const router = useRouter();
     const [account, setAccount] = useState("");
     const [isVIP, setIsVIP] = useState(false)
@@ -46,7 +47,12 @@ export const Header = () => {
             <header className="bg-black/[0.8] backdrop-blur-sm shadow-xl text-white
         w-screen h-[var(--header-height)] sticky top-0 z-999
         flex items-center justify-between px-5">
-                <Link href={'/'}><div>Logo</div></Link>
+                <Link href={'/'}>
+                    <div className="flex items-end">
+                        <img src={logoURL} alt="logo" className="w-8"/>
+                        <span className="font-bold">Resume Edge</span>
+                    </div>
+                </Link>
 
                 <div className="flex gap-[1rem] items-center">
                     <div>Options</div>

@@ -5,7 +5,7 @@ export default function Home(props: any[]) {
   const logoURL = '/Logo_Dark.png';
 
   const Jump = () => {
-    // 这里缺一个登录验证
+    // TODO: 这里缺一个登录验证
     router.push('/checkout')
   }
   
