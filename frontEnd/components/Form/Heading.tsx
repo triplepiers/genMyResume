@@ -1,10 +1,10 @@
 import { useEffect } from "react";
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 
 import { Form, FormItem, FormField, FormLabel, FormControl, FormMessage } from "../ui/form";
-import { Input } from "../ui/input";
+import { Input, PhoneInput } from "../ui/input";
 
 import axios from "@/lib/axios";
 
@@ -16,7 +16,7 @@ const formSchema = z.object({
   city:       z.string().regex(/^[A-Za-z\s]+$/).optional(),
   province:   z.string().regex(/^[A-Za-z\s]+$/).optional(),
   postcode:   z.string().regex(/^\d{6}$/, { message: '6-bit numbers'}).optional(),
-  phone:      z.string().regex(/^\d+$/).max(11).optional(),
+  phone:      z.string().optional(),
   email:      z.string().min(1, { message: "Required"}).email({ message: "Invalid Format"})
 })
 
@@ -33,6 +33,9 @@ export const Heading = (props: { updateFormMeta: Function, updateFormStatus: Fun
     axios.get('/head').then((res) => {
       if(res.status === 200 && res.data.head.length>0) {
         for (let [key, val] of Object.entries(JSON.parse(res.data.head)) ) {
+          if (key==='phone' && (val as string).length>0) { // 删掉 (+862)
+            val = (val as string).slice(7)
+          }
           form.setValue(key as formKey, val as string)
         }
       }
@@ -45,15 +48,52 @@ export const Heading = (props: { updateFormMeta: Function, updateFormStatus: Fun
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    // await localStorage.setItem('1', JSON.stringify(values)); // 存在 localStorage
+    // check Phone: if notNull, add (+862)
+    let phone = values.phone;
+    if (phone!.length>0) {
+      if (phone!.length<9) {
+        form.setError('phone', {message: "Incomplete Phone Number"})
+        return;
+      } else {
+        values.phone = `(+862) ${phone}`
+      }
+    }
     // save to server
     axios.post('/head', {
       data: JSON.stringify(values)
     }).then((res) => {
-      // 没啥要干的了
+      // 没啥要干的了, go next
+      props.updateFormStatus();  
     })
-    // go next
-    props.updateFormStatus();                                
+                                  
+  }
+
+  const handlePhone = (e: any) => {
+    let neo_ipt_ch = e.nativeEvent.data;
+    if (neo_ipt_ch) {
+      if (/^\d$/.test(neo_ipt_ch)) { // add & isNum
+        let prev = form.getValues('phone');
+        if (!prev || prev.length < 9) {
+          if (prev?.length == 4) {
+            form.setValue('phone', `${prev} ${neo_ipt_ch}`)
+          } else {
+            form.setValue('phone', `${prev}${neo_ipt_ch}`)
+          }
+        }
+      }
+    } else { // delete
+      let prev = form.getValues('phone');
+      if (prev) {
+        if (prev.length == 6) {
+          form.setValue('phone', prev.slice(0,4))
+        } else {
+          console.log(typeof prev.slice(0,-1))
+          if (prev.length>0) {
+            form.setValue('phone', prev.slice(0,-1))
+          }
+        }
+      }
+    }
   }
 
   return (
@@ -144,9 +184,11 @@ export const Heading = (props: { updateFormMeta: Function, updateFormStatus: Fun
           name="phone"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Phone</FormLabel>
+              <FormLabel>
+                Phone <span className="text-gray-500 text-xs font-normal">(8-bit HongKong Phone Number)</span>
+              </FormLabel>
               <FormControl>
-                <Input placeholder="e.g. (45) 6789 0123" {...field} />
+                <PhoneInput placeholder="e.g. 6789 0123" {...field} onChange={handlePhone} />
               </FormControl>
               <FormMessage />
             </FormItem>
