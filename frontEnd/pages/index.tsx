@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 
 export default function Home(props: any[]) {
   const router = useRouter();
+  const logoURL = '/Logo_Dark.png';
 
   const Jump = () => {
     // 这里缺一个登录验证
@@ -12,6 +13,10 @@ export default function Home(props: any[]) {
     <div className="flex flex-col items-center justify-center gap-y-[2rem]
       w-screen h-[calc(100vh-var(--header-height))] p-20">
       <div className="flex flex-col items-center justify-center gap-y-[1rem]">
+        <div className="flex flex-col items-center">
+          <div className="w-40"><img src={logoURL} alt="logo" /></div>
+          <h1 className="font-black text-5xl text-center text-[var(--logo)]">ResumeEdge</h1>
+        </div>
         <h1 className="font-semibold text-5xl text-center">
           Professional Resume Tools For E-commerce Jobs
         </h1>

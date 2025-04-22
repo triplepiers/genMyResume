@@ -47,7 +47,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <>
       <Head>
         {/* 所有网页的 title */}
-        <title>{`Logo | ${pageProps.pageName}`}</title>
+        <title>{`ResumeEdge | ${pageProps.pageName}`}</title>
       </Head>
       <Header />
       <Component {...pageProps} />

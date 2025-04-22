@@ -26,7 +26,7 @@ export default function Checkout(props: any[]) {
     const steps = [                // ? optional
         ['Head', false],
         ['Education', false],
-        ['WorkExp', false],
+        ['Work Experience', false],
         ['Skills', true],
         ['Additional', true],
         ['Slef-Statement', false],
@@ -75,7 +75,7 @@ export default function Checkout(props: any[]) {
         <div className="flex flex-col w-screen min-h-[calc(100vh-var(--header-height))] p-10 pt-5 gap-3">
             <div className="flex flex-wrap justify-center md:justify-between items-center gap-y-2">
             <div className="flex flex-wrap gap-[1.5] font-medium leading-tight items-center">
-                <div className="text-[var(--foreground)] font-bold pr-2">Stepps: </div>
+                <div className="text-[var(--foreground)] font-bold pr-2">Steps: </div>
                 {
                     steps.map((step, idx) => {
                         return (
