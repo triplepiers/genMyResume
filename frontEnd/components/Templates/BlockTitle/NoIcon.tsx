@@ -1,4 +1,5 @@
 export const NoIconTitle = (props: {
+    titleFont?: string,
     underLine: boolean, topLine: boolean,
     alignCenter: boolean, fontSize?: string,
     ftClr: string, bgClr: string,
@@ -7,6 +8,7 @@ export const NoIconTitle = (props: {
     classList?: string
 }) => {
     const { 
+        titleFont,
         underLine, topLine, 
         alignCenter,
         ftClr, bgClr, 
@@ -27,6 +29,6 @@ export const NoIconTitle = (props: {
             <div className="w-2 h-2 rounded-full" style={{ backgroundColor: ftClr }}></div>)
             :(<></>)
         }
-        <div>{upperCase ? title.toUpperCase() : title}</div>
+        <div style={{ fontFamily: titleFont?titleFont:'' }}>{upperCase ? title.toUpperCase() : title}</div>
     </div>)
 }

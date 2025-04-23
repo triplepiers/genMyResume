@@ -1,11 +1,14 @@
 import "@/styles/globals.css";
 import '@/styles/customTailWind.css';
 
-import { Hanken_Grotesk, Satisfy } from "next/font/google";
+import { Hanken_Grotesk, Satisfy, Lobster } from "next/font/google";
 const ft_HKGrotesk = Hanken_Grotesk({
   variable: "--font-HKGrotesk"
 });
 const ft_Satisfy = Satisfy({
+  weight: ['400']
+});
+const ft_Lobster = Lobster({
   weight: ['400']
 })
 

@@ -2,6 +2,7 @@ import { IconContact } from "../Contact/Icon";
 import { NoIconContact } from "../Contact/NoIcon";
 
 export const FullDarkHeader = (props: {
+    titleFont?: string,
     ftClr: string, bgClr: string,
     subClr?: string,
     headPF: any,
@@ -13,7 +14,7 @@ export const FullDarkHeader = (props: {
     contactIconBgClr?: string, contactIconFtClr?: string,
     contactClr?: string, contactGapY?: string
 }) => {
-    const { ftClr, bgClr, headPF } = props;
+    const { titleFont, ftClr, bgClr, headPF } = props;
     const subClr = props.subClr?props.subClr: ftClr;
 
     const inclineSubTitle = props.inclineSubTitle?true:false;
@@ -31,7 +32,8 @@ export const FullDarkHeader = (props: {
     return (
         <div className={`${classList} w-full flex flex-col`}
             style={{ backgroundColor: bgClr, color: ftClr  }}>
-            <div className='text-3xl font-extrabold'>
+            <div className='text-3xl font-extrabold'
+                style={{ fontFamily: titleFont?titleFont:'' }}>
                 {headPF.name} {headPF.surname}
             </div>
             {
