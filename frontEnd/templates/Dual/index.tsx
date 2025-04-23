@@ -7,6 +7,7 @@ import D06 from './06'
 import D07 from './07'
 import D08 from './08'
 import D09 from './09'
+import D10 from './10'
 
 const Duals = {
     D01,
@@ -17,7 +18,8 @@ const Duals = {
     D06,
     D07,
     D08,
-    D09
+    D09,
+    D10
 }
 
 export default Duals

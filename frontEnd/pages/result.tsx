@@ -7,13 +7,12 @@ import { DownloadCard } from "@/components/Cards/DownLoadCard";
 import { FaFileLines, FaPaintRoller, FaCirclePlus, FaDownload } from "react-icons/fa6";
 
 import axios from '@/lib/axios';
-import { setuid } from "process";
 
 export default function Result(props: any[]) {
     // 下载按钮相关内容
     const [showOPT, setShowOPT] = useState(false);
     const [showDown, setShowDown] = useState(false);
-    const [tid, setTid] = useState('S01');
+    const [tid, setTid] = useState('D10');
 
     useEffect(() => {
         // const tid = localStorage.getItem('tid');
@@ -57,12 +56,14 @@ export default function Result(props: any[]) {
     return (
         <div className="relative">
             {/* body */}
-            <div className="w-screen min-h-[calc(100vh-var(--header-height))] 
-            px-10 py-5 pb-10 relative flex flex-col items-center">
+            <div className="min-w-screen max-w-screen min-h-[calc(100vh-var(--header-height))]
+            overflow-x-hidden pt-10 relative flex flex-col gap-2 items-center">
                 <h2 className="font-medium text-xl mb-2">
                     Result Preview
                 </h2>
-                <PdfGenerator tid={tid}/>
+                <div className="px-10 pb-20 w-fit max-w-screen overflow-x-scroll">
+                    <PdfGenerator tid={tid}/>
+                </div>
                 {/* <Palette /> */}
             </div >
             {/* options */}

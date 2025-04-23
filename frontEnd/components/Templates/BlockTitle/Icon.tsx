@@ -16,8 +16,8 @@ export const IconTitle = (props: {
     const classList = props.classList?props.classList:'pb-1';
     const rotate = props.rotate?true:false;
     return (
-        <div className={`w-full flex items-center gap-${rounded?'4':'3'} ${underLine?'border-b-1':''} ${topLine?'border-t-1':''} ${classList}`}>
-            <div className={`${rounded?'rounded-full':''}  
+        <div className={`w-full flex items-center gap-${rounded?'3':'2'} ${underLine?'border-b-1':''} ${topLine?'border-t-1':''} ${classList}`}>
+            <div className={`shrink-0 ${rounded?'rounded-full':''}  
                 w-[2rem] h-[2rem] flex items-center justify-center text-white`}
                 style={{ color: iconClr, backgroundColor: ftClr, transform: rotate?'rotate(45deg)':'' }}>
                 <div style={{ transform: rotate?'rotate(-45deg)':'' }}>{icon}</div>

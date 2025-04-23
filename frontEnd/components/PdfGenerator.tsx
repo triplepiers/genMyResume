@@ -25,13 +25,13 @@ export const PdfGenerator = (props:{ tid: string }) => {
     
     useEffect(() => {
         axios.get('/tp/profile').then((res) => {
-            if (res.status === 200) { return res.data.profile}
-        }).then((tmp) => {
-            loadTemplate(props.tid, handleProfile(tmp))
+            if (res.status === 200) { return res.data.profile }
+        }).then((profile) => {
+            loadTemplate(props.tid, handleProfile(profile))
         })
     }, [props.tid])
 
-    const quality = 3.3; // 必须和央视表对应
+    const quality = 3.55; // 必须和央视表对应
     const generate = (isPDF: boolean) => {
         const input = document.getElementById("pdf") as HTMLElement;
         html2canvas(input, {
