@@ -1,6 +1,16 @@
 # genMyResume
 > 什么，我居然能接外包
 
+## 打包
+
+- 修改后的前端支持纯静态资源打包（小了很多）
+
+    命令为 `npm run build`，之后会生成一个 `out` 文件夹
+
+    把这个文件夹丢到 Server + Nginx 代理就可以了，教程看 [这里](https://blog.csdn.net/qq_34241004/article/details/140154735)
+
+    > 默认命令会把 `node_modules` 也放进去，导致巨大无比
+
 ## TODO 富文本编辑器
 
 - [TinyMice](https://juejin.cn/post/7124588377541705736)

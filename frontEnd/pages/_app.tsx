@@ -3,13 +3,16 @@ import '@/styles/customTailWind.css';
 
 import { Hanken_Grotesk, Satisfy, Lobster } from "next/font/google";
 const ft_HKGrotesk = Hanken_Grotesk({
-  variable: "--font-HKGrotesk"
+  variable: "--font-HKGrotesk",
+  subsets: ['latin']
 });
 const ft_Satisfy = Satisfy({
-  weight: ['400']
+  weight: ['400'],
+  subsets: ['latin']
 });
 const ft_Lobster = Lobster({
-  weight: ['400']
+  weight: ['400'],
+  subsets: ['latin']
 })
 
 import { useEffect } from "react";
@@ -49,15 +52,11 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
-        {/* 所有网页的 title */}
         <title>{`ResumeEdge | ${pageProps.pageName}`}</title>
       </Head>
       <Header />
       <Component {...pageProps} />
       <Footer />
-      {/* {() => {
-          if(!(pageProps.privateFooter)) { return ( <Footer /> )}
-      }} */}
     </>
   );
 }
