@@ -6,7 +6,7 @@ import routers from './routers/index.js';
 
 // init DBs
 import initDBs from "./db/index.js";
-initDBs();
+// initDBs();
 
 const app = new Koa();
 
@@ -23,7 +23,9 @@ app.use(async (ctx, nxt) => {
 
 
 // Router
-var router = new Router();
+var router = new Router({
+    prefix: '/api' // remote 部署
+});
 // 用来测试的
 router.get('/',(ctx, nxt) => {
     ctx.response.body = 'Hello Koa';

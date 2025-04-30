@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: true  // 打包时忽略 TypeScript 检查
   },
-  output: 'export'           // 只进行静态打包
+  output: 'standalone'           // 只进行静态打包
 };
 
 export default nextConfig;

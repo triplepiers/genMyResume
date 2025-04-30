@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build",
+    "build": "next build && npm run move",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "move": "cp -Rf .next/static .next/standalone/.next/static && cp -Rf public .next/standalone/public"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",
