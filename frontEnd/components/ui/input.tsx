@@ -33,7 +33,7 @@ function PhoneInput({ className, type, ...props }: React.ComponentProps<"input">
         {...props}
       />
       <div className="absolute left-0 top-0 text-sm h-full px-2 flex items-center">
-        (+862)
+        (+852)
       </div>
     </div>
   )
