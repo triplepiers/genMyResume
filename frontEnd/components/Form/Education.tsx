@@ -178,7 +178,7 @@ export const Education = (props: { edit: number, updateFormStatus: Function }) =
                         <FormItem>
                             <FormLabel>Location</FormLabel>
                             <FormControl>
-                                <Input placeholder="e.g. HonKong" {...field} />
+                                <Input placeholder="e.g. HongKong" {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
