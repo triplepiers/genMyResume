@@ -51,7 +51,7 @@ export const Heading = (props: { updateFormMeta: Function, updateFormStatus: Fun
   async function onSubmit(values: z.infer<typeof formSchema>) {
     // check Phone: if notNull, add (+862)
     let phone = values.phone;
-    if (phone!.length>0) {
+    if (phone && phone!.length>0) {
       if (phone!.length<9) {
         form.setError('phone', {message: "Incomplete Phone Number"})
         return;
