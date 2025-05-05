@@ -31,17 +31,13 @@ export const PdfGenerator = (props:{ tid: string }) => {
         })
     }, [props.tid])
 
-    const quality = 3; // 必须和样视表对应
     const generate = (isPDF: boolean) => {
         const input = document.getElementById("pdf") as HTMLElement;
         // 写死，解决扩展屏上导出比例异常问题
-        input.ownerDocument.defaultView!.innerWidth = 754;
-        input.ownerDocument.defaultView!.innerHeight = 1381;
         input.ownerDocument.defaultView!.devicePixelRatio = 2;
-
         html2canvas(input, {
-            width: 210 * quality,
-            height: 297 * quality,
+            width: input.getBoundingClientRect().width,
+            height: input.getBoundingClientRect().height,
             scale: 3 // 分辨率
         }).then((canvas) => {
             const imgData = canvas.toDataURL("image/png", 1);

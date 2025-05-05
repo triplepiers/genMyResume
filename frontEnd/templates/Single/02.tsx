@@ -170,10 +170,10 @@ const genTemplate = (headPF: any, eduPF: any, wkPF: any, awardPF: any, skillPF: 
     return (
         <div className='w-full h-full flex'
             style={{ fontFamily: 'sans-serif' }}>
-            <div className='w-[18%] shrink-0 h-full text-white'
+            <div className='w-[22%] shrink-0 h-auto text-white'
                 style={{ backgroundColor: darkenColor(theme_clr, 0.4)}}>
             </div>
-            <div className='grow-1'>
+            <div className='grow-1 h-full'>
                 <div className='pb-[20px]'>
                     <FullDarkHeader 
                         ftClr={darkenColor(theme_clr, 0.4)} bgClr='transparent'
@@ -185,7 +185,7 @@ const genTemplate = (headPF: any, eduPF: any, wkPF: any, awardPF: any, skillPF: 
                     />
                     <>{genSS(ssPF, theme_clr)}</>
                 </div>
-                <div>
+                <div className='pb-[20px]'>
                 {
                     blocks.map((block: any, idx: number) => {
                         return (
