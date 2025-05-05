@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 
+import { TemplateSelector } from "@/components/Templates/Selector";
 import { PdfGenerator } from "@/components/PdfGenerator";
 import { Palette } from "@/components/Editor/Palette";
 import { PurchaseCard } from "@/components/Cards/PurchaseCard";
 import { DownloadCard } from "@/components/Cards/DownLoadCard";
-import { FaFileLines, FaPaintRoller, FaCirclePlus, FaDownload } from "react-icons/fa6";
+import { FaPaintRoller, FaCirclePlus, FaDownload } from "react-icons/fa6";
 
 import axios from '@/lib/axios';
 
@@ -44,14 +45,8 @@ export default function Result(props: any[]) {
         setShowDown(neoShowDown);
     }
     // 切换模版
-    const switchTemplate = () => {
-        if (tid === 'D01') {
-            localStorage.setItem('tid', 'S01')
-            setTid('S01')
-        } else {
-            localStorage.setItem('tid', 'D01')
-            setTid('D01')
-        }
+    const switchTemplate = (neoTid: string) => {
+        setTid(neoTid);
     }
 
     return (
@@ -73,10 +68,7 @@ export default function Result(props: any[]) {
                 fixed top-[50vh] right-0 -translate-y-[50%]
                 rounded-lg
                 font-light text-[.7rem] px-3 py-5">
-                <div className="custom-option-set" onClick={switchTemplate}>
-                    <FaFileLines className="custom-option-icon" />
-                    Templates
-                </div>
+                <TemplateSelector updateTid={switchTemplate}/>
                 <div className="custom-option-set">
                     <FaPaintRoller className="custom-option-icon" />
                     Design
