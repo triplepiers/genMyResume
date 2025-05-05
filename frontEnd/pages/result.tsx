@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 
 import { TemplateSelector } from "@/components/Templates/Selector";
+import { ColorSelector } from "@/components/Editor/Selector";
 import { PdfGenerator } from "@/components/PdfGenerator";
-import { Palette } from "@/components/Editor/Palette";
 import { PurchaseCard } from "@/components/Cards/PurchaseCard";
 import { DownloadCard } from "@/components/Cards/DownLoadCard";
-import { FaPaintRoller, FaCirclePlus, FaDownload } from "react-icons/fa6";
+import { FaCirclePlus, FaDownload } from "react-icons/fa6";
 
 import axios from '@/lib/axios';
 
@@ -13,6 +13,7 @@ export default function Result(props: any[]) {
     // 下载按钮相关内容
     const [showOPT, setShowOPT] = useState(false);
     const [showDown, setShowDown] = useState(false);
+    const [themeClr, setThemeClr] = useState('#333333');
     const [tid, setTid] = useState<string>('S01');
 
     useEffect(() => {
@@ -49,6 +50,10 @@ export default function Result(props: any[]) {
         setTid(neoTid);
     }
 
+    const switchThemeClr = (neoThemeClr: string) => {
+        setThemeClr(neoThemeClr);
+    }
+
     return (
         <div className="relative">
             {/* body */}
@@ -58,7 +63,7 @@ export default function Result(props: any[]) {
                     Result Preview
                 </h2>
                 <div className="px-10 pb-20 w-fit max-w-screen overflow-x-scroll">
-                    <PdfGenerator tid={tid}/>
+                    <PdfGenerator tid={tid} themeClr={themeClr}/>
                 </div>
                 {/* <Palette /> */}
             </div >
@@ -69,10 +74,7 @@ export default function Result(props: any[]) {
                 rounded-lg
                 font-light text-[.7rem] px-3 py-5">
                 <TemplateSelector updateTid={switchTemplate}/>
-                <div className="custom-option-set">
-                    <FaPaintRoller className="custom-option-icon" />
-                    Design
-                </div>
+                <ColorSelector updateThemeClr={switchThemeClr} defaultClr={themeClr}/>
                 <div className="custom-option-set">
                     <FaCirclePlus className="custom-option-icon" />
                     New Section

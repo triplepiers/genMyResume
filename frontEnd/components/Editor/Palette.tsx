@@ -3,7 +3,7 @@ import { PaletteBtn } from "@/components/Editor/PaletteBtn";
 import { ColorPicker } from "@/components/Editor/ColorPicker";
 
 const default_clr_list: string[][] = [
-    ['#7D7D7D', '#34383D', '#E4E2DE', '#000000'],
+    ['#7D7D7D', '#34383D', '#E4E2DE', '#333333'],
     ['#102A73', '#394D6C', '#A3B8DE', '#25A7FF'],
     ['#7D47B2', '#9987FF', '#F3C2F9', '#E360CA'],
     ['#2C98DE', '#074D73', '#8AC3F4', '#25CEE4'],
@@ -15,9 +15,13 @@ const default_clr_list: string[][] = [
 ];
 const N_DEFAULT: number = default_clr_list.length * default_clr_list[0].length;
 
-export const Palette = () => {
+export const Palette = (props: {
+    updateThemeClr: Function,
+    defaultClr: string
+}) => {
+    const { updateThemeClr, defaultClr } = props;
     const [custom_clr_list, setCustomClrList] = useState<string[]>([]);
-    const [clrId, setClrId] = useState(35);
+    const [clrId, setClrId] = useState(3);
     const idx2Clr = (clrId: number) => {
         if (clrId < N_DEFAULT) { // default
             return default_clr_list[Math.floor(clrId/4)][clrId%4];
@@ -26,7 +30,10 @@ export const Palette = () => {
         }
     }
     const handleBtnClick = (neoClrId: number) => {
-        if (neoClrId !== clrId) { setClrId(neoClrId); }
+        if (neoClrId !== clrId) { 
+            setClrId(neoClrId); 
+            updateThemeClr(idx2Clr(neoClrId));
+        }
     }
     const handleCustomClr = (neoCustomClr: string) => {
         let l = custom_clr_list.length;
@@ -37,16 +44,16 @@ export const Palette = () => {
             setCustomClrList(prev => [...prev, neoCustomClr]);
         } else {          // 在的话:   移到最后 -> 选中新的
             setClrId(N_DEFAULT + l - 1);
-            setCustomClrList(prev => [...prev.slice(0, idx), ...prev.slice(idx+1), neoCustomClr])
+            setCustomClrList(prev => [...prev.slice(0, idx), ...prev.slice(idx+1), neoCustomClr]);
         }
+        updateThemeClr(neoCustomClr);
     }
 
     return (
         <div className="flex flex-col w-66 relative">
-            <div style={{ color: idx2Clr(clrId)}}>ClrID: {clrId}，这是调色板捏</div>
-            <div className="flex gap-1.5 mx-4">
+            <div className="flex gap-3">
                 {default_clr_list.map((col, c_idx) => (
-                    <div key={c_idx} className="flex flex-col gap-1.5">
+                    <div key={c_idx} className="flex flex-col gap-3">
                         {col.map((item, idx) => {
                             let key = c_idx*4 + idx;
                             return (
@@ -59,7 +66,7 @@ export const Palette = () => {
                     </div>
                 ))}
             </div>
-            <div className="flex flex-wrap gap-1.5 my-1.5 mx-4">
+            <div className="flex flex-wrap gap-3 my-3">
                 {custom_clr_list.map((clr, idx) => {
                     let key = N_DEFAULT+idx;
                     return (

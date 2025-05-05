@@ -12,15 +12,18 @@ import { handleProfile } from '@/lib/utils';
 import templates from '@/templates';
 
 
-export const PdfGenerator = (props:{ tid: string }) => {
+export const PdfGenerator = (props:{ 
+    tid: string,
+    themeClr: string
+}) => {
+    const { themeClr } = props;
     const [result, setResult] = useState<any>()
-
 
     const loadTemplate = (tid: string, profile: any) => {
         if(tid.length===0) return
         let { head, edus, works, skill, award, ss } = profile;
         let renderer = templates[tid] as Function;
-        setResult(renderer(head, edus, works, award, skill, ss))
+        setResult(renderer(head, edus, works, award, skill, ss, themeClr))
     }
     
     useEffect(() => {
@@ -29,7 +32,7 @@ export const PdfGenerator = (props:{ tid: string }) => {
         }).then((profile) => {
             loadTemplate(props.tid, handleProfile(profile))
         })
-    }, [props.tid])
+    }, [props.tid, props.themeClr])
 
     const generate = (isPDF: boolean) => {
         const input = document.getElementById("pdf") as HTMLElement;

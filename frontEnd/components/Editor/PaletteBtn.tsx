@@ -5,7 +5,7 @@ export const PaletteBtn = (props: {
     const emitClrIdx = () => { props.onBtnClick(idx); }
     return (
         <div 
-        className="w-5 h-5 rounded-full cursor-pointer
+        className="w-6 h-6 rounded-full cursor-pointer
          brightness-100 hover:brightness-120 duration-200"
         style={{ backgroundColor: bgClr, borderRadius: selected ? 3 : 50}}
         onClick={emitClrIdx}>
