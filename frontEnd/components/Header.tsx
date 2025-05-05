@@ -5,6 +5,16 @@ import { Flame } from "lucide-react";
 
 import { PurchaseCard } from "@/components/Cards/PurchaseCard";
 
+const subPages = [
+    {
+        url: '/',
+        title: 'Job Search'
+    }, {
+        url: '/checkout',
+        title: 'Resume Design'
+    }
+]
+
 export const Header = () => {
     const logoURL = './Logo.png';
     const router = useRouter();
@@ -54,8 +64,16 @@ export const Header = () => {
                     </div>
                 </Link>
 
-                <div className="flex gap-[1rem] items-center">
-                    <div>Options</div>
+                <div className="flex gap-[1rem] items-center h-full">
+                    {
+                        subPages.map(itemInfo => (
+                            <Link href={itemInfo.url} 
+                            className="h-full flex items-center px-2 border-[var(--blue)]
+                            hover:text-[var(--blue)] hover:border-b-[6px] duration-200">
+                                {itemInfo.title}
+                            </Link>
+                        ))
+                    }
                     {
                         account.length > 0 ? (
                             <div className="underline cursor-pointer flex items-center gap-[0.3rem]">
