@@ -25,9 +25,6 @@ export const Header = () => {
         setShowCard(neoShowCard);
     }
     useEffect(() => {
-        // 这里要删掉
-        // localStorage.setItem('account', '00')
-        // localStorage.setItem('isVIP', 'true')
         if (localStorage.getItem('account')) {
             setAccount(localStorage.getItem('account') as string);
         }

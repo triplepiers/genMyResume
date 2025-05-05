@@ -43,6 +43,24 @@ export function darkenColor(hex: string, percent: number) {
   return `#${toHex(darkenedR)}${toHex(darkenedG)}${toHex(darkenedB)}`;
 }
 
+export function isDarkColor(clrStr: string) {
+  let r, g, b;
+  // hexString to Number
+  const hex = clrStr.substring(1);
+  r = parseInt(hex.substring(0, 2), 16);
+  g = parseInt(hex.substring(2, 4), 16);
+  b = parseInt(hex.substring(4, 6), 16);
+
+  // 将sRGB值转换为线性RGB
+  const linearR = r <= 10 ? r / 3294.6 : Math.pow((r / 255 + 0.055) / 1.055, 2.4);
+  const linearG = g <= 10 ? g / 3294.6 : Math.pow((g / 255 + 0.055) / 1.055, 2.4);
+  const linearB = b <= 10 ? b / 3294.6 : Math.pow((b / 255 + 0.055) / 1.055, 2.4);
+  
+  // 计算亮度
+  const luminance = 0.2126 * linearR + 0.7152 * linearG + 0.0722 * linearB;
+  return luminance < 0.18; // 这个阈值可以根据需要调整
+}
+
 export function handleProfile(pfObj: any) {
   let head = JSON.parse(pfObj.head)
   head.showProf = head.profession && head.profession.length > 0

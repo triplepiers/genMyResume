@@ -1,5 +1,6 @@
 import { IconContact } from "../Contact/Icon";
 import { NoIconContact } from "../Contact/NoIcon";
+import { isDarkColor } from "@/lib/utils";
 
 export const FullDarkHeader = (props: {
     titleFont?: string,
@@ -29,6 +30,8 @@ export const FullDarkHeader = (props: {
     const contactGapY = props.contactGapY?props.contactGapY:'';
 
     const classList = props.classList?props.classList:'px-[40px] pt-[30px] pb-[10px]';
+    
+    
     return (
         <div className={`${classList} w-full flex flex-col`}
             style={{ backgroundColor: bgClr, color: ftClr  }}>
@@ -51,14 +54,15 @@ export const FullDarkHeader = (props: {
                     contactIcon ? (<>
                         <IconContact
                             phone={headPF.phone} email={headPF.email}
-                            iconFtClr={contactIconFtClr} iconBgClr={contactIconBgClr}
-                            ftClr={contactClr}
+                            iconFtClr={contactIconFtClr}
+                            iconBgClr={contactIconBgClr}
+                            ftClr={isDarkColor(bgClr)?'white':contactClr}
                         />
                     </>):(<>
                         <NoIconContact 
                             inline={inlineContact} vertical={verticalContact}
                             phone={headPF.phone} email={headPF.email}
-                            ftClr={contactClr} gapY={contactGapY}
+                            ftClr={isDarkColor(bgClr)?'white':contactClr} gapY={contactGapY}
                         />
                     </>)
                 ):(<></>)
