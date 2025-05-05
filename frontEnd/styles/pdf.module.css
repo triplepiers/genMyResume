@@ -13,8 +13,8 @@
 
 .pdf {
     --quality: 3;
-    aspect-ratio: 2/3;
-    width: calc(250px * var(--quality));
+    width: calc(210px * var(--quality));
+    height: calc(297px * var(--quality));
     box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
     border: 1px solid #eee;
 }
