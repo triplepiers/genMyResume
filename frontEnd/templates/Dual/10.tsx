@@ -233,7 +233,7 @@ const genTemplate = (headPF: any, eduPF: any, wkPF: any, awardPF: any, skillPF: 
                     }
                 </div>
             </div>
-            <div className='w-[30%] shrink-0'>{
+            <div className='w-[37%] shrink-0'>{
                 rightBlocks.map((block: any, idx: number) => {
                     return (
                         <div className='pt-[20px]'>

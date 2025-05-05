@@ -162,8 +162,8 @@ const genTemplate = (headPF: any, eduPF: any, wkPF: any, awardPF: any, skillPF: 
                     />
                     <>{genSS(ssPF, theme_clr)}</>
                 </div>
-            <div className='flex gap-6'>
-                <div className='w-[30%]'>
+            <div className='flex gap-6 pb-[20px]'>
+                <div className='w-[34%]'>
                     {
                         leftBlocks.map((block: any, idx: number) => {
                             return (

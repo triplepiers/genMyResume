@@ -151,7 +151,7 @@ const genTemplate = (headPF: any, eduPF: any, wkPF: any, awardPF: any, skillPF: 
     return (
         <div className='w-full h-full flex'
             style={{ fontFamily: 'sans-serif' }}>
-            <div className='w-[30%] shrink-0'>{
+            <div className='w-[35%] shrink-0'>{
                 leftBlocks.map((block: any, idx: number) => {
                     return (
                     <div className='px-[20px] pt-[20px]'>

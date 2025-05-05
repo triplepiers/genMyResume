@@ -12,11 +12,12 @@ export default function Result(props: any[]) {
     // 下载按钮相关内容
     const [showOPT, setShowOPT] = useState(false);
     const [showDown, setShowDown] = useState(false);
-    const [tid, setTid] = useState('D10');
+    const [tid, setTid] = useState<string>('S01');
 
     useEffect(() => {
-        // const tid = localStorage.getItem('tid');
-        // if (tid) { setTid(tid) }
+        const tid = localStorage.getItem('tid');
+        if (tid) { setTid(tid! as string) }
+        else { setTid('S01') }
     }, [])
 
     const handleDownload = {

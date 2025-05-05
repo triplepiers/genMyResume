@@ -178,7 +178,7 @@ const genTemplate = (headPF: any, eduPF: any, wkPF: any, awardPF: any, skillPF: 
                             })
                         }
                 </div>
-                <div className='w-[30%]'>
+                <div className='w-[33%]'>
                     {
                         rightBlocks.map((block: any, idx: number) => {
                             return (

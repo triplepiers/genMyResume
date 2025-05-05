@@ -191,7 +191,7 @@ const genTemplate = (headPF: any, eduPF: any, wkPF: any, awardPF: any, skillPF: 
                 headPF={headPF} inlineContact={true} 
                 classList='px-[40px] pt-[30px] pb-[20px]'
             />
-            <div className='px-[40px] pt-[20px] pb-[30px] flex flex-col'>
+            <div className='px-[40px] py-[20px] pb-[30px] flex flex-col'>
                 <>{genSS(ssPF, theme_clr)}</>
             {
                 blocks.map((block: any, idx: number) => {

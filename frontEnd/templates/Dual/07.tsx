@@ -196,7 +196,7 @@ const genTemplate = (headPF: any, eduPF: any, wkPF: any, awardPF: any, skillPF: 
                                     />
                                     <div className='absolute top-[2px] -left-[53px]'>
                                         <div className='w-[30px] h-[30px]' style={{ backgroundColor: theme_clr}}></div>
-                                        <div className='w-[15px] h-[30px] absolute -right-[15px] top-0' 
+                                        <div className='w-[15px] h-[30px] absolute -right-[14px] top-0' 
                                             style={{ backgroundColor: theme_clr, clipPath: 'polygon(0 0, 0% 100%, 100% 50%)'}}></div>
                                         <div className='absolute left-0 w-3 h-3'
                                             style={{ backgroundColor: darkenColor(theme_clr, 0.4), clipPath: 'polygon(0 0, 100% 100%, 100% 0)'}}></div>
