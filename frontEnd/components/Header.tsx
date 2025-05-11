@@ -7,7 +7,7 @@ import { PurchaseCard } from "@/components/Cards/PurchaseCard";
 
 const subPages = [
     {
-        url: '/',
+        url: '/jobs',
         title: 'Job Search'
     }, {
         url: '/checkout',
