@@ -31,7 +31,6 @@ export const PdfGenerator = (props:{
     
     useEffect(() => {
         axios.get('/tp/profile').then((res) => {
-            console.log(res.status)
             if (res.status === 200) { 
                 return res.data.profile
             } else if (res.status === 204) {

@@ -59,7 +59,7 @@ def scrabPage(pageIdx):
         for idx, job in enumerate(soup.select('[data-testid="job-card"]')):
             print(f'Job {pageIdx}-{idx}')
             jid, detail, reqs = getJobInfo(job)
-            if reqs == None:
+            if reqs == None or len(reqs) == 0:
                 continue
             else:
                 print('OK')
@@ -79,7 +79,7 @@ def scrabPage(pageIdx):
 
 if __name__ == '__main__':
     # 爬 10 页
-    for idx in range(1, 11):
+    for idx in range(1, 21):
         print(idx)
         scrabPage(idx) # 爬了快 18min
         print(f'Now get: {len(detailList)}')
@@ -89,7 +89,7 @@ if __name__ == '__main__':
 
     # 序列化（这边倒是巨快）
     with open('../data/jobDetail.json', 'w', encoding='utf-8') as f:
-        json.dump({'jpbs': detailList}, f, ensure_ascii=False, indent=4)
+        json.dump({'jobs': detailList}, f, ensure_ascii=False, indent=4)
 
     with open('../data/jobReqs.json', 'w', encoding='utf-8') as f:
-        json.dump({'jpbs': reqList}, f, ensure_ascii=False, indent=4)
+        json.dump({'jobs': reqList}, f, ensure_ascii=False, indent=4)
