@@ -2,22 +2,25 @@
     Ref:
     https://www.oryoy.com/news/shi-yong-react-he-jspdf-shi-xian-dom-zhuan-pdf-de-xiang-xi-bu-zhou-yu-dai-ma-shi-li.html
 */
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import styles from '@/styles/pdf.module.css';
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import axios from '@/lib/axios';
 
+import { message } from 'antd';
 import { handleProfile } from '@/lib/utils';
 import templates from '@/templates';
-
 
 export const PdfGenerator = (props:{ 
     tid: string,
     themeClr: string
 }) => {
     const { themeClr } = props;
-    const [result, setResult] = useState<any>()
+    const router = useRouter();
+    const [result, setResult] = useState<any>();
+    const [messageApi, contextHolder] = message.useMessage();
 
     const loadTemplate = (tid: string, profile: any) => {
         if(tid.length===0) return
@@ -28,8 +31,21 @@ export const PdfGenerator = (props:{
     
     useEffect(() => {
         axios.get('/tp/profile').then((res) => {
-            if (res.status === 200) { return res.data.profile }
+            console.log(res.status)
+            if (res.status === 200) { 
+                return res.data.profile
+            } else if (res.status === 204) {
+                return false
+            }
         }).then((profile) => {
+            if (!profile) {
+                messageApi.open({
+                    type: 'error',
+                    content: 'Please complete your information first',
+                });
+                setTimeout(() => router.replace('/checkout'), 2000);
+                return;
+            }
             loadTemplate(props.tid, handleProfile(profile))
         })
     }, [props.tid, props.themeClr])
@@ -63,6 +79,7 @@ export const PdfGenerator = (props:{
 
     return (
         <>
+        {contextHolder}
         <div id="pdf" className={`${styles.pdf} gap-1`}>
             {result}
         </div>
