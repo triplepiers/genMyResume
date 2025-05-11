@@ -30,8 +30,15 @@ tpRouter.use((ctx, nxt) => {
 })
 
 // 返回完整用户信息
+// 204: 滚回去填表吧你
 tpRouter.get('/profile', (ctx, nxt) => {
     let phone = ctx.phone;
+    let profile = getProfile(phone);
+
+    if (!profile) {
+        return ctx.status = 204
+    }
+    
     ctx.response.body = JSON.stringify({ profile: getProfile(phone) });
     return ctx.status = 200
 })
