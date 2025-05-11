@@ -1,3 +1,4 @@
+'use client'
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { Table, Descriptions, message } from 'antd';
@@ -79,7 +80,7 @@ export default function Jobs(props: any[]) {
                 </div>
                 <div className="w-full p-10">
                     <Table
-                        rowKey={(record) => record.jid}
+                        rowKey={(record: any) => record.jid}
                         // pagination={{ pageSize: 40 }}
                         pagination={false} // 去掉分页器
                         dataSource={data} columns={cols}

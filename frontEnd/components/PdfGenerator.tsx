@@ -2,6 +2,7 @@
     Ref:
     https://www.oryoy.com/news/shi-yong-react-he-jspdf-shi-xian-dom-zhuan-pdf-de-xiang-xi-bu-zhou-yu-dai-ma-shi-li.html
 */
+'use client'
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import styles from '@/styles/pdf.module.css';
@@ -9,7 +10,7 @@ import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import axios from '@/lib/axios';
 
-import { message } from 'antd';
+import { message } from 'antd/lib';
 import { handleProfile } from '@/lib/utils';
 import templates from '@/templates';
 
