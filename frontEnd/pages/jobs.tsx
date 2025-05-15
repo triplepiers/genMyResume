@@ -88,7 +88,9 @@ export default function Jobs(props: any[]) {
                         expandable={{
                             columnTitle: 'Details',
                             expandedRowRender: (record) => (
-                                <div className="pl-20"><Descriptions items={
+                                <div className="pl-20"><Descriptions 
+                                column={2} layout="vertical"
+                                items={
                                     [{
                                         key: 'location',
                                         label: 'Location',
@@ -96,8 +98,16 @@ export default function Jobs(props: any[]) {
                                     },
                                     {
                                         key: 'classification',
-                                        label: 'classification',
+                                        label: 'Classification',
                                         children: record.classification
+                                    },
+                                    {
+                                        key: 'description',
+                                        label: 'Job Requirements',
+                                        children: <div
+                                            className="flex flex-col list-disc"
+                                            dangerouslySetInnerHTML={{ __html: record.desc }} />,
+                                        span: 2
                                     }]
                                 } /></div>
                             )

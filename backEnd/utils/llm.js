@@ -7,17 +7,27 @@ const openai = new OpenAI({
     temprature: 2.0,
 });
 
-function genMsgs(userInfo) {
+function genSelfStatementMsgs(userInfo) {
     return [
         { role: "system", content: "You are a helpful assistant." },
         { role: "user",   content: 
-            `I am a recent graduate, currently seeking job opportunities in the e-commerce field in Hong Kong.<br>
+`I am a recent graduate, currently seeking job opportunities in the e-commerce field in Hong Kong.\n
+This is my personal info:\n${userInfo}.\n
+Can you summarize a short self-statement for me in 2~3 sentences?\n
+Please don't output message that is not required, just show me the result.` },
+    ];
+}
 
-            This is my personal info:\n ${userInfo}.<br>
-            
-            Can you summarize a short self-statement for me in 2~3 sentences?
-            
-            Please don't output message that is not required, just show me the result.` },
+function genJobRecMsgs(userInfo, jobReqs) {
+    return [
+        { role: "system", content: "You are an experienced HR." },
+        { role: "user",   content: 
+`I am a recent graduate, currently seeking job opportunities in the e-commerce field in Hong Kong.\n
+This is my personal info:\n ${userInfo}.\n
+And here it's the requirements of a job: \n${jobReqs}\n\n
+For each requirement, check if my background matches:\n
+\t - Return in this format: \`- [Only True / False] [Original Requirement] ([Brief Reason])\`\n
+Please don't output message that is not required, just show me the result.` },
     ];
 }
 
@@ -37,7 +47,7 @@ async function getCompletion(msgs) {
 
 async function genSelfStatement(userInfo) {
   return new Promise((resolve) => {
-    getCompletion(genMsgs(userInfo))
+    getCompletion(genSelfStatementMsgs(userInfo))
     .then((res) => {
       resolve(res);
     })
@@ -45,5 +55,7 @@ async function genSelfStatement(userInfo) {
 };
 
 export {
-  genSelfStatement
+  genSelfStatement,
+  getCompletion,
+  genJobRecMsgs
 }
