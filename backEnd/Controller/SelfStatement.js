@@ -83,13 +83,14 @@ function genSkills(phone) {
     getAllSkills(phone).forEach((item) => {
         let skill = JSON.parse(item)
         if (skill.isLan) {
-            res += `\t- Language: ${skill.name}, Level: ${skill.level}\n`
+            res += `\t- Language: ${skill.lan}, Level: ${skill.level}\n`
         } else {
             res += `\t- Skill: ${skill.title}, Description: ${skill.desc}\n`
         }
     });
     return res;
 }
+
 function getProfile(phone) {
 return `
 - My Education Experience: \n
@@ -114,6 +115,7 @@ async function genSS(phone) {
 }
 
 export {
+    getProfile,
     getSS,
     updateSS,
     canGen,

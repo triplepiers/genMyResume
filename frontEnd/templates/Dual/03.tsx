@@ -102,10 +102,10 @@ function genSkill(skillPF: any, theme_clr: string) {
                 skillPF.customs.length>0?(<>{
                     skillPF.customs.map((cst:any, idx: number) => {
                         return (
-                        <div key={idx} className='w-full text-sm flex justify-between'>
+                        <div key={idx} className='w-full text-sm flex flex-col justify-between'>
                             <div><b>{cst.title}</b></div>
                             {
-                                cst.desc.length > 0? (<div>{cst.desc}</div>):(<></>)
+                                cst.desc.length > 0? (<div className='text-xs'>{cst.desc}</div>):(<></>)
                             }
                         </div>)                       
                     })

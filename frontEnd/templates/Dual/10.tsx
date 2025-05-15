@@ -154,10 +154,7 @@ function genSkill(skillPF: any, theme_clr: string) {
                             <div key={idx} className='text-xs flex flex-col'>
                                 <div><b>{cst.title}</b></div>
                                 {
-                                    cst.desc.length > 0 ? (
-                                        <div className='w-full flex justify-end'>
-                                            {cst.desc}
-                                        </div>) : (<></>)
+                                    cst.desc.length > 0 ? (<div>{cst.desc}</div>) : (<></>)
                                 }
                             </div>)
                     })

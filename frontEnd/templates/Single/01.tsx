@@ -117,7 +117,7 @@ function genSkill(skillPF: any) {
                     <b>Skills: </b> {
                         skillPF.customs.map((cst:any, idx: number) => {
                             return (<span key={idx}>
-                                {cst.title}{cst.desc.length>0?` (${cst.level})`:''}{idx<skillPF.customs.length-1?', ':''}
+                                {cst.title}{cst.desc.length>0?` (${cst.desc})`:''}{idx<skillPF.customs.length-1?', ':''}
                             </span>)
                         })
                     }
