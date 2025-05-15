@@ -1,3 +1,4 @@
+import lzStr from 'lz-string';
 import { JSONFilePreset } from 'lowdb/node';
 import { getProfile } from './SelfStatement.js';
 import { genJobRecMsgs, getCompletion } from '../utils/llm.js';
@@ -115,9 +116,10 @@ async function genJobRec(n, phone) {
                     jobInfo.push({
                         jid,
                         ...getJobDetails(jid),
-                        desc: id2desc[jid]
+                        desc: lzStr.compress(id2desc[jid])
                     })
                 })
+            // 序列化
             return jobInfo;
         })
     return res;

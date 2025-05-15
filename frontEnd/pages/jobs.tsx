@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import lzStr from 'lz-string';
 import { Table, Descriptions, message } from 'antd';
 import Link from "next/link";
 import axios from '@/lib/axios';
@@ -47,7 +48,6 @@ export default function Jobs(props: any[]) {
     useEffect(() => {
         if (localStorage.getItem('isVIP')) {
             setIsVIP(localStorage.getItem('isVIP') !== 'false');
-            console.log(localStorage.getItem('isVIP'))
         }
         axios.get('/job').then((res) => {
             if (res.status === 200) {
@@ -64,7 +64,12 @@ export default function Jobs(props: any[]) {
                 setTimeout(() => router.replace('/checkout'), 2000);
                 return;
             }
-            setData(details);
+            setData(details.map((item: any) => {
+                return {
+                    ...item,
+                    desc: lzStr.decompress(item.desc)
+                }
+            }))
         })
     }, [])
     return (

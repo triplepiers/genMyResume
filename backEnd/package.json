@@ -8,7 +8,9 @@
     "start": "node index.js"
   },
   "nodemonConfig": {
-    "ignore": [ "data/*" ]
+    "ignore": [
+      "data/*"
+    ]
   },
   "author": "SeaBee",
   "license": "ISC",
@@ -21,6 +23,7 @@
     "koa-bodyparser": "^4.4.1",
     "koa-router": "^13.0.1",
     "lowdb": "^7.0.1",
+    "lz-string": "^1.5.0",
     "openai": "^4.92.1"
   }
 }
