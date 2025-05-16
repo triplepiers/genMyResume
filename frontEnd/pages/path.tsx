@@ -7,16 +7,21 @@ import axios from '@/lib/axios';
 import lzStr from 'lz-string';
 
 import { genEchartConfig } from '@/lib/configs';
-
-const sal_A = [120, 200, 180];
-const sal_B = [250, 100, 350];
-const jg_idx_A = [0, 0, 1];
-const jg_idx_B = [0, 1, 2];
+import { set } from 'react-hook-form';
 
 export default function PathSimulator(props: any[]) {
   const [messageApi, contextHolder] = message.useMessage();
+
+  const [isLoadA, setIsLoadA] = useState(false);
   const [compA, setCompA] = useState<string>();
+  const [sal_A, setSalA] = useState<number[]>([]);
+  const [jg_idx_A, setJgIdxA] = useState<number[]>([]);
+
+  const [isLoadB, setIsLoadB] = useState(false);
   const [compB, setCompB] = useState<string>();
+  const [sal_B, setSalB] = useState<number[]>([]);
+  const [jg_idx_B, setJgIdxB] = useState<number[]>([]);
+
   const [compList, setCompList] = useState<string[]>([]);
   const chartRef = useRef<HTMLDivElement>(null);
   // 路由相关
@@ -73,16 +78,39 @@ export default function PathSimulator(props: any[]) {
   useEffect(() => {
     if (!compA || !compB) return;
     let chartInstance = echarts.init(chartRef.current);
+    chartInstance.clear();
     chartInstance.setOption(genEchartConfig(
       compA, compB, sal_A, sal_B, jg_idx_A, jg_idx_B
     ));
-  }, [compA, compB]);
+  }, [sal_A, sal_B]);
 
   const handleSelectA = (neoVal: string) => {
-    if (neoVal !== compA) setCompA(neoVal);
+    if (neoVal !== compA) {
+      setCompA(neoVal);
+      setIsLoadA(true);
+      axios.get('/path/comp', { params: { compName: neoVal } })
+        .then(res => res.data)
+        .then(data => {
+          let {salary, jobGrade} = data;
+          setSalA(salary);
+          setJgIdxA(jobGrade);
+          setIsLoadA(false);
+        })
+    };
   }
   const handleSelectB = (neoVal: string) => {
-    if (neoVal !== compB) setCompB(neoVal);
+    if (neoVal !== compB) {
+      setCompB(neoVal);
+      setIsLoadB(true);
+      axios.get('/path/comp', { params: { compName: neoVal } })
+        .then(res => res.data)
+        .then(data => {
+          let {salary, jobGrade} = data;
+          setSalB(salary);
+          setJgIdxB(jobGrade);
+          setIsLoadB(false);
+        })
+    }
   }
 
   const genCompList = (exclusion: any) => {
@@ -110,6 +138,7 @@ export default function PathSimulator(props: any[]) {
           <div className='flex items-center gap-x-2'>
             <div className='text-[var(--blue)] font-bold text-nowrap'>Company 1: </div>
             <Select
+              disabled={isLoadA}
               showSearch
               placeholder="Select Company"
               style={{ width: 280 }}
@@ -120,6 +149,7 @@ export default function PathSimulator(props: any[]) {
           <div className='flex items-center gap-2'>
             <div className='text-[var(--pink)] font-bold text-nowrap'>Company 2: </div>
             <Select
+              disabled={isLoadB}
               showSearch
               placeholder="Select Company"
               style={{ width: 280 }}

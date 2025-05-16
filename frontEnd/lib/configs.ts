@@ -1,5 +1,8 @@
 const jobGrades = ['Entry-Level', 'Mid-Level', 'Senior-Level', 'Management-Level'];
 const EchartBasicOption = {
+    legend: {
+      show: true
+    },
     grid: {
         left: '8%',
         right: '15%',
@@ -14,7 +17,7 @@ const EchartBasicOption = {
       yAxis: [
         {
           type: 'value',
-          name: 'Salary',
+          name: 'Salary (HKD)',
           axisLine: {
             show: true,  // 显示坐标线
           },

@@ -1,5 +1,7 @@
 import lzStr from 'lz-string';
 import { readFile } from 'fs/promises';
+import { getProfile } from './SelfStatement.js';
+import { genCareerPathMsgs, getJSONCompletion } from '../utils/llm.js';
 const COMP_FILE_PATH = './data/company.json';
 
 // load from local file
@@ -18,6 +20,21 @@ function getCompList() {
     return compressed;
 }
 
+async function genCareerPath(phone, compName) {
+    return new Promise(resolve => {
+        getJSONCompletion(genCareerPathMsgs(getProfile(phone), compName))
+            .then((res) => {
+                try {
+                    let path = JSON.parse(res.slice(8, -4));
+                    resolve(path);
+                } catch (err) {
+                    resolve({ salary: [], jobGrade: [] })
+                }
+            });
+    })
+}
+
 export {
-    getCompList
+    getCompList,
+    genCareerPath
 }

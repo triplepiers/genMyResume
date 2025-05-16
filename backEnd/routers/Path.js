@@ -1,6 +1,6 @@
 import Router from "koa-router";
 import { headExist } from "../Controller/Head.js";
-import { getCompList } from "../Controller/Path.js";
+import { getCompList, genCareerPath } from "../Controller/Path.js";
 
 const pathRouter = new Router({
     prefix: '/path'
@@ -30,6 +30,19 @@ pathRouter.use(async (ctx, nxt) => {
 pathRouter.get('/', (ctx, nxt) => {
     ctx.response.body = JSON.stringify({ compList: getCompList() }); // compressed
     return ctx.status = 200
+})
+
+pathRouter.get('/comp', async (ctx, nxt) => {
+    let phone = ctx.phone;
+    let { compName } = ctx.query;
+    ctx.status = 200
+    return new Promise(resolve => {
+        genCareerPath(phone, compName)
+            .then( res => {
+                ctx.response.body = JSON.stringify(res)
+                resolve()
+            })
+    })
 })
 
 export default pathRouter;
