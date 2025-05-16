@@ -6,7 +6,6 @@ import { MenuOutlined } from '@ant-design/icons';
 import { Dropdown, Space } from "antd";
 
 import { PurchaseCard } from "@/components/Cards/PurchaseCard";
-import { set } from "react-hook-form";
 
 const subPages = [
     {
@@ -18,7 +17,7 @@ const subPages = [
         title: 'Job Search'
     }, 
     {
-        url: '/',
+        url: '/path',
         title: 'Career Path Simulator'
     }
 ]
