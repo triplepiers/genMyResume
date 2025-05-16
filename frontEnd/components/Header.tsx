@@ -1,11 +1,12 @@
 import Link from "next/link";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { Flame } from "lucide-react";
 import { MenuOutlined } from '@ant-design/icons';
 import { Dropdown, Space } from "antd";
 
 import { PurchaseCard } from "@/components/Cards/PurchaseCard";
+import { set } from "react-hook-form";
 
 const subPages = [
     {
@@ -25,7 +26,7 @@ const subPages = [
 export const Header = () => {
     const logoURL = './Logo.png';
     const router = useRouter();
-    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+    const [windowWidth, setWindowWidth] = useState<number>();
     const [account, setAccount] = useState("");
     const [isVIP, setIsVIP] = useState(false);
     const [showCard, setShowCard] = useState(false);
@@ -41,6 +42,7 @@ export const Header = () => {
         }
     }, [router.pathname]);
     useEffect(() => {
+        setWindowWidth(window.innerWidth);
         const handleResize = () => {
             setWindowWidth(window.innerWidth);
         }
@@ -80,7 +82,7 @@ export const Header = () => {
 
                 <div className="flex gap-[1rem] items-center h-full">
                     {
-                        windowWidth > 720 ?
+                        !windowWidth || windowWidth > 720 ?
                             subPages.map(itemInfo => (
                                 <Link href={itemInfo.url}
                                     className="h-full flex items-center px-2 border-[var(--blue)]
