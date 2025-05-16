@@ -92,7 +92,7 @@ export default function Jobs(props: any[]) {
         <>
             {contextHolder}
             <div className="min-w-screen max-w-screen min-h-[calc(100vh-var(--header-height))]">
-                <div className="w-full flex justify-center pt-10">
+                <div className="w-full flex justify-center pt-10 px-10">
                     <div className="text-lg">
                         <h1 className="text-3xl font-black pb-3">Job Search</h1>
                         <p>According to your resume, we found some jobs that suits you the most.</p>

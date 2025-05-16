@@ -1,25 +1,33 @@
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { Flame } from "lucide-react";
+import { MenuOutlined } from '@ant-design/icons';
+import { Dropdown, Space } from "antd";
 
 import { PurchaseCard } from "@/components/Cards/PurchaseCard";
 
 const subPages = [
     {
-        url: '/jobs',
-        title: 'Job Search'
-    }, {
         url: '/checkout',
         title: 'Resume Design'
+    },
+    {
+        url: '/jobs',
+        title: 'Job Search'
+    }, 
+    {
+        url: '/',
+        title: 'Career Path Simulator'
     }
 ]
 
 export const Header = () => {
     const logoURL = './Logo.png';
     const router = useRouter();
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
     const [account, setAccount] = useState("");
-    const [isVIP, setIsVIP] = useState(false)
+    const [isVIP, setIsVIP] = useState(false);
     const [showCard, setShowCard] = useState(false);
     const handleUpdateShowCard =  (neoShowCard: boolean) => {
         setShowCard(neoShowCard);
@@ -31,7 +39,16 @@ export const Header = () => {
         if (localStorage.getItem('isVIP')) {
             setIsVIP(localStorage.getItem('isVIP') !== 'false');
         }
-    })
+    }, [router.pathname]);
+    useEffect(() => {
+        const handleResize = () => {
+            setWindowWidth(window.innerWidth);
+        }
+        window.addEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        }
+    }, []);
 
     // 登出
     const logout = () => {
@@ -63,13 +80,36 @@ export const Header = () => {
 
                 <div className="flex gap-[1rem] items-center h-full">
                     {
-                        subPages.map(itemInfo => (
-                            <Link href={itemInfo.url} 
-                            className="h-full flex items-center px-2 border-[var(--blue)]
+                        windowWidth > 720 ?
+                            subPages.map(itemInfo => (
+                                <Link href={itemInfo.url}
+                                    className="h-full flex items-center px-2 border-[var(--blue)]
                             hover:text-[var(--blue)] hover:border-b-[6px] duration-200">
-                                {itemInfo.title}
-                            </Link>
-                        ))
+                                    {itemInfo.title}
+                                </Link>
+                            )) : (<Dropdown placement="bottom"
+                                menu={{
+                                    selectable: true,
+                                    defaultSelectedKeys: [router.pathname],
+                                    items: subPages.map(itemInfo => {
+                                        return {
+                                            key: itemInfo.url,
+                                            label: (
+                                                <Link href={itemInfo.url}
+                                                    className="h-full flex items-center px-2 text-md">
+                                                    {itemInfo.title}
+                                                </Link>
+                                            )
+                                        }
+                                    })
+                                }}>
+                                <a onClick={(e) => e.preventDefault()} className="group">
+                                    <Space>
+                                        Menu
+                                        <MenuOutlined />
+                                    </Space>
+                                </a>
+                            </Dropdown>)
                     }
                     {
                         account.length > 0 ? (
