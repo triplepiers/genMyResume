@@ -7,7 +7,6 @@ import axios from '@/lib/axios';
 import lzStr from 'lz-string';
 
 import { genEchartConfig } from '@/lib/configs';
-import { set } from 'react-hook-form';
 
 export default function PathSimulator(props: any[]) {
   const [messageApi, contextHolder] = message.useMessage();
@@ -26,6 +25,20 @@ export default function PathSimulator(props: any[]) {
   const chartRef = useRef<HTMLDivElement>(null);
   // 路由相关
   const router = useRouter();
+
+  // load Status
+  useEffect(() => {
+    if ((isLoadA&&!isLoadB) || (!isLoadA&&isLoadB)) {
+      messageApi.open({
+        type: 'loading',
+        content: 'Loading...',
+        duration: 0,
+      });
+    } else if (!isLoadA && !isLoadB) {
+      messageApi.destroy();
+    }
+  }, [isLoadA, isLoadB]);
+
   // load CompNameList
   useEffect(() => {
     // 登录拦截器
