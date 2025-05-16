@@ -1,7 +1,11 @@
 import lzStr from 'lz-string';
-import { JSONFilePreset } from 'lowdb/node';
+import { recDB, detailDB, reqDB } from '../db/JobRec.js';
 import { getProfile } from './SelfStatement.js';
 import { genJobRecMsgs, getCompletion } from '../utils/llm.js';
+
+const details = detailDB.data.jobs;
+const reqs = reqDB.data.jobs;
+const { recs } = recDB.data;
 
 // 在 [1, maxx] 范围内，生成 count 个不重复的随机数
 function genUniqueRandNums(count, max) {
@@ -12,13 +16,6 @@ function genUniqueRandNums(count, max) {
     }
     return Array.from(numbers);
 }
-
-// read or create dbFile
-const detailDB = await JSONFilePreset('./data/jobDetail.json', { jobs: [] });
-const details = detailDB.data.jobs;
-
-const reqDB    = await JSONFilePreset('./data/jobReqs.json', { jobs: [] });
-const reqs = reqDB.data.jobs;
 
 // 从 details 中抽取 n 个
 function getRandDetails(n) {
@@ -75,6 +72,40 @@ function parseRes(res) {
     }
 }
 
+function hasPrevRes(phone) {
+    let entry = recs.find((rec) => rec.phone === phone);
+    if (!entry) { // 没查过，更新 recs = [] 表示 working
+        recDB.update(({ recs }) => recs.push({
+            phone,
+            lastTime: Date.now(),
+            recs: []
+        }));
+    } else {
+        if (Date.now() - entry.lastTime <= 60000) { // Gap < 1min
+            if  (entry.recs.length > 0) { // 很新，可以返回
+                return entry.recs;
+            } else { // 很新，且在 working ...
+                return [];
+            }
+        } else {
+            if (entry.recs.length === 0) { // 旧的，在 working ...
+                return [];
+            } else { // 旧的，还没查：update 一下 继续查
+                recDB.update(({ recs }) => recs.find((rec) => rec.phone === phone).recs = []);
+            }
+        }
+    }
+    return false;
+}
+
+function updateRec(phone, neo_recs) {
+    recDB.update(({ recs }) => {
+        let entry = recs.find((rec) => rec.phone === phone);
+        entry.lastTime = Date.now();
+        entry.recs = neo_recs;
+    })
+}
+
 async function assessJob(profile, jid) {
     let { reqs } = getJobReqs(jid);
     return new Promise((resolve) => {
@@ -88,7 +119,14 @@ async function assessJob(profile, jid) {
     })
 }
 
+// 返回：[] - 正在查
+//      [sth] - 查出来了
 async function genJobRec(n, phone) {
+    let prevRes = hasPrevRes(phone);
+    if (prevRes) {
+        return Promise.resolve(prevRes);
+    } 
+
     let profile = getProfile(phone);
 
     // 抽样两倍（2N），然后返回 N 个
@@ -120,6 +158,7 @@ async function genJobRec(n, phone) {
                     })
                 })
             // 序列化
+            updateRec(phone, jobInfo);
             return jobInfo;
         })
     return res;

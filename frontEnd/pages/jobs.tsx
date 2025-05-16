@@ -49,13 +49,22 @@ export default function Jobs(props: any[]) {
         if (localStorage.getItem('isVIP')) {
             setIsVIP(localStorage.getItem('isVIP') !== 'false');
         }
+        messageApi.open({
+            type: 'loading',
+            content: 'Searching the most suitable job for you ...',
+            duration: 0,
+        });
         axios.get('/job').then((res) => {
             if (res.status === 200) {
                 return res.data.details
-            } else if (res.status === 204) {
+            } else {
+                if (res.status === 205) {
+                    return []
+                }
                 return false
             }
         }).then((details) => {
+            messageApi.destroy(); // clear loading message
             if (!details) {
                 messageApi.open({
                     type: 'error',
@@ -63,6 +72,13 @@ export default function Jobs(props: any[]) {
                 });
                 setTimeout(() => router.replace('/checkout'), 2000);
                 return;
+            }
+            if (details.length === 0) {
+                messageApi.open({
+                    type: 'warning',
+                    content: 'Searching... Please refresh the page shortly.',
+                });
+                return; // working for it ...
             }
             setData(details.map((item: any) => {
                 return {
