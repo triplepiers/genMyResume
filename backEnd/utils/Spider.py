@@ -9,6 +9,7 @@ headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36'
 }
 
+compNameSet = set()
 detailList = []
 reqList = []
 
@@ -41,9 +42,11 @@ def getJobInfo(job):
     jid = job['data-job-id'] # 8-bit string
     # detailURL = f'https://hk.jobsdb.com/job/{jid}?type=standard&amp;ref=search-standalone'
     # applyURL = f'https://hk.jobsdb.com/job/{jid}/apply'
+    compName = job.find(attrs={'data-automation': f'jobCompany'}).text
+    compNameSet.add(compName)
     return jid, {
         'title': job.find(attrs={'id': f'job-title-{jid}'}).text,
-        'company': job.find(attrs={'data-automation': f'jobCompany'}).text,
+        'company': compName,
         'location': job.find(attrs={'data-automation': f'jobLocation'}).text,
         'classification': f'{job.find(attrs={'data-automation': f'jobSubClassification'}).text} {job.find(attrs={'data-automation': f'jobClassification'}).text}',
     }, getReqs(jid)
@@ -93,3 +96,6 @@ if __name__ == '__main__':
 
     with open('../data/jobReqs.json', 'w', encoding='utf-8') as f:
         json.dump({'jobs': reqList}, f, ensure_ascii=False, indent=4)
+
+    with open('../data/company.json', 'w', encoding='utf-8') as f:
+        json.dump({'companies': list(compNameSet)}, f, ensure_ascii=False, indent=4)

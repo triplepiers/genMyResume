@@ -2,8 +2,11 @@
 import { Select } from 'antd';
 import { useEffect, useState, useRef } from 'react';
 import * as echarts from 'echarts'; // 全量引入
+import axios from '@/lib/axios';
+import lzStr from 'lz-string';
 
 import { genEchartConfig } from '@/lib/configs';
+import { string } from 'zod';
 
 const sal_A = [120, 200, 180];
 const sal_B = [250, 100, 350];
@@ -13,7 +16,20 @@ const jg_idx_B = [0,1,2];
 export default function PathSimulator(props: any[]) {
   const [compA, setCompA] = useState<string>();
   const [compB, setCompB] = useState<string>();
+  const [compList, setCompList] = useState<string[]>([]);
   const chartRef = useRef<HTMLDivElement>(null);
+  // load CompNameList
+  useEffect(() => {
+    axios.get('/path')
+      .then((res) => res.data.compList)
+      .then((compressed) => {
+        setCompList(
+          JSON.parse(lzStr.decompress(compressed)).map((compName: string)=> {
+            return { value: compName, label: compName }
+          })
+        )
+      })
+  }, []);
   // handle Resize
   useEffect(() => {
     const handleResize = () => {
@@ -46,31 +62,17 @@ export default function PathSimulator(props: any[]) {
     if (neoVal !== compB) setCompB(neoVal);
   }
 
-  const companyList = [
-    { value: 'Jack', label: 'Jack' },
-    { value: 'Lucy', label: 'Lucy' },
-    { value: 'Yiminghe', label: 'Yiminghe' },
-  ]
-
-  const genCompListA = () => {
-    return companyList.map((item) => {
+  const genCompList = (exclusion: any ) => {
+    if (!compList) return [];
+    return compList.map((item: any) => {
       return {
         value: item.value,
         label: item.label,
-        disabled: item.value === compB
+        disabled: item.value === exclusion
       }
     })
   }
 
-  const genCompListB = () => {
-    return companyList.map((item) => {
-      return {
-        value: item.value,
-        label: item.label,
-        disabled: item.value === compA
-      }
-    })
-  }
   return (
     <div className="flex flex-col items-center
       w-screen min-h-[calc(100vh-var(--header-height))] pt-5 pb-20 px-10">
@@ -86,9 +88,9 @@ export default function PathSimulator(props: any[]) {
           <Select
           showSearch
           placeholder="Select Company"
-          style={{ width: 200 }}
+          style={{ width: 300 }}
           onChange={handleSelectA}
-          options={genCompListA()}
+          options={genCompList(compB)}
         />
         </div>
         <div className='flex items-center gap-2'>
@@ -96,9 +98,9 @@ export default function PathSimulator(props: any[]) {
           <Select
           showSearch
           placeholder="Select Company"
-          style={{ width: 200 }}
+          style={{ width: 300 }}
           onChange={handleSelectB}
-          options={genCompListB()}
+          options={genCompList(compA)}
         />
         </div>
       </div>
