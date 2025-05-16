@@ -76,7 +76,7 @@ export default function Jobs(props: any[]) {
             if (details.length === 0) {
                 messageApi.open({
                     type: 'warning',
-                    content: 'Searching... Please refresh the page shortly.',
+                    content: 'Searching ... Please refresh the page shortly after.',
                 });
                 return; // working for it ...
             }
@@ -109,7 +109,7 @@ export default function Jobs(props: any[]) {
                         expandable={{
                             columnTitle: 'Details',
                             expandedRowRender: (record) => (
-                                <div className="pl-20"><Descriptions 
+                                <div className="pl-20 pr-10"><Descriptions 
                                 column={2} layout="vertical"
                                 items={
                                     [{
@@ -126,7 +126,7 @@ export default function Jobs(props: any[]) {
                                         key: 'description',
                                         label: 'Job Requirements',
                                         children: <div
-                                            className="flex flex-col list-disc"
+                                            className="flex flex-col gap-1.5 list-disc"
                                             dangerouslySetInnerHTML={{ __html: record.desc }} />,
                                         span: 2
                                     }]

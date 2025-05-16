@@ -3,6 +3,8 @@ import { recDB, detailDB, reqDB } from '../db/JobRec.js';
 import { getProfile } from './SelfStatement.js';
 import { genJobRecMsgs, getCompletion } from '../utils/llm.js';
 
+const MINITES=2; // Searching Gap = ? min
+
 const details = detailDB.data.jobs;
 const reqs = reqDB.data.jobs;
 const { recs } = recDB.data;
@@ -81,7 +83,7 @@ function hasPrevRes(phone) {
             recs: []
         }));
     } else {
-        if (Date.now() - entry.lastTime <= 60000) { // Gap < 1min
+        if (Date.now() - entry.lastTime <= 60000*MINITES) { // Gap < 1min
             if  (entry.recs.length > 0) { // 很新，可以返回
                 return entry.recs;
             } else { // 很新，且在 working ...
