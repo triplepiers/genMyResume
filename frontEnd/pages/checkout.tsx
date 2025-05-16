@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 
 import { Heading } from "@/components/Form/Heading";
@@ -19,7 +19,13 @@ type FormMeta =  { title: string, desc: string }
 
 export default function Checkout(props: any[]) {
     // 路由相关
-    const router = useRouter()
+    const router = useRouter();
+    
+    // 登录拦截器
+    useEffect(() => {
+        const account = localStorage.getItem('account');
+        if (!account) router.push('/login');
+    }, []);
 
     // 节点
     // stepper 组件
@@ -28,7 +34,7 @@ export default function Checkout(props: any[]) {
         ['Education', false],
         ['Work Experience', false],
         ['Skills', true],
-        ['Additional', true],
+    //    ['Additional', true],
         ['Slef-Statement', false],
     ]
     function getStepContent(step: number) {
@@ -42,8 +48,8 @@ export default function Checkout(props: any[]) {
             case 3:
                 return <MoreInfoWrap updateFormMeta={handleFormMeta}/>;
             case 4:
-                return <AdditionalWrap updateFormMeta={handleFormMeta}/>;
-            case 5:
+                //return <AdditionalWrap updateFormMeta={handleFormMeta}/>;
+            //case 5:
                 return <SelfStatement updateFormMeta={handleFormMeta}/>
             default:
                 throw new Error('Unknown Step!');

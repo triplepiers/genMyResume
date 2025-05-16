@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 
 import { TemplateSelector } from "@/components/Templates/Selector";
 import { ColorSelector } from "@/components/Editor/Selector";
@@ -10,23 +11,30 @@ import { FaCirclePlus, FaDownload } from "react-icons/fa6";
 import axios from '@/lib/axios';
 
 export default function Result(props: any[]) {
+    // 路由相关
+    const router = useRouter();
+    // 登录拦截器
+    useEffect(() => {
+        const account = localStorage.getItem('account');
+        if (!account) router.push('/login')
+        else {
+            const tid = localStorage.getItem('tid');
+            if (tid) { setTid(tid! as string) }
+            else { setTid('S01') }
+        }
+    }, []);
+
     // 下载按钮相关内容
     const [showOPT, setShowOPT] = useState(false);
     const [showDown, setShowDown] = useState(false);
     const [themeClr, setThemeClr] = useState('#333333');
     const [tid, setTid] = useState<string>('S01');
 
-    useEffect(() => {
-        const tid = localStorage.getItem('tid');
-        if (tid) { setTid(tid! as string) }
-        else { setTid('S01') }
-    }, [])
-
     const handleDownload = {
         download: () => {
             // check purchased
-            axios.get('/tp/down',{
-                params: {tid: 'tid'}
+            axios.get('/tp/down', {
+                params: { tid: 'tid' }
             }).then((res) => {
                 let canDown = res.data.canDown
                 if (canDown) {
@@ -63,7 +71,7 @@ export default function Result(props: any[]) {
                     Result Preview
                 </h2>
                 <div className="px-10 pb-20 w-fit max-w-screen overflow-x-scroll">
-                    <PdfGenerator tid={tid} themeClr={themeClr}/>
+                    <PdfGenerator tid={tid} themeClr={themeClr} />
                 </div>
                 {/* <Palette /> */}
             </div >
@@ -73,8 +81,8 @@ export default function Result(props: any[]) {
                 fixed top-[50vh] right-0 -translate-y-[50%]
                 rounded-lg
                 font-light text-[.7rem] px-3 py-5">
-                <TemplateSelector updateTid={switchTemplate}/>
-                <ColorSelector updateThemeClr={switchThemeClr} defaultClr={themeClr}/>
+                <TemplateSelector updateTid={switchTemplate} />
+                <ColorSelector updateThemeClr={switchThemeClr} defaultClr={themeClr} />
                 <div className="custom-option-set">
                     <FaCirclePlus className="custom-option-icon" />
                     New Section
@@ -85,19 +93,19 @@ export default function Result(props: any[]) {
                 </div>
             </div>
             {/* 购买提示 */}
-            
+
             {
-                showOPT ? 
-                (<PurchaseCard 
-                    // todo: TID 需要传入真实值
-                    tid={tid} title="Oops! You haven't bought this template yet"
-                    updateShow={handleDownload.handleUpdateShowOPT}
-                />) : (<></>)
+                showOPT ?
+                    (<PurchaseCard
+                        // todo: TID 需要传入真实值
+                        tid={tid} title="Oops! You haven't bought this template yet"
+                        updateShow={handleDownload.handleUpdateShowOPT}
+                    />) : (<></>)
             }
             {
                 showDown ? (
-                    <DownloadCard tid={tid} updateShow={handleUpdateShowDown}/>
-                ):(<></>)
+                    <DownloadCard tid={tid} updateShow={handleUpdateShowDown} />
+                ) : (<></>)
             }
         </div>
     );

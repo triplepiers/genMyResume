@@ -1,6 +1,7 @@
 'use client'
 import { Select } from 'antd';
 import { useEffect, useState, useRef } from 'react';
+import { useRouter } from 'next/router';
 import * as echarts from 'echarts'; // 全量引入
 import axios from '@/lib/axios';
 import lzStr from 'lz-string';
@@ -9,25 +10,32 @@ import { genEchartConfig } from '@/lib/configs';
 
 const sal_A = [120, 200, 180];
 const sal_B = [250, 100, 350];
-const jg_idx_A = [0,0,1];
-const jg_idx_B = [0,1,2];
+const jg_idx_A = [0, 0, 1];
+const jg_idx_B = [0, 1, 2];
 
 export default function PathSimulator(props: any[]) {
   const [compA, setCompA] = useState<string>();
   const [compB, setCompB] = useState<string>();
   const [compList, setCompList] = useState<string[]>([]);
   const chartRef = useRef<HTMLDivElement>(null);
+  // 路由相关
+  const router = useRouter();
   // load CompNameList
   useEffect(() => {
-    axios.get('/path')
-      .then((res) => res.data.compList)
-      .then((compressed) => {
-        setCompList(
-          JSON.parse(lzStr.decompress(compressed)).map((compName: string)=> {
-            return { value: compName, label: compName }
-          })
-        )
-      })
+    // 登录拦截器
+    const account = localStorage.getItem('account');
+    if (!account) router.push('/login');
+    else {
+      axios.get('/path')
+        .then((res) => res.data.compList)
+        .then((compressed) => {
+          setCompList(
+            JSON.parse(lzStr.decompress(compressed)).map((compName: string) => {
+              return { value: compName, label: compName }
+            })
+          )
+        })
+    }
   }, []);
   // handle Resize
   useEffect(() => {
@@ -61,7 +69,7 @@ export default function PathSimulator(props: any[]) {
     if (neoVal !== compB) setCompB(neoVal);
   }
 
-  const genCompList = (exclusion: any ) => {
+  const genCompList = (exclusion: any) => {
     if (!compList) return [];
     return compList.map((item: any) => {
       return {
@@ -85,22 +93,22 @@ export default function PathSimulator(props: any[]) {
         <div className='flex items-center gap-x-2'>
           <div className='text-[var(--blue)] font-bold text-nowrap'>Company 1: </div>
           <Select
-          showSearch
-          placeholder="Select Company"
-          style={{ width: 280 }}
-          onChange={handleSelectA}
-          options={genCompList(compB)}
-        />
+            showSearch
+            placeholder="Select Company"
+            style={{ width: 280 }}
+            onChange={handleSelectA}
+            options={genCompList(compB)}
+          />
         </div>
         <div className='flex items-center gap-2'>
           <div className='text-[var(--pink)] font-bold text-nowrap'>Company 2: </div>
           <Select
-          showSearch
-          placeholder="Select Company"
-          style={{ width: 280 }}
-          onChange={handleSelectB}
-          options={genCompList(compA)}
-        />
+            showSearch
+            placeholder="Select Company"
+            style={{ width: 280 }}
+            onChange={handleSelectB}
+            options={genCompList(compA)}
+          />
         </div>
       </div>
       <div className='w-full overflow-x-scroll rounded-lg shadow-xl border-1 min-h-120
@@ -110,7 +118,7 @@ export default function PathSimulator(props: any[]) {
             <div className='text-xl text-gray-300 font-bold'>
               Please select 2 companies to compare
             </div>
-          ):<div ref={chartRef} className='w-full min-w-[700] h-full min-h-110'></div>
+          ) : <div ref={chartRef} className='w-full min-w-[700] h-full min-h-110'></div>
         }
       </div>
     </div>

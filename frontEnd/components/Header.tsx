@@ -83,11 +83,11 @@ export const Header = () => {
                     {
                         !windowWidth || windowWidth > 720 ?
                             subPages.map(itemInfo => (
-                                <Link href={itemInfo.url}
+                                <div onClick={() => {if (account.length>0) router.push(itemInfo.url)}}
                                     className="h-full flex items-center px-2 border-[var(--blue)]
-                            hover:text-[var(--blue)] hover:border-b-[6px] duration-200">
+                            hover:text-[var(--blue)] hover:border-b-[6px] duration-200 cursor-pointer">
                                     {itemInfo.title}
-                                </Link>
+                                </div>
                             )) : (<Dropdown placement="bottom"
                                 menu={{
                                     selectable: true,
@@ -96,10 +96,10 @@ export const Header = () => {
                                         return {
                                             key: itemInfo.url,
                                             label: (
-                                                <Link href={itemInfo.url}
-                                                    className="h-full flex items-center px-2 text-md">
+                                                <div onClick={() => {if(account.length > 0) router.push(itemInfo.url);}}
+                                                    className="h-full flex items-center px-2 text-md cursor-pointer">
                                                     {itemInfo.title}
-                                                </Link>
+                                                </div>
                                             )
                                         }
                                     })

@@ -14,7 +14,7 @@ import { message } from 'antd/lib';
 import { handleProfile } from '@/lib/utils';
 import templates from '@/templates';
 
-export const PdfGenerator = (props:{ 
+export const PdfGenerator = (props: {
     tid: string,
     themeClr: string
 }) => {
@@ -24,30 +24,35 @@ export const PdfGenerator = (props:{
     const [messageApi, contextHolder] = message.useMessage();
 
     const loadTemplate = (tid: string, profile: any) => {
-        if(tid.length===0) return
+        if (tid.length === 0) return
         let { head, edus, works, skill, award, ss } = profile;
         let renderer = templates[tid] as Function;
         setResult(renderer(head, edus, works, award, skill, ss, themeClr))
     }
-    
+
     useEffect(() => {
-        axios.get('/tp/profile').then((res) => {
-            if (res.status === 200) { 
-                return res.data.profile
-            } else if (res.status === 204) {
-                return false
-            }
-        }).then((profile) => {
-            if (!profile) {
-                messageApi.open({
-                    type: 'error',
-                    content: 'Please complete your information first',
-                });
-                setTimeout(() => router.replace('/checkout'), 2000);
-                return;
-            }
-            loadTemplate(props.tid, handleProfile(profile))
-        })
+        const account = localStorage.getItem('account');
+        if (!account) router.push('/login')
+        else {
+            axios.get('/tp/profile').then((res) => {
+                if (res.status === 200) {
+                    return res.data.profile
+                } else if (res.status === 204) {
+                    return false
+                }
+            }).then((profile) => {
+                if (!profile) {
+                    messageApi.open({
+                        type: 'error',
+                        content: 'Please complete your information first',
+                    });
+                    setTimeout(() => router.replace('/checkout'), 2000);
+                    return;
+                }
+                loadTemplate(props.tid, handleProfile(profile))
+            })
+        }
+
     }, [props.tid, props.themeClr])
 
     const generate = (isPDF: boolean) => {
@@ -79,12 +84,12 @@ export const PdfGenerator = (props:{
 
     return (
         <>
-        {contextHolder}
-        <div id="pdf" className={`${styles.pdf} gap-1`}>
-            {result}
-        </div>
-        <button id='PDF' onClick={() => generate(true)} className='w-0 h-0 hidden'>PDF</button>
-        <button id='PNG' onClick={() => generate(false)} className='w-0 h-0 hidden'>PNG</button>
+            {contextHolder}
+            <div id="pdf" className={`${styles.pdf} gap-1`}>
+                {result}
+            </div>
+            <button id='PDF' onClick={() => generate(true)} className='w-0 h-0 hidden'>PDF</button>
+            <button id='PNG' onClick={() => generate(false)} className='w-0 h-0 hidden'>PNG</button>
         </>
     )
 };
