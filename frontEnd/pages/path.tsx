@@ -6,7 +6,6 @@ import axios from '@/lib/axios';
 import lzStr from 'lz-string';
 
 import { genEchartConfig } from '@/lib/configs';
-import { string } from 'zod';
 
 const sal_A = [120, 200, 180];
 const sal_B = [250, 100, 350];
@@ -82,23 +81,23 @@ export default function PathSimulator(props: any[]) {
           <p>Choose different companies, and view the difference.</p>
         </div>
       </div>
-      <div className='w-full flex gap-10 mb-[1rem]'>
-        <div className='flex items-center gap-2'>
-          <div className='text-[var(--blue)] font-bold'>Company A: </div>
+      <div className='w-full flex flex-wrap justify-center md:flex-row gap-x-10 gap-y-2 mb-[1rem]'>
+        <div className='flex items-center gap-x-2'>
+          <div className='text-[var(--blue)] font-bold text-nowrap'>Company 1: </div>
           <Select
           showSearch
           placeholder="Select Company"
-          style={{ width: 300 }}
+          style={{ width: 280 }}
           onChange={handleSelectA}
           options={genCompList(compB)}
         />
         </div>
         <div className='flex items-center gap-2'>
-          <div className='text-[var(--pink)] font-bold'>Company B: </div>
+          <div className='text-[var(--pink)] font-bold text-nowrap'>Company 2: </div>
           <Select
           showSearch
           placeholder="Select Company"
-          style={{ width: 300 }}
+          style={{ width: 280 }}
           onChange={handleSelectB}
           options={genCompList(compA)}
         />
@@ -108,8 +107,8 @@ export default function PathSimulator(props: any[]) {
       flex justify-center items-center'>
         {
           !compA || !compB ? (
-            <div className='text-xl'>
-              Please select 2 companies
+            <div className='text-xl text-gray-300 font-bold'>
+              Please select 2 companies to compare
             </div>
           ):<div ref={chartRef} className='w-full min-w-[700] h-full min-h-110'></div>
         }
