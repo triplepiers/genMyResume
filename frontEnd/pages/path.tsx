@@ -1,5 +1,5 @@
 'use client'
-import { Select } from 'antd';
+import { Select, message } from 'antd';
 import { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/router';
 import * as echarts from 'echarts'; // 全量引入
@@ -14,6 +14,7 @@ const jg_idx_A = [0, 0, 1];
 const jg_idx_B = [0, 1, 2];
 
 export default function PathSimulator(props: any[]) {
+  const [messageApi, contextHolder] = message.useMessage();
   const [compA, setCompA] = useState<string>();
   const [compB, setCompB] = useState<string>();
   const [compList, setCompList] = useState<string[]>([]);
@@ -27,13 +28,28 @@ export default function PathSimulator(props: any[]) {
     if (!account) router.push('/login');
     else {
       axios.get('/path')
-        .then((res) => res.data.compList)
+        .then(res => {
+          if (res.status === 200) {
+            return res.data.compList
+          } else {
+            return false
+          }
+        })
         .then((compressed) => {
-          setCompList(
-            JSON.parse(lzStr.decompress(compressed)).map((compName: string) => {
-              return { value: compName, label: compName }
-            })
-          )
+          if (!compressed) {
+            messageApi.open({
+              type: 'error',
+              content: 'Please complete your information first',
+            });
+            setTimeout(() => router.replace('/checkout'), 2000);
+            return;
+          } else {
+            setCompList(
+              JSON.parse(lzStr.decompress(compressed)).map((compName: string) => {
+                return { value: compName, label: compName }
+              })
+            )
+          }
         })
     }
   }, []);
@@ -81,47 +97,49 @@ export default function PathSimulator(props: any[]) {
   }
 
   return (
-    <div className="flex flex-col items-center
+    <>{contextHolder}
+      <div className="flex flex-col items-center
       w-screen min-h-[calc(100vh-var(--header-height))] pt-5 pb-20 px-10">
-      <div className="w-full flex justify-center pt-10 px-10 mb-[2rem]">
-        <div className="text-lg">
-          <h1 className="text-3xl font-black pb-3">Career Path Simulator</h1>
-          <p>Choose different companies, and view the difference.</p>
+        <div className="w-full flex justify-center pt-10 px-10 mb-[2rem]">
+          <div className="text-lg">
+            <h1 className="text-3xl font-black pb-3">Career Path Simulator</h1>
+            <p>Choose different companies, and view the difference.</p>
+          </div>
         </div>
-      </div>
-      <div className='w-full flex flex-wrap justify-center md:flex-row gap-x-10 gap-y-2 mb-[1rem]'>
-        <div className='flex items-center gap-x-2'>
-          <div className='text-[var(--blue)] font-bold text-nowrap'>Company 1: </div>
-          <Select
-            showSearch
-            placeholder="Select Company"
-            style={{ width: 280 }}
-            onChange={handleSelectA}
-            options={genCompList(compB)}
-          />
+        <div className='w-full flex flex-wrap justify-center md:flex-row gap-x-10 gap-y-2 mb-[1rem]'>
+          <div className='flex items-center gap-x-2'>
+            <div className='text-[var(--blue)] font-bold text-nowrap'>Company 1: </div>
+            <Select
+              showSearch
+              placeholder="Select Company"
+              style={{ width: 280 }}
+              onChange={handleSelectA}
+              options={genCompList(compB)}
+            />
+          </div>
+          <div className='flex items-center gap-2'>
+            <div className='text-[var(--pink)] font-bold text-nowrap'>Company 2: </div>
+            <Select
+              showSearch
+              placeholder="Select Company"
+              style={{ width: 280 }}
+              onChange={handleSelectB}
+              options={genCompList(compA)}
+            />
+          </div>
         </div>
-        <div className='flex items-center gap-2'>
-          <div className='text-[var(--pink)] font-bold text-nowrap'>Company 2: </div>
-          <Select
-            showSearch
-            placeholder="Select Company"
-            style={{ width: 280 }}
-            onChange={handleSelectB}
-            options={genCompList(compA)}
-          />
-        </div>
-      </div>
-      <div className='w-full overflow-x-scroll rounded-lg shadow-xl border-1 min-h-120
+        <div className='w-full overflow-x-scroll rounded-lg shadow-xl border-1 min-h-120
       flex justify-center items-center'>
-        {
-          !compA || !compB ? (
-            <div className='text-xl text-gray-300 font-bold'>
-              Please select 2 companies to compare
-            </div>
-          ) : <div ref={chartRef} className='w-full min-w-[700] h-full min-h-110'></div>
-        }
+          {
+            !compA || !compB ? (
+              <div className='text-xl text-gray-300 font-bold'>
+                Please select 2 companies to compare
+              </div>
+            ) : <div ref={chartRef} className='w-full min-w-[700] h-full min-h-110'></div>
+          }
+        </div>
       </div>
-    </div>
+    </>
   )
 }
 
