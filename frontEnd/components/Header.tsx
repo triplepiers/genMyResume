@@ -83,7 +83,8 @@ export const Header = () => {
                     {
                         !windowWidth || windowWidth > 720 ?
                             subPages.map(itemInfo => (
-                                <div onClick={() => {if (account.length>0) router.push(itemInfo.url)}}
+                                <div key={itemInfo.url} 
+                                    onClick={() => {if (account.length>0) router.push(itemInfo.url)}}
                                     className="h-full flex items-center px-2 border-[var(--blue)]
                             hover:text-[var(--blue)] hover:border-b-[6px] duration-200 cursor-pointer">
                                     {itemInfo.title}

@@ -25,8 +25,7 @@ async function genCareerPath(phone, compName) {
         getJSONCompletion(genCareerPathMsgs(getProfile(phone), compName))
             .then((res) => {
                 try {
-                    let path = JSON.parse(res.slice(8, -4));
-                    resolve(path);
+                    resolve(JSON.parse(res));
                 } catch (err) {
                     resolve({ salary: [], jobGrade: [] })
                 }

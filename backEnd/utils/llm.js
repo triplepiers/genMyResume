@@ -50,7 +50,7 @@ Help me to predict my salary and job grade for the first 3 years:
 EXAMPLE JSON OUTPUT:
 {
 \tsalary: [first_year_salary, second_year_salary, third_year_salary],
-\tjobGrad: [first_year_jobGrade, second_year_jobGrade, third_year_jobGrade]
+\tjobGrade: [first_year_jobGrade, second_year_jobGrade, third_year_jobGrade]
 }
 ` },
   ];
@@ -61,7 +61,6 @@ async function getCompletion(msgs) {
     openai.chat.completions.create({
       messages: msgs,
       model:    process.env.MODEL_NAME,
-      response_format: { type: 'json_object' } // return in JSON
     }).then((completion) => {
       resolve(completion.choices[0].message.content);
     }).catch((err) => {
@@ -76,6 +75,7 @@ async function getJSONCompletion(msgs) {
     openai.chat.completions.create({
       messages: msgs,
       model:    process.env.MODEL_NAME,
+      response_format: { type: 'json_object' } // return in JSON
     }).then((completion) => {
       resolve(completion.choices[0].message.content);
     }).catch((err) => {
