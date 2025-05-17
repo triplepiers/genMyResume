@@ -5,7 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon index.js",
-    "start": "node index.js"
+    "start": "node index.js",
+    "build": "npm run zip && npm run send && npm run clean",
+    "zip": "zip -q -r backEnd.zip ../backEnd",
+    "send": "scp backEnd.zip seabee@20.2.117.32:~/BK.zip",
+    "clean": "rm -f backEnd.zip"
   },
   "nodemonConfig": {
     "ignore": [

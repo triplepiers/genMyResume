@@ -4,9 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build && npm run move",
+    "build": "next build && npm run move && npm run zip && npm run send && npm run clean",
     "start": "next start",
     "lint": "next lint",
+    "zip": "zip -q -r -m standalone.zip .next/standalone",
+    "send": "scp standalone.zip seabee@20.2.117.32:~/FT.zip",
+    "clean": "rm -f standalone.zip",
     "move": "cp -Rf .next/static .next/standalone/.next/static && cp -Rf public .next/standalone/public"
   },
   "dependencies": {

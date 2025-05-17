@@ -1,6 +1,34 @@
 # genMyResume
 > 什么，我居然能接外包
 
+## 服务器上的 build 脚本
+```bash
+# stop
+sudo pm2 stop frontEnd/.next/standalone/server.js
+sudo pm2 stop backEnd/index.js
+
+# clean
+cd ~/frontEnd/.next && rm -rf * && rm -f .env .DS_Store .gitignore
+cd ~/backEnd && rm -rf *
+cd ~/backEnd/.next && rm -rf *
+rmdir ~/backEnd/.next
+rmdir ~/frontEnd/.next
+rmdir ~/frontEnd
+rmdir ~/backEnd
+
+# unzip
+cd ~ && unzip FT.zip -d ~/frontEnd
+cd ~ && unzip BK.zip
+
+# restart
+sudo pm2 start ~/frontEnd/.next/standalone/server.js
+sudo pm2 start ~/backEnd/index.js
+
+# clean
+rm -f BK.zip
+rm -f FT.zip
+```
+
 ## NGINX 配置（片段）
 
 ```conf
