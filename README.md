@@ -1,6 +1,28 @@
 # genMyResume
 > 什么，我居然能接外包
 
+## dom-to-image 源码修改
+
+修改 `newCanvas` 以解决清晰度问题：
+
+```js
+var ctx = canvas.getContext('2d');
+ctx.mozImageSmoothingEnabled = false;
+ctx.webkitImageSmoothingEnabled = false;
+ctx.msImageSmoothingEnabled = false;
+ctx.imageSmoothingEnabled = false;
+
+var scale = options.scale || 4; // 默认值 4
+canvas.width = (options.width * scale) || util.width(domNode)*scale;
+canvas.height = (options.height * scale) || util.height(domNode)*scale;
+ctx.scale(scale, scale) // 添加了scale参数
+
+if (options.bgcolor) {
+    ctx.fillStyle = options.bgcolor;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+}
+```
+
 ## 服务器上的 build 脚本
 ```bash
 # stop

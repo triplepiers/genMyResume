@@ -6,8 +6,10 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import styles from '@/styles/pdf.module.css';
-import html2canvas from "html2canvas";
-import jsPDF from "jspdf";
+
+import domtoimage from 'dom-to-image';
+import { jsPDF } from 'jspdf';
+
 import axios from '@/lib/axios';
 
 import { message } from 'antd/lib';
@@ -59,33 +61,27 @@ export const PdfGenerator = (props: {
         const input = document.getElementById("pdf") as HTMLElement;
         // 写死，解决扩展屏上导出比例异常问题
         input.ownerDocument.defaultView!.devicePixelRatio = 2;
-        html2canvas(input, {
-            width: input.getBoundingClientRect().width,
-            height: input.getBoundingClientRect().height,
-            scale: 3 // 分辨率
-        }).then((canvas) => {
-            const imgData = canvas.toDataURL("image/png", 1);
+
+        domtoimage.toJpeg(input)
+        .then(function (dataUrl) {
             if (isPDF) {
-                const pdf = new jsPDF({
-                    orientation: 'portrait',
-                    unit: 'mm',
-                    format: 'a4'
-                });
-                pdf.addImage(imgData, 'PNG', 0, 0, 210, 297);
-                pdf.save("resume.pdf");
+                const doc = new jsPDF();
+                // load image
+                doc.addImage(dataUrl, 'JPEG', 0, 0, 210, 297);
+                doc.save('resume.pdf');
             } else {
                 const link = document.createElement('a');
-                link.href = imgData;
-                link.download = 'resume.png';
+                link.download = 'resume.jpeg';
+                link.href = dataUrl;
                 link.click();
             }
-        });
+        })
     }
 
     return (
         <>
             {contextHolder}
-            <div id="pdf" className={`${styles.pdf} gap-1`}>
+            <div id="pdf" className={`${styles.pdf} gap-1 bg-white`}>
                 {result}
             </div>
             <button id='PDF' onClick={() => generate(true)} className='w-0 h-0 hidden'>PDF</button>
