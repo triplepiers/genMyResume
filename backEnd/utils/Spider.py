@@ -48,7 +48,7 @@ def getJobInfo(job):
         'title': job.find(attrs={'id': f'job-title-{jid}'}).text,
         'company': compName,
         'location': job.find(attrs={'data-automation': f'jobLocation'}).text,
-        'classification': f'{job.find(attrs={'data-automation': f'jobSubClassification'}).text} {job.find(attrs={'data-automation': f'jobClassification'}).text}',
+        'classification': f"{job.find(attrs={'data-automation': f'jobSubClassification'}).text} {job.find(attrs={'data-automation': f'jobClassification'}).text}",
     }, getReqs(jid)
 
 def scrabPage(pageIdx):

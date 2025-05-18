@@ -9,7 +9,11 @@
     "build": "npm run zip && npm run send && npm run clean",
     "zip": "zip -q -r backEnd.zip ../backEnd",
     "send": "scp backEnd.zip seabee@20.2.117.32:~/BK.zip",
-    "clean": "rm -f backEnd.zip"
+    "clean": "rm -f backEnd.zip",
+    "update": "cd utils && python Spider.py",
+    "sync": "npm run syncDetail && npm run syncReqs",
+    "syncDetail": "scp ./data/jobDetail.json seabee@20.2.117.32:~/backEnd/data/jobDetail.json",
+    "syncReqs": "scp ./data/jobReqs.json seabee@20.2.117.32:~/backEnd/data/jobReqs.json"
   },
   "nodemonConfig": {
     "ignore": [
