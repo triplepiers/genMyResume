@@ -12,7 +12,7 @@ export const NoIconContact = (props: {
         <div className={`${gapY} w-full text-sm flex ${inline?'':'flex-col gap-1'} ${vertical?'flex-col gap-1':''}`}
         style={{ color: ftClr }}>
         {
-            phone.length>0?(
+            phone && phone.length>0?(
                 <div className={`flex grow-1 ${inline?'gap-3':'flex-col gap-0.8'}`}>
                     <div><b>Phone</b></div>
                     <div className={`${inline?'':'text-xs'}`}><a href={`tel:${phone}`}>{phone}</a></div>
@@ -20,7 +20,7 @@ export const NoIconContact = (props: {
             ):(<></>)
         }
         {
-            email.length>0?(
+            email && email.length>0?(
                 <div className={`flex grow-1 ${inline?'gap-3':'flex-col gap-0.8'}`}>
                     <div><b>Email</b></div>
                     <div className={`${inline?'':'text-xs'}`}><a href={`mailto:${email}`}>{email}</a></div>

@@ -15,7 +15,7 @@ export const IconContact = (props: {
         <div className={`w-full text-[var(--foreground)] flex ${vertical?'flex-col gap-2':''}`} 
             style={{ color: ftClr }}>
         {
-            phone.length>0?(
+            phone && phone.length>0?(
             <div className='flex-1 flex items-center text-sm gap-2'>
                 <div className='rounded-full flex justify-center items-center w-[1.2rem] h-[1.2rem]'
                 style={{ backgroundColor: iconBgClr }}>
@@ -25,7 +25,7 @@ export const IconContact = (props: {
             </div>):(<></>)
         }
         {
-            email.length>0?(
+            email && email.length>0?(
                 <div className='flex-1 flex items-center text-sm gap-2'>
                     <div className='rounded-full flex justify-center items-center w-[1.2rem] h-[1.2rem]'
                     style={{ backgroundColor: iconBgClr }}>
