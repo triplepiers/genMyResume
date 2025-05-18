@@ -84,7 +84,10 @@ export const Header = () => {
                         !windowWidth || windowWidth > 720 ?
                             subPages.map(itemInfo => (
                                 <div key={itemInfo.url} 
-                                    onClick={() => {if (account.length>0) router.push(itemInfo.url)}}
+                                    onClick={() => {
+                                        if (account.length>0) router.push(itemInfo.url);
+                                        else router.push('/login');
+                                    }}
                                     className="h-full flex items-center px-2 border-[var(--blue)]
                             hover:text-[var(--blue)] hover:border-b-[6px] duration-200 cursor-pointer">
                                     {itemInfo.title}
@@ -97,7 +100,10 @@ export const Header = () => {
                                         return {
                                             key: itemInfo.url,
                                             label: (
-                                                <div onClick={() => {if(account.length > 0) router.push(itemInfo.url);}}
+                                                <div onClick={() => {
+                                                    if(account.length > 0) router.push(itemInfo.url);
+                                                    else router.push('/login');
+                                                }}
                                                     className="h-full flex items-center px-2 text-md cursor-pointer">
                                                     {itemInfo.title}
                                                 </div>
