@@ -121,43 +121,14 @@ export const genItemTitle = {
 }
 
 /*
-  Bug:
-  - 不支持光标左右移动
-  - 不支持全选删除
+  Bug: 删空格的时候光标会跳回最后面
 */
 export const handlePhone = (e: any, form: any, field: string) => {
-  let neo_ipt_ch = e.nativeEvent.data;
-  let cursor_pos = e.target.selectionStart;
-  if (cursor_pos > 5) cursor_pos -= 1;
-  if (neo_ipt_ch) {
-    if (/^\d+$/.test(neo_ipt_ch)) { // add & isNum
-      let prev = form.getValues(field);
-      if (!prev) { // 之前没有
-        neo_ipt_ch = neo_ipt_ch.substring(0, 8); // 截断
-      } else if (prev.length < 9) {
-        // 需要在 Selection Start 插入
-        let no_blk_prev = prev.replace(/\s+/g, "");
-        console.log(cursor_pos)
-        neo_ipt_ch = (no_blk_prev.substring(0, cursor_pos-1) + neo_ipt_ch + no_blk_prev.substring(cursor_pos)).substring(0, 8);
-        console.log(no_blk_prev.substring(0, cursor_pos), neo_ipt_ch)
-      } else {
-        neo_ipt_ch = prev.replace(/\s+/g, "");
-      }
-      if (neo_ipt_ch.length >= 5) {
-        neo_ipt_ch = `${neo_ipt_ch.substring(0, 4)} ${neo_ipt_ch.substring(4)}`
-      }
-      form.setValue(field, neo_ipt_ch)
-    }
-  } else { // delete
-    let prev = form.getValues(field);
-    if (prev) {
-      if (prev.length == 6) {
-        form.setValue(field, prev.slice(0, 4))
-      } else {
-        if (prev.length > 0) {
-          form.setValue(field, prev.slice(0, -1))
-        }
-      }
-    }
+  let neo_res = e.target.value
+    .replace(/\D/g, '') // numbersONLY
+    .substring(0, 8)    // not longer than 8
+  if (neo_res.length >= 5) {
+    neo_res = `${neo_res.substring(0, 4)} ${neo_res.substring(4)}`;
   }
+  form.setValue(field, neo_res);
 }
