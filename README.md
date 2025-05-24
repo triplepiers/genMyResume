@@ -107,24 +107,53 @@ server {
     unzip standalone.zip -d ~/standalone
     ```
 
-- 启动前端
+- 目前为前后端工程都写了发布脚本
 
-    安装依赖
+    ```bash
+    # front
+    npm run build # 打包+ 传到服务器
+    # back
+    npm run build # 压缩 + 传到服务器
+    npm run update # 重新从 jobsDB 爬取数据
+    npm run sync   # 把爬取的数据传到服务器
+    ```
+
+## PM2 进程守护
+
+- 安装依赖
 
     ```bash
     npm install -g pm2
     ```
 
-    启动服务（换成 server.js）
+-  启动服务（文件换成 `server.js`）
 
     ```bash
-    pm2 start app.js        // 启动
-    pm2 start app.js -i max //启动 使用所有CPU核心的集群
-    pm2 stop app.js         // 停止
-    pm2 stop all            // 停止所有
-    pm2 restart app.js      // 重启
-    pm2 restart all         // 重启所有
-    pm2 delete  app.js      // 关闭
+    pm2 start app.js        # 启动，可以通过 --name [Name] 指定
+    pm2 stop app.js         # 停止 (也能用 name/index)
+    pm2 stop all            # 停止所有
+    pm2 restart app.js      # 重启
+    pm2 restart all         # 重启所有
+    pm2 delete  app.js      # 关闭 (也能用 name/index)
+    ```
+
+- 实现开机自启（我淦你个自动重启...）
+
+    ```bash
+    # 通过制定 name 的方式启动项目
+    sudo pm2 start backEnd/index.js --name backend
+
+    # 启动所有需要自启的项目后，保存列表
+    sudo pm2 save # >> /root/.pm2/dump.pm2
+
+    # 生成开机自启服务（？）
+    sudp pm2 startup
+
+    # 启用开机自启服务
+    sudo systemctl enable pm2-root
+
+    # 重启服务器
+    sudo reboot
     ```
 
 - 前端反向代理到 3000 已成功
