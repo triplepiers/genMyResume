@@ -110,7 +110,7 @@ export const SigninForm = () => {
                                 />
                             </FormControl>
                             <FormDescription>
-                                8-bit HongKong Phone Number
+                                8 letters HongKong Phone Number
                             </FormDescription>
                             <FormMessage />
                         </FormItem>
@@ -139,7 +139,7 @@ export const SigninForm = () => {
                                 <Input placeholder="The same as above" {...field} type="password"/>
                             </FormControl>
                             <FormDescription className="pl-2">
-                                <span>5~15 bit</span><br/>
+                                <span>5~15 letters</span><br/>
                                 <span>Contains Numbers, Letters, Special Symbols (@#$%&*+) at the same time</span>
                             </FormDescription>
                             <FormMessage />

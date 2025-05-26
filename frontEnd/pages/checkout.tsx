@@ -35,7 +35,7 @@ export default function Checkout(props: any[]) {
         ['Work Experience', false],
         ['Skills', true],
     //    ['Additional', true],
-        ['Slef-Statement', false],
+        ['Self-Statement', false],
     ]
     function getStepContent(step: number) {
         switch (step) {

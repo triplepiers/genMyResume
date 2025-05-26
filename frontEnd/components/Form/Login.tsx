@@ -84,7 +84,7 @@ export const LoginForm = () => {
                                     {...field} onChange={(e) => handlePhone(e, form, 'phone')}/>
                             </FormControl>
                             <FormDescription>
-                                8-bit HongKong Phone Number as your account
+                                8 letters HongKong Phone Number as your account
                             </FormDescription>
                             <FormMessage />
                         </FormItem>
@@ -100,7 +100,7 @@ export const LoginForm = () => {
                                 <Input placeholder="Not your birthday" {...field} type="password"/>
                             </FormControl>
                             <FormDescription className="pl-2">
-                                <span>5~15 bit</span><br/>
+                                <span>5~15 letters</span><br/>
                                 <span>Contains Numbers, Letters, Special Symbols (@#$%&*+) at the same time</span>
                             </FormDescription>
                             <FormMessage />
