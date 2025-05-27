@@ -53,6 +53,14 @@ rm -f FT.zip
 
 ## NGINX 配置（片段）
 
+> 在 nginx 1.18.0 版本中，应该书写在 `sites-available` （而不是直接改 `nginx.conf` 下，并软链接到 `sites-enabled`
+>
+> ```bash
+> ln -s /etc/nginx/sites-available/resumeEdge /etc/nginx/sites-enabled/resumeEdge
+> # 请用 unlink [linkName] 移除链接，避免误伤源文件
+> ```
+
+
 ```conf
 # Web Server
 server {
@@ -145,6 +153,7 @@ server {
 
     # 启动所有需要自启的项目后，保存列表
     sudo pm2 save # >> /root/.pm2/dump.pm2
+    # 这里 backEnd 自启 bug 的原因是：从 ~ 路径开始的相对引用路径不对 orz
 
     # 生成开机自启服务（？）
     sudp pm2 startup
