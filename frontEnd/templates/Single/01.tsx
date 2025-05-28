@@ -2,7 +2,7 @@ import { capitalized, formDate } from '@/lib/utils';
 
 function genHead(headPF: any) {
     return (
-        <div className='w-full flex flex-col items-center'>
+        <div className='w-full flex flex-col items-center' data-section='head'>
             <div className='text-3xl font-bold'>
                 {headPF.name} {headPF.surname}
             </div>
@@ -33,6 +33,7 @@ function genHead(headPF: any) {
 } 
 function genEdu(eduPF: any) {
     return {
+        section: 'edu',
         title: 'Education',
         content: eduPF.map((edu: any) => {
             return (
@@ -65,6 +66,7 @@ function genEdu(eduPF: any) {
 }
 function genWork(wkPF: any) {
     return {
+        section: 'work',
         title: 'Work Experience', content: wkPF.map((work: any) => {
             return (
                 <div className='flex flex-col gap-1'>
@@ -93,12 +95,14 @@ function genWork(wkPF: any) {
 }
 function genAward(awardPF: any) {
     return {
+        section: 'award',
         title: 'Awards & Certifications', 
         content: (<div>{awardPF}</div>)
     }
 }
 function genSkill(skillPF: any) {
     return {
+        section: 'lan',
         title: 'Additional Information', content: (
         <div>
             {
@@ -128,6 +132,7 @@ function genSkill(skillPF: any) {
 }
 function genSS(ssPF: any) {
     return {
+        section: 'ss',
         title: 'Self-Statement', 
         content: (<div className='text-justify indent-4'>{ssPF}</div>)
     }
@@ -153,7 +158,7 @@ const genTemplate = (headPF: any, eduPF: any, wkPF: any, awardPF: any, skillPF: 
                 {
                     blocks.map((block) => {
                         return (
-                            <div key={block.title} className='w-full flex flex-col justify-begin'>
+                            <div key={block.title} className='w-full flex flex-col justify-begin' data-section={block.section}>
                                 <h2 className='text-[var(--foreground)] font-bold text-xl pb-1 border-b-[0.5px] border-black'>
                                     {upperTitle ? block.title.toUpperCase() : block.title}
                                 </h2>

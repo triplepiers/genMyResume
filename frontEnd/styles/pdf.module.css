@@ -27,6 +27,6 @@
 
 .pdf [data-section]:hover {
     cursor: pointer;
-    z-index: 999;
+    z-index: 990;
     outline: 3px solid var(--pink); /* 外扩边框 */
 }

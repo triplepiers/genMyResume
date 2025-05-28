@@ -87,10 +87,13 @@ export const PdfGenerator = (props: {
                     q = 'step=2';
                     break;
                 case 'award':
-                    q = 'step=3&mode=else';
+                    q = 'step=3';
+                    break;
+                case 'lan':
+                    q = 'step=3&mode=lan';
                     break;
                 case 'skill':
-                    q = 'step=3&mode=lan';
+                    q = 'step=3&mode=else';
                     break;
                 case 'ss':
                     q = 'step=4';

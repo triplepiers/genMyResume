@@ -11,6 +11,7 @@ const mFirst = true;
 
 function genPersonalInfo(headPF: any) {
     return {
+        section: 'head',
         title: 'Personal Information',
         content: (<>
             <NoIconContact
@@ -25,6 +26,7 @@ function genEdu(eduPF: any) {
     const genTitle = genItemTitle.EDU.Title;
     const genSubTitle = genItemTitle.EDU.SubTitle;
     return {
+        section: 'edu',
         title: 'Education',
         content: eduPF.map((edu: any) => {
             return (
@@ -44,6 +46,7 @@ function genEdu(eduPF: any) {
 function genWork(wkPF: any) {
     const genSubTitle = genItemTitle.WORK.SubTitle;
     return {
+        section: 'work',
         title: 'Work Experience', 
         content: wkPF.map((work: any) => {
             return (
@@ -62,6 +65,7 @@ function genWork(wkPF: any) {
 }
 function genAward(awardPF: any) {
     return {
+        section: 'award',
         title: 'Awards', 
         content: (<div className='text-xs'>{awardPF}</div>)
     }
@@ -69,6 +73,7 @@ function genAward(awardPF: any) {
 function genSkill(skillPF: any, theme_clr: string) {
     return [
         {
+            section: 'lan',
             title: 'Languages', content: (<>{
                 skillPF.lans.length > 0 ? (<>{
                     skillPF.lans.map((lan: any, idx: number) => {
@@ -89,6 +94,7 @@ function genSkill(skillPF: any, theme_clr: string) {
                 }</>) : (<></>)                
             }</>)
         }, {
+            section: 'skill',
             title: 'Skills',
             content: (<>{
                 skillPF.customs.length>0?(<>{
@@ -108,6 +114,7 @@ function genSkill(skillPF: any, theme_clr: string) {
 }
 function genSS(ssPF: any) {
     return {
+        section: 'ss',
         title: 'Self-Statement', 
         content: (<div className='text-justify indent-4 text-sm mt-1'>{ssPF}</div>)
     }
@@ -137,7 +144,7 @@ const genTemplate = (headPF: any, eduPF: any, wkPF: any, awardPF: any, skillPF: 
             style={{ fontFamily: 'sans-serif' }}>
             <div className='grow-1'>{
                 rightBlocks.map((block: any, idx: number) => {
-                    return (<div className='px-[20px] py-[20px]'>
+                    return (<div className='px-[20px] py-[20px]' data-section={block.section}>
                         <NoIconTitle 
                             underLine={true} topLine={true}
                             alignCenter={false}
@@ -153,16 +160,18 @@ const genTemplate = (headPF: any, eduPF: any, wkPF: any, awardPF: any, skillPF: 
             }</div>
             <div className={`w-[35%] shrink-0 h-full text-white pb-[20px]`}
                 style={{ backgroundColor: theme_clr }}>
-                <FullDarkHeader 
-                    ftClr='#fff' bgClr={theme_clr} 
-                    headPF={headPF} 
-                    showContactBlock={false}
-                    classList='px-[20px] py-[20px]'
-                />
+                <div data-section='head'>
+                    <FullDarkHeader 
+                        ftClr='#fff' bgClr={theme_clr} 
+                        headPF={headPF} 
+                        showContactBlock={false}
+                        classList='px-[20px] py-[20px]'
+                    />
+                </div>
                 {
                     leftBlocks.map((block: any, idx: number) => {
                         return (
-                        <div key={idx}>
+                        <div key={idx} data-section={block.section}>
                             <NoIconTitle 
                                 underLine={false} topLine={false}
                                 alignCenter={false}

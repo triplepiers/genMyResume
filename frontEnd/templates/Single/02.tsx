@@ -16,6 +16,7 @@ function genEdu(eduPF: any, theme_clr: string) {
     const genTitle = genItemTitle.EDU.Title;
     const genSubTitle = genItemTitle.EDU.SubTitle;
     return {
+        section: 'edu',
         icon: (<><GraduationCapIcon /></>),
         title: 'Education',
         content: eduPF.map((edu: any) => {
@@ -49,6 +50,7 @@ function genEdu(eduPF: any, theme_clr: string) {
 function genWork(wkPF: any ,theme_clr: string) {
     const genSubTitle = genItemTitle.WORK.SubTitle;
     return {
+        section: 'work',
         icon: (<><BriefcaseBusinessIcon /></>),
         title: 'Work Experience', content: wkPF.map((work: any) => {
             return (
@@ -84,6 +86,7 @@ function genWork(wkPF: any ,theme_clr: string) {
 }
 function genAward(awardPF: any, theme_clr: string) {
     return {
+        section: 'award',
         icon: (<><TrophyIcon /></>),
         title: 'Awards', 
         content: (<div className='pl-[3rem] mt-2 w-full text-sm'>
@@ -98,6 +101,7 @@ function genAward(awardPF: any, theme_clr: string) {
 function genSkill(skillPF: any, theme_clr: string) {
     return [
         {
+            section: 'lan',
             icon: (<><SpeechIcon /></>),
             title: 'Languages', 
             content: (<>{
@@ -124,6 +128,7 @@ function genSkill(skillPF: any, theme_clr: string) {
                 }</>) : (<></>)                
             }</>)
         }, {
+            section: 'skill',
             icon: (<><ShapesIcon /></>),
             title: 'Skills',
             content: (<>{
@@ -148,7 +153,7 @@ function genSkill(skillPF: any, theme_clr: string) {
 }
 function genSS(ssPF: any, theme_clr: string) {
     return (
-        <div className='w-full pl-[20px] pr-[60px] text-justify text-sm my-2'>
+        <div className='w-full pl-[20px] pr-[60px] text-justify text-sm my-2' data-section='ss'>
             <div className='font-bold'
             style={{ color: theme_clr }}>Self Statement</div>
             <div className='indent-4 leading-tight'>{ssPF}</div>
@@ -175,21 +180,23 @@ const genTemplate = (headPF: any, eduPF: any, wkPF: any, awardPF: any, skillPF: 
             </div>
             <div className='grow-1 h-full'>
                 <div className='pb-[20px]'>
-                    <FullDarkHeader 
-                        ftClr={darkenColor(theme_clr, 0.4)} bgClr='transparent'
-                        subClr={theme_clr}
-                        headPF={headPF} inlineContact={true} 
-                        classList='px-[20px] pt-[20px]'
-                        contactIcon={true} contactIconBgClr={theme_clr} contactIconFtClr='#FFF'
-                        contactClr='var(--foreground)' 
-                    />
+                    <div data-section='head'>
+                        <FullDarkHeader 
+                            ftClr={darkenColor(theme_clr, 0.4)} bgClr='transparent'
+                            subClr={theme_clr}
+                            headPF={headPF} inlineContact={true} 
+                            classList='px-[20px] pt-[20px]'
+                            contactIcon={true} contactIconBgClr={theme_clr} contactIconFtClr='#FFF'
+                            contactClr='var(--foreground)' 
+                        />
+                    </div>
                     <>{genSS(ssPF, theme_clr)}</>
                 </div>
                 <div className='pb-[20px]'>
                 {
                     blocks.map((block: any, idx: number) => {
                         return (
-                        <div className='px-[20px]'>
+                        <div className='px-[20px]' data-section={block.section}>
                             <IconTitle
                                 icon={block.icon} rounded={rounded}
                                 underLine={false} topLine={false}

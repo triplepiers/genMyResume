@@ -18,6 +18,7 @@ function genEdu(eduPF: any, theme_clr: string) {
     const genTitle = genItemTitle.EDU.Title;
     const genSubTitle = genItemTitle.EDU.SubTitle;
     return {
+        section: 'edu',
         icon: (<><GraduationCapIcon /></>),
         title: 'Education',
         content: eduPF.map((edu: any) => {
@@ -53,6 +54,7 @@ function genEdu(eduPF: any, theme_clr: string) {
 function genWork(wkPF: any ,theme_clr: string) {
     const genSubTitle = genItemTitle.WORK.SubTitle;
     return {
+        section: 'work',
         icon: (<><BriefcaseBusinessIcon /></>),
         title: 'Work Experience', content: wkPF.map((work: any) => {
             return (
@@ -89,6 +91,7 @@ function genWork(wkPF: any ,theme_clr: string) {
 }
 function genAward(awardPF: any, theme_clr: string) {
     return {
+        section: 'award',
         icon: (<><TrophyIcon /></>),
         title: 'Awards', 
         content: (
@@ -107,6 +110,7 @@ function genAward(awardPF: any, theme_clr: string) {
 function genSkill(skillPF: any, theme_clr: string) {
     return [
         {
+            section: 'lan',
             icon: (<><SpeechIcon /></>),
             title: 'Languages', 
             content: (<>{
@@ -135,6 +139,7 @@ function genSkill(skillPF: any, theme_clr: string) {
                 }</>) : (<></>)                
             }</>)
         }, {
+            section: 'skill',
             icon: (<><ShapesIcon /></>),
             title: 'Skills',
             content: (<>{
@@ -163,7 +168,7 @@ function genSkill(skillPF: any, theme_clr: string) {
 }
 function genSS(ssPF: any, theme_clr: string) {
     return (
-        <div className='w-full text-justify text-sm mb-4'>
+        <div className='w-full text-justify text-sm mb-4' data-section='ss'>
             <div className='font-bold pb-1'
             style={{ color: theme_clr }}>Self Statement</div>
             <div className='indent-4 leading-tight'>{ssPF}</div>
@@ -186,17 +191,19 @@ const genTemplate = (headPF: any, eduPF: any, wkPF: any, awardPF: any, skillPF: 
     return (
         <div className='w-full h-full flex flex-col'
             style={{ fontFamily: 'sans-serif' }}>
-            <FullDarkHeader 
-                ftClr='#fff' bgClr={theme_clr} 
-                headPF={headPF} inlineContact={true} 
-                classList='px-[40px] pt-[30px] pb-[20px]'
-            />
+            <div data-section='head'>
+                <FullDarkHeader 
+                    ftClr='#fff' bgClr={theme_clr} 
+                    headPF={headPF} inlineContact={true} 
+                    classList='px-[40px] pt-[30px] pb-[20px]'
+                />
+            </div>
             <div className='px-[40px] py-[20px] pb-[30px] flex flex-col'>
                 <>{genSS(ssPF, theme_clr)}</>
             {
                 blocks.map((block: any, idx: number) => {
                     return (
-                    <div>
+                    <div data-section={block.section}>
                         <IconTitle
                             icon={block.icon} rounded={rounded} rotate={rotate}
                             underLine={false} topLine={false}

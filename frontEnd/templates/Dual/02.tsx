@@ -17,6 +17,7 @@ const outlined = true
 
 function genPersonalInfo(headPF: any, theme_clr: string) {
     return {
+        section: 'head',
         icon: (<><UserIcon /></>),
         title: 'Personal Info',
         content: (<>
@@ -32,6 +33,7 @@ function genEdu(eduPF: any) {
     const genTitle = genItemTitle.EDU.Title;
     const genSubTitle = genItemTitle.EDU.SubTitle;
     return {
+        section: 'edu',
         icon: (<><GraduationCapIcon /></>),
         title: 'Education',
         content: eduPF.map((edu: any) => {
@@ -52,6 +54,7 @@ function genEdu(eduPF: any) {
 function genWork(wkPF: any) {
     const genSubTitle = genItemTitle.WORK.SubTitle;
     return {
+        section: 'work',
         icon: (<><BriefcaseBusinessIcon /></>),
         title: 'Work Experience', 
         content: wkPF.map((work: any) => {
@@ -71,6 +74,7 @@ function genWork(wkPF: any) {
 }
 function genAward(awardPF: any) {
     return {
+        section: 'award',
         icon: (<><TrophyIcon /></>),
         title: 'Awards', 
         content: (
@@ -84,6 +88,7 @@ function genAward(awardPF: any) {
 function genSkill(skillPF: any, theme_clr: string) {
     return [
         {
+            section: 'lan',
             icon: (<><SpeechIcon /></>),
             title: 'Languages', 
             content: (<>{
@@ -106,6 +111,7 @@ function genSkill(skillPF: any, theme_clr: string) {
                 }</>) : (<></>)                
             }</>)
         }, {
+            section: 'skill',
             icon: (<><ShapesIcon /></>),
             title: 'Skills',
             content: (<>{
@@ -126,7 +132,7 @@ function genSkill(skillPF: any, theme_clr: string) {
 }
 function genSS(ssPF: any, theme_clr: string) {
     return (
-        <div className='w-full text-justify text-sm my-2'>
+        <div className='w-full text-justify text-sm my-2' data-section='ss'>
             <div className='font-bold'
             style={{ color: theme_clr }}>Self Statement</div>
             <div className='indent-4 leading-tight'>{ssPF}</div>
@@ -153,13 +159,15 @@ const genTemplate = (headPF: any, eduPF: any, wkPF: any, awardPF: any, skillPF: 
         <div className='w-full h-full flex flex-col px-[40px] pt-[40px]'
             style={{ fontFamily: 'sans-serif' }}>
                 <div className='pb-[20px]'>
-                    <FullDarkHeader 
-                        ftClr='var(--foreground)'
-                        bgClr='transparent'
-                        headPF={headPF}
-                        showContactBlock={false}
-                        classList='px-0 py-0'
-                    />
+                    <div data-section='head'>
+                        <FullDarkHeader 
+                            ftClr='var(--foreground)'
+                            bgClr='transparent'
+                            headPF={headPF}
+                            showContactBlock={false}
+                            classList='px-0 py-0'
+                        />
+                    </div>
                     <>{genSS(ssPF, theme_clr)}</>
                 </div>
             <div className='flex gap-6 pb-[20px]'>
@@ -167,7 +175,7 @@ const genTemplate = (headPF: any, eduPF: any, wkPF: any, awardPF: any, skillPF: 
                     {
                         leftBlocks.map((block: any, idx: number) => {
                             return (
-                                <div className='mb-4'>
+                                <div className='mb-4' data-section={block.section}>
                                     <IconTitle
                                         icon={block.icon} rounded={rounded}
                                         underLine={true} topLine={false}
@@ -183,7 +191,7 @@ const genTemplate = (headPF: any, eduPF: any, wkPF: any, awardPF: any, skillPF: 
                     {
                         rightBlocks.map((block: any, idx: number) => {
                             return (
-                                <div className='mb-4'>
+                                <div className='mb-4' data-section={block.section}>
                                     <IconTitle
                                         icon={block.icon} rounded={rounded}
                                         underLine={true} topLine={false}

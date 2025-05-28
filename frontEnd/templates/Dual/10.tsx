@@ -18,6 +18,7 @@ function genScript(name: string, surname: string) {
 
 function genPersonalInfo(headPF: any, theme_clr: string) {
     return {
+        section: 'head',
         icon: (<><UserIcon /></>),
         title: 'Personal Information',
         content: (<>
@@ -36,6 +37,7 @@ function genEdu(eduPF: any, theme_clr: string) {
     const genTitle = genItemTitle.EDU.Title;
     const genSubTitle = genItemTitle.EDU.SubTitle;
     return {
+        section: 'edu',
         icon: (<><GraduationCapIcon /></>),
         title: 'Education',
         content: eduPF.map((edu: any) => {
@@ -69,6 +71,7 @@ function genEdu(eduPF: any, theme_clr: string) {
 function genWork(wkPF: any, theme_clr: string) {
     const genSubTitle = genItemTitle.WORK.SubTitle;
     return {
+        section: 'work',
         icon: (<><BriefcaseBusinessIcon /></>),
         title: 'Work Experience',
         content: wkPF.map((work: any) => {
@@ -105,6 +108,7 @@ function genWork(wkPF: any, theme_clr: string) {
 }
 function genAward(awardPF: any, theme_clr: string) {
     return {
+        section: 'award',
         icon: (<><TrophyIcon /></>),
         title: 'Awards',
         content: (
@@ -121,6 +125,7 @@ function genAward(awardPF: any, theme_clr: string) {
 function genSkill(skillPF: any, theme_clr: string) {
     return [
         {
+            section: 'lan',
             icon: (<><SpeechIcon /></>),
             title: 'Languages', content: (<>{
                 skillPF.lans.length > 0 ? (<>{
@@ -145,6 +150,7 @@ function genSkill(skillPF: any, theme_clr: string) {
                 }</>) : (<></>)
             }</>)
         }, {
+            section: 'skill',
             icon: (<><ShapesIcon /></>),
             title: 'Skills',
             content: (<>{
@@ -165,7 +171,7 @@ function genSkill(skillPF: any, theme_clr: string) {
 }
 function genSS(ssPF: any, theme_clr: string) {
     return (
-        <div className='text-justify text-sm my-[20px]'>
+        <div className='text-justify text-sm my-[20px]' data-section='ss'>
             <div className='indent-4 leading-tight'>{ssPF}</div>
         </div>
     )
@@ -194,7 +200,7 @@ const genTemplate = (headPF: any, eduPF: any, wkPF: any, awardPF: any, skillPF: 
         <div className='w-full h-full flex gap-[40px] px-[30px] py-[30px]'
             style={{ fontFamily: 'sans-serif' }}>
             <div className='grow-1 flex flex-col h-full'>
-                <div className='gap-5 flex items-center h-fit'>
+                <div className='gap-5 flex items-center h-fit' data-section='head'>
                     <div className='rounded-full w-18 h-18 shrink-0 relative'
                         style={{ backgroundColor: theme_clr, color: '#FFF', fontFamily: '"Satisfy", sans-serif' }}>
                         <div className='absolute bottom-2 right-4 text-2xl'>{genScript(headPF.name, headPF.surname)}</div>
@@ -211,7 +217,7 @@ const genTemplate = (headPF: any, eduPF: any, wkPF: any, awardPF: any, skillPF: 
                     {
                         leftBlocks.map((block: any, idx: number) => {
                             return (
-                                <div key={idx}>
+                                <div key={idx} data-section={block.section}>
                                     <IconTitle
                                         icon={block.icon} iconClr='#FFF'
                                         underLine={false} topLine={false}
@@ -233,7 +239,7 @@ const genTemplate = (headPF: any, eduPF: any, wkPF: any, awardPF: any, skillPF: 
             <div className='w-[37%] shrink-0'>{
                 rightBlocks.map((block: any, idx: number) => {
                     return (
-                        <div className='pt-[20px]'>
+                        <div className='mt-[20px]' data-section={block.section}>
                             <IconTitle
                                 icon={block.icon} iconClr='#FFF'
                                 rounded={rounded}

@@ -80,7 +80,7 @@ function genAward(awardPF: any) {
 function genSkill(skillPF: any, theme_clr: string) {
     return [
         {
-            section: 'skill',
+            section: 'lan',
             title: 'Languages', 
             content: (<>{
                 skillPF.lans.length > 0 ? (<>{
