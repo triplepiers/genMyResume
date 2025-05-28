@@ -70,7 +70,7 @@ export default function Result(props: any[]) {
                 <h2 className="font-medium text-xl mb-2">
                     Result Preview
                 </h2>
-                <div className="px-10 pb-20 w-fit max-w-screen overflow-x-scroll">
+                <div className="mb-20 w-fit max-w-screen overflow-x-scroll shadow-2xl">
                     <PdfGenerator tid={tid} themeClr={themeClr} />
                 </div>
                 {/* <Palette /> */}
