@@ -20,14 +20,12 @@ type FormMeta =  { title: string, desc: string }
 export default function Checkout(props: any[]) {
     // 路由相关
     const router = useRouter();
-    
     // 登录拦截器
     useEffect(() => {
         const account = localStorage.getItem('account');
         if (!account) router.push('/login');
     }, []);
 
-    // 节点
     // stepper 组件
     const steps = [                // ? optional
         ['Head', false],
@@ -37,7 +35,20 @@ export default function Checkout(props: any[]) {
     //    ['Additional', true],
         ['Self-Statement', false],
     ]
+    const [activeStep, setActiveStep] = useState<number>();
+    const parseActiveStep = (stepStr: any) => {
+        if (stepStr) {
+            const step = parseInt(stepStr);
+            if (step > 0 && step < steps.length && step !== activeStep) {
+                setActiveStep(step);
+            }
+        } else if (activeStep != 0) {
+            setActiveStep(0);
+        }
+    }
+    parseActiveStep(router.query.step);
     function getStepContent(step: number) {
+        if (step === undefined) return <></>;
         switch (step) {
             case 0:
                 return <Heading updateFormMeta={handleFormMeta} updateFormStatus={goNextStep}/>;
@@ -55,7 +66,6 @@ export default function Checkout(props: any[]) {
                 throw new Error('Unknown Step!');
         }
     }
-    const [activeStep, setActiveStep] = useState(0)
     const trySubmit = () => { 
         if (activeStep == 0) {
             document.getElementById('GO')?.click()
@@ -64,10 +74,22 @@ export default function Checkout(props: any[]) {
         }
     }
     const goNextStep = () => {
+        if (activeStep === undefined) return;
         if (activeStep === steps.length - 1) { router.push('/result') } 
-        else                                 { setActiveStep(cur => cur + 1) }
+        else                                 { setActiveStep(cur => cur! + 1) }
     }
-    const goPrevStep = () => { setActiveStep(cur => cur - 1) }
+    const goTargetStep = (targetStep: number) => {
+        if (activeStep == 0) { // page 0 需要手动保存一下
+            document.getElementById('GO')?.click()
+        }
+        if (targetStep != activeStep) {
+            setActiveStep(targetStep);
+        }
+    }
+    const goPrevStep = () => { 
+        if (activeStep === undefined || activeStep === 0) return;
+        setActiveStep(cur => cur! - 1)
+    }
 
     // 表单信息
     const [formTitle, setFormTitle] = useState('');
@@ -86,7 +108,12 @@ export default function Checkout(props: any[]) {
                     steps.map((step, idx) => {
                         return (
                             <>
-                            <div key={idx} className={`${activeStep === idx ? 'text-[var(--pink)]' : 'text-gray-500'}`}>
+                            <div key={idx} 
+                            className={`
+                                cursor-pointer hover:text-[var(--blue)] duration-200
+                                ${activeStep === idx ? 'text-[var(--pink)]' : 'text-gray-500'}`}
+                            onClick={() => goTargetStep(idx)}
+                            >
                                 {step[0]}
                             </div>
                             {idx !== steps.length - 1 ? (<ChevronRight className="w-4 h-4 text-gray-500"/>):(<></>)}
@@ -121,7 +148,7 @@ export default function Checkout(props: any[]) {
                 <h1 className="text-3xl font-bold">{formTitle}</h1>
                 <p dangerouslySetInnerHTML={{ __html: formDesc}} className="mt-2 mb-5"></p>
                 <div className="w-full max-w-190 flex justify-center">
-                    {(getStepContent(activeStep))}
+                    {(getStepContent(activeStep!))}
                 </div>
             </div>
         </div>
