@@ -156,3 +156,17 @@ body {
 .ant-table-thead > tr > th {
   color: var(--blue) !important; 
 }
+
+/* 渐显动画 */
+.reveal {
+  animation: show 0.5s linear;
+}
+
+@keyframes show {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

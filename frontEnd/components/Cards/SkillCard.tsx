@@ -8,7 +8,7 @@ export const SkillCard = (props: {
     
     return (
         <div data-id={props.idx} className="border-1 rounded bg-[var(--background)] shadow-lg px-3 py-2
-            w-60">
+            w-60 reveal">
             {/* title wrap */}
             <div>
                 <div className="leading-tight mb-1.5 flex flex-wrap justify-between items-center">
