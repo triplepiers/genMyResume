@@ -13,20 +13,22 @@ const outlined = true
 
 function genPersonalInfo(headPF: any, theme_clr: string) {
     return {
+        section: 'head',
         title: 'Personal Info',
-        content: (<>
+        content: (
             <NoIconContact
                 inline={false} ftClr={theme_clr}
                 phone={headPF.phone}
                 email={headPF.email}
             />
-        </>)
+        )
     }
 }
 function genEdu(eduPF: any) {
     const genTitle = genItemTitle.EDU.Title;
     const genSubTitle = genItemTitle.EDU.SubTitle;
     return {
+        section: 'edu',
         title: 'Education',
         content: eduPF.map((edu: any) => {
             return (
@@ -46,6 +48,7 @@ function genEdu(eduPF: any) {
 function genWork(wkPF: any) {
     const genSubTitle = genItemTitle.WORK.SubTitle;
     return {
+        section: 'work',
         title: 'Work Experience', 
         content: wkPF.map((work: any) => {
             return (
@@ -64,6 +67,7 @@ function genWork(wkPF: any) {
 }
 function genAward(awardPF: any) {
     return {
+        section: 'award',
         title: 'Awards', 
         content: (
             <div className='flex'>
@@ -76,6 +80,7 @@ function genAward(awardPF: any) {
 function genSkill(skillPF: any, theme_clr: string) {
     return [
         {
+            section: 'skill',
             title: 'Languages', 
             content: (<>{
                 skillPF.lans.length > 0 ? (<>{
@@ -97,6 +102,7 @@ function genSkill(skillPF: any, theme_clr: string) {
                 }</>) : (<></>)                
             }</>)
         }, {
+            section: 'skill',
             title: 'Skills',
             content: (<>{
                 skillPF.customs.length>0?(<>{
@@ -116,7 +122,7 @@ function genSkill(skillPF: any, theme_clr: string) {
 }
 function genSS(ssPF: any, theme_clr: string) {
     return (
-        <div className='w-full text-justify text-sm'>
+        <div className='w-full text-justify text-sm' data-section='ss'>
             <div className='font-bold mb-1'
             style={{ color: theme_clr }}>Self Statement</div>
             <div className='indent-4 leading-tight'>{ssPF}</div>
@@ -143,19 +149,21 @@ const genTemplate = (headPF: any, eduPF: any, wkPF: any, awardPF: any, skillPF: 
     return (
         <div className='w-full h-auto flex flex-col'
          style={{ fontFamily: 'sans-serif' }}>
-            <FullDarkHeader
+            <div data-section='head'>
+                <FullDarkHeader
                 ftClr='#FFF' bgClr={theme_clr}
                 headPF={headPF}
                 showContactBlock={false}
                 classList='px-[40px] py-[30px] pb-[20px]'
-            />
+                />
+            </div>
             <div className='flex grow-1'>
                 <div className='grow-1 pl-[40px] pr-[30px] py-[20px] flex flex-col gap-4'>
                 <>{genSS(ssPF, theme_clr)}</>
                 {
                     leftBlocks.map((block: any, idx: number) => {
                         return (
-                            <div className='mb-4'>
+                            <div className='mb-4' data-section={block.section} key={idx}>
                                 <NoIconTitle 
                                     underLine={true} topLine={false}
                                     alignCenter={false}
@@ -172,7 +180,7 @@ const genTemplate = (headPF: any, eduPF: any, wkPF: any, awardPF: any, skillPF: 
                 {
                     rightBlocks.map((block: any, idx: number) => {
                         return (
-                            <div className='mb-4'>
+                            <div className='mb-4' data-section={block.section} key={idx}>
                                 <NoIconTitle 
                                     underLine={true} topLine={false}
                                     alignCenter={false}

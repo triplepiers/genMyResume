@@ -18,3 +18,15 @@
     height: fit-content;
     display: flex;
 }
+
+.pdf [data-section] {
+    outline: 3px solid transparent; /* 外扩边框 */
+    outline-offset: 5px; /* 控制外扩距离 */
+    transition: outline 0.5s ease;
+}
+
+.pdf [data-section]:hover {
+    cursor: pointer;
+    z-index: 999;
+    outline: 3px solid var(--pink); /* 外扩边框 */
+}

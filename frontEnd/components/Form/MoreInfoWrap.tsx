@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 import { Awards } from "@/components/Form/Awards";
 import { Language } from "@/components/Form/Language";
@@ -13,16 +13,31 @@ import { SkillCard } from "@/components/Cards/SkillCard";
 import axios from "@/lib/axios";
 
 export const MoreInfoWrap = (props: { updateFormMeta: Function }) => {
-    const [ showLan, setShowLan ] = useState(true)
-    const [ showCus, setShowCus ] = useState(true)
-    const [ skillList, setSkillList ] = useState([])
-    const [ editIdx, setEditIdx ] = useState(-1) // add
-    const [ mode, setMode ] = useState("else")
+    const router = useRouter();
+
+    const [showLan, setShowLan] = useState(true)
+    const [showCus, setShowCus] = useState(true)
+    const [skillList, setSkillList] = useState([])
+    const [editIdx, setEditIdx] = useState(-1) // add
+    const [mode, setMode] = useState<string>();
+    const parseLabel = (labelStr: any) => {
+        if (labelStr) {
+            if (labelStr === 'lan' && mode !== 'lan') {
+                setMode('lan');
+            } else if (labelStr === 'else' && mode !== 'else') {
+                setMode('else');
+            }
+        } else if (mode != 'lan') {
+            setMode('lan');
+        }
+    }
     useEffect(() => {
         props.updateFormMeta({
             title: 'More Informations',
             desc: 'Add some awards & skills.',
         })
+        const { mode } = router.query;
+        parseLabel(mode);
     }, [])
 
     useEffect(() => {
@@ -32,10 +47,10 @@ export const MoreInfoWrap = (props: { updateFormMeta: Function }) => {
     const updateFormStatus = () => {
         setSkillList([])
         axios.get('/more/skill/all').then((res) => {
-            if(res.status === 200) {
+            if (res.status === 200) {
                 // 后端处理不了，前端自己 parse
                 // setSkillList(res.data.skill)
-                setSkillList(res.data.skill.map((item:string)=>JSON.parse(item)))
+                setSkillList(res.data.skill.map((item: string) => JSON.parse(item)))
             }
         })
     }
@@ -44,7 +59,7 @@ export const MoreInfoWrap = (props: { updateFormMeta: Function }) => {
         if (showLan) { ca += 1 }
         if (showCus) { ca += 2 }
         switch (ca) {
-            case 0: 
+            case 0:
                 return []
             case 1:// show only Lan
                 return skillList.filter((item: any) => item.isLan === true)
@@ -56,12 +71,12 @@ export const MoreInfoWrap = (props: { updateFormMeta: Function }) => {
     }
     const changeSkillInfo = (e: any, idx: number) => {
         // setEditIdx(parseInt(e.target.dataset.id))
-        setMode(skillList[idx].isLan?"lan":"else")
+        setMode((skillList[idx] as any).isLan ? "lan" : "else")
         setEditIdx(idx)
     }
     const removeSkillInfo = (e: any, idx: number) => {
-        axios.post('/more/skill/delete', {idx})
-        setTimeout(()=>{
+        axios.post('/more/skill/delete', { idx })
+        setTimeout(() => {
             setEditIdx(-1)
             updateFormStatus()
         }, 500)
@@ -76,7 +91,7 @@ export const MoreInfoWrap = (props: { updateFormMeta: Function }) => {
                 <h2 className="text-xl font-bold mb-2">
                     Awards & Certificates
                 </h2>
-                <Awards updateFormStatus={updateFormStatus}/>
+                <Awards updateFormStatus={updateFormStatus} />
             </div>
             <div className="flex w-full flex-col border-t-1 h-fit">
                 <h2 className="text-xl font-bold  my-2">
@@ -95,9 +110,9 @@ export const MoreInfoWrap = (props: { updateFormMeta: Function }) => {
                             <div>Show:</div>
                             <div className="flex gap-2">
                                 <div className="flex items-center space-x-2">
-                                    <Checkbox id="languages" 
+                                    <Checkbox id="languages"
                                         checked={showLan}
-                                        onCheckedChange={(checked) => {setShowLan(checked as boolean)}}
+                                        onCheckedChange={(checked) => { setShowLan(checked as boolean) }}
                                     />
                                     <label
                                         htmlFor="languages"
@@ -107,9 +122,9 @@ export const MoreInfoWrap = (props: { updateFormMeta: Function }) => {
                                     </label>
                                 </div>
                                 <div className="flex items-center space-x-2">
-                                    <Checkbox id="customs" 
+                                    <Checkbox id="customs"
                                         checked={showCus}
-                                        onCheckedChange={(checked) => {setShowCus(checked as boolean)}}
+                                        onCheckedChange={(checked) => { setShowCus(checked as boolean) }}
                                     />
                                     <label
                                         htmlFor="customs"
@@ -121,10 +136,10 @@ export const MoreInfoWrap = (props: { updateFormMeta: Function }) => {
                             </div>
                         </div>
                         <div className="flex flex-col gap-2">{
-                            filterShowList().map((item, idx) => (
+                            filterShowList()!.map((item, idx) => (
                                 <SkillCard idx={idx} data={item}
-                                    handleEdit={(e:any, idx:number)=>changeSkillInfo(e, idx)}
-                                    handleDelete={(e:any, idx:number)=>removeSkillInfo(e, idx)}
+                                    handleEdit={(e: any, idx: number) => changeSkillInfo(e, idx)}
+                                    handleDelete={(e: any, idx: number) => removeSkillInfo(e, idx)}
                                     key={idx} />)
                             )
                         }</div>
@@ -134,21 +149,21 @@ export const MoreInfoWrap = (props: { updateFormMeta: Function }) => {
                         <Tabs defaultValue={mode} value={mode} className="w-50%">
                             <TabsList className="mb-2">
                                 <TabsTrigger value="lan" className="cursor-pointer"
-                                    onClick={() => {setEditIdx(-1); setMode("lan")}}>Language</TabsTrigger>
+                                    onClick={() => { setEditIdx(-1); setMode("lan") }}>Language</TabsTrigger>
                                 <TabsTrigger value="else" className="cursor-pointer"
-                                    onClick={() => {setEditIdx(-1); setMode("else")}}>Customize</TabsTrigger>
+                                    onClick={() => { setEditIdx(-1); setMode("else") }}>Customize</TabsTrigger>
                             </TabsList>
                             <TabsContent value="lan" className="px-5">
-                                <Language isLan={mode==="lan"} edit={editIdx} updateFormStatus={updateFormStatus}/>
+                                <Language isLan={mode === "lan"} edit={editIdx} updateFormStatus={updateFormStatus} />
                             </TabsContent>
                             <TabsContent value="else" className="px-5">
-                                <Customize isLan={mode==="lan"} edit={editIdx} updateFormStatus={updateFormStatus}/>
+                                <Customize isLan={mode === "lan"} edit={editIdx} updateFormStatus={updateFormStatus} />
                             </TabsContent>
                         </Tabs>
 
                     </div>
                 </div>
+            </div>
         </div>
-    </div>
     )
 }

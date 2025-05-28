@@ -67,10 +67,13 @@ export default function Result(props: any[]) {
             {/* body */}
             <div className="min-w-screen max-w-screen min-h-[calc(100vh-var(--header-height))]
             overflow-x-hidden pt-10 relative flex flex-col gap-2 items-center">
-                <h2 className="font-medium text-xl mb-2">
+                <h2 className="font-medium text-xl">
                     Result Preview
                 </h2>
-                <div className="mb-20 w-fit max-w-screen overflow-x-scroll shadow-2xl">
+                <div className="mb-2 text-xs">
+                    Click the right mouse button to edit the corresponding section
+                </div>
+                <div className="mb-20 w-fit max-w-screen shadow-2xl">
                     <PdfGenerator tid={tid} themeClr={themeClr} />
                 </div>
                 {/* <Palette /> */}

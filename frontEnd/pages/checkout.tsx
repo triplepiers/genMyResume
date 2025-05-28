@@ -39,7 +39,7 @@ export default function Checkout(props: any[]) {
     const parseActiveStep = (stepStr: any) => {
         if (stepStr) {
             const step = parseInt(stepStr);
-            if (step > 0 && step < steps.length && step !== activeStep) {
+            if (step >= 0 && step < steps.length && step !== activeStep) {
                 setActiveStep(step);
             }
         } else if (activeStep != 0) {
@@ -79,9 +79,7 @@ export default function Checkout(props: any[]) {
         else                                 { setActiveStep(cur => cur! + 1) }
     }
     const goTargetStep = (targetStep: number) => {
-        if (activeStep == 0) { // page 0 需要手动保存一下
-            document.getElementById('GO')?.click()
-        }
+        // 手动保存 Heading 会有 bug，不存了
         if (targetStep != activeStep) {
             setActiveStep(targetStep);
         }

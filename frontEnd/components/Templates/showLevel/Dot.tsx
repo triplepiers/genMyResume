@@ -40,7 +40,7 @@ export const LevelDot = (props: {
                     )})
             }
         </div>
-        <div className='text-xs' style={{ color: descClr }}>{level}</div>
+        <div className='text-xs whitespace-nowrap' style={{ color: descClr }}>{level}</div>
     </div>
     )
 }
