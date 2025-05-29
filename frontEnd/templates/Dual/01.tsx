@@ -118,7 +118,20 @@ function genSS(ssPF: any) {
         content: (<div className='text-justify indent-4 text-sm mt-1'>{ssPF}</div>)
     }
 }
-function genSections(headPF: any, eduPF: any, wkPF: any, awardPF: any, skillPF: any, ssPF: any, theme_clr: string) {
+function genAdds(addsPF: any) {
+    return addsPF.map((add: any) => {
+        let { title, more } = JSON.parse(add.data)
+        return {
+            section: add.uuid,
+            title: title,
+            content: (<div>{more}</div>)
+        }
+    })
+}
+function genSections(
+    headPF: any, eduPF: any, wkPF: any, awardPF: any, skillPF: any, ssPF: any, addsPF: any,
+    theme_clr: string
+) {
     let leftBlocks = [
         genAward(awardPF),
         ...genSkill(skillPF, theme_clr),
@@ -130,14 +143,18 @@ function genSections(headPF: any, eduPF: any, wkPF: any, awardPF: any, skillPF: 
     let rightBlocks = [
         genEdu(eduPF),
         genWork(wkPF),
+        ...genAdds(addsPF),
         genSS(ssPF)
     ]
     return {leftBlocks, rightBlocks}
 }
 
 const upperTitle = false
-const genTemplate = (headPF: any, eduPF: any, wkPF: any, awardPF: any, skillPF: any, ssPF: any, theme_clr: string='#003D75') => {
-    let {leftBlocks, rightBlocks} = genSections(headPF, eduPF, wkPF, awardPF, skillPF, ssPF, theme_clr)
+const genTemplate = (
+    headPF: any, eduPF: any, wkPF: any, awardPF: any, skillPF: any, ssPF: any, addsPF: any,
+    theme_clr: string='#003D75'
+) => {
+    let {leftBlocks, rightBlocks} = genSections(headPF, eduPF, wkPF, awardPF, skillPF, ssPF, addsPF, theme_clr)
     return (
         <div className='w-full h-auto flex'>
             <div className={`w-[35%] shrink-0 h-auto text-white`}

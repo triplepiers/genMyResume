@@ -1,6 +1,7 @@
 import { genItemTitle } from '@/lib/utils';
 import { 
-    BriefcaseBusinessIcon, GraduationCapIcon, SpeechIcon, ShapesIcon, TrophyIcon, UserIcon
+    BriefcaseBusinessIcon, GraduationCapIcon, SpeechIcon, ShapesIcon, TrophyIcon, UserIcon, PinIcon,
+    icons
 } from 'lucide-react';
 
 import { FullDarkHeader } from '@/components/Templates/Header/FullDark';
@@ -139,7 +140,26 @@ function genSS(ssPF: any, theme_clr: string) {
         </div>
     ) 
 }
-function genSections(headPF: any, eduPF: any, wkPF: any, awardPF: any, skillPF: any, ssPF: any, theme_clr: string) {
+function genAdds(addsPF: any) {
+    return addsPF.map((add: any) => {
+        let { title, more } = JSON.parse(add.data)
+        return {
+            section: add.uuid,
+            icon: <><PinIcon /></>,
+            title: title,
+            content: (
+                <div className='flex'>
+                    <div className={`text-xs font-mono pt-1 w-${inlineTime?'36':'20'}`}></div>
+                    <div className='flex flex-col'>{more}</div>
+                </div>
+            )
+        }
+    })
+}
+function genSections(
+    headPF: any, eduPF: any, wkPF: any, awardPF: any, skillPF: any, ssPF: any, addsPF: any,
+    theme_clr: string
+) {
     let leftBlocks = [
         genPersonalInfo(headPF, theme_clr),
         ...genSkill(skillPF, theme_clr),
@@ -148,13 +168,17 @@ function genSections(headPF: any, eduPF: any, wkPF: any, awardPF: any, skillPF: 
         genWork(wkPF),
         genEdu(eduPF),
         genAward(awardPF),
+        ...genAdds(addsPF)
     ]
     return { leftBlocks, rightBlocks };
 }
 
 
-const genTemplate = (headPF: any, eduPF: any, wkPF: any, awardPF: any, skillPF: any, ssPF: any, theme_clr: string='#333333') => {
-    let {leftBlocks, rightBlocks} = genSections(headPF, eduPF, wkPF, awardPF, skillPF, ssPF, theme_clr)
+const genTemplate = (
+    headPF: any, eduPF: any, wkPF: any, awardPF: any, skillPF: any, ssPF: any, addsPF: any,
+    theme_clr: string='#333333'
+) => {
+    let {leftBlocks, rightBlocks} = genSections(headPF, eduPF, wkPF, awardPF, skillPF, ssPF, addsPF, theme_clr)
     return (
         <div className='w-full h-full flex flex-col px-[40px] pt-[40px]'>
                 <div className='pb-[20px]'>

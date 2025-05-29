@@ -131,9 +131,26 @@ function genSS(ssPF: any, theme_clr: string) {
         </div>
     ) 
 }
-function genSections(headPF: any, eduPF: any, wkPF: any, awardPF: any, skillPF: any, ssPF: any, theme_clr: string) {
+function genAdds(addsPF: any) {
+    return addsPF.map((add: any) => {
+        let { title, more } = JSON.parse(add.data)
+        return {
+            section: add.uuid,
+            title: title,
+            content: (
+                <div className='w-full flex'>
+                    <div className={`w-${inlineTime?'36':'20'} shrink-0`}></div>
+                    <div className='grow-1'>{more}</div>
+                </div>
+            )
+        }
+    })
+}
+function genSections(
+    headPF: any, eduPF: any, wkPF: any, awardPF: any, skillPF: any, ssPF: any, addsPF: any,
+    theme_clr: string
+) {
     let leftBlocks = [
-        
         ...genSkill(skillPF, theme_clr),
     ]
     if (headPF.showContact) {
@@ -144,13 +161,17 @@ function genSections(headPF: any, eduPF: any, wkPF: any, awardPF: any, skillPF: 
         genEdu(eduPF),
         genWork(wkPF),
         genAward(awardPF),
+        ...genAdds(addsPF)
     ]
     return {leftBlocks, rightBlocks}
 }
 
 const upperTitle = false
-const genTemplate = (headPF: any, eduPF: any, wkPF: any, awardPF: any, skillPF: any, ssPF: any, theme_clr: string='#003D75') => {
-    let {leftBlocks, rightBlocks} = genSections(headPF, eduPF, wkPF, awardPF, skillPF, ssPF, theme_clr)
+const genTemplate = (
+    headPF: any, eduPF: any, wkPF: any, awardPF: any, skillPF: any, ssPF: any, addsPF: any,
+    theme_clr: string='#003D75'
+) => {
+    let {leftBlocks, rightBlocks} = genSections(headPF, eduPF, wkPF, awardPF, skillPF, ssPF, addsPF, theme_clr)
     return (
         <div className='w-full h-full flex flex-col px-[40px] py-[30px] gap-[20px]'>
             <div data-section='head'>
