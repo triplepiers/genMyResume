@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 
 import { TemplateSelector } from "@/components/Templates/Selector";
-import { ColorSelector } from "@/components/Editor/Selector";
+import { Selector } from "@/components/Editor/Selector";
 import { PdfGenerator } from "@/components/PdfGenerator";
 import { PurchaseCard } from "@/components/Cards/PurchaseCard";
 import { DownloadCard } from "@/components/Cards/DownLoadCard";
@@ -23,6 +23,12 @@ export default function Result(props: any[]) {
             else { setTid('S01') }
         }
     }, []);
+
+    // 字体相关
+    const [font, setFont] = useState<string>('"Hanken Grotesk", sans-serif');
+    const switchFont = (neoFont: string) => {
+        if (neoFont !== font) { setFont(neoFont) }
+    }
 
     // 下载按钮相关内容
     const [showOPT, setShowOPT] = useState(false);
@@ -74,7 +80,7 @@ export default function Result(props: any[]) {
                     Click the right mouse button to edit the corresponding section
                 </div>
                 <div className="mb-20 w-fit max-w-screen shadow-2xl">
-                    <PdfGenerator tid={tid} themeClr={themeClr} />
+                    <PdfGenerator tid={tid} themeClr={themeClr} font={font}/>
                 </div>
                 {/* <Palette /> */}
             </div >
@@ -85,7 +91,10 @@ export default function Result(props: any[]) {
                 rounded-lg
                 font-light text-[.7rem] px-3 py-5">
                 <TemplateSelector updateTid={switchTemplate} />
-                <ColorSelector updateThemeClr={switchThemeClr} defaultClr={themeClr} />
+                <Selector 
+                    updateThemeClr={switchThemeClr} defaultClr={themeClr} 
+                    updateFont={switchFont}
+                />
                 <div className="custom-option-set">
                     <FaCirclePlus className="custom-option-icon" />
                     New Section

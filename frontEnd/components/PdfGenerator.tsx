@@ -22,9 +22,10 @@ import { EditIcon } from 'lucide-react';
 
 export const PdfGenerator = (props: {
     tid: string,
-    themeClr: string
+    themeClr: string,
+    font: string
 }) => {
-    const { themeClr } = props;
+    const { themeClr, font } = props;
     const router = useRouter();
     const [result, setResult] = useState<any>();
     const [messageApi, contextHolder] = message.useMessage();
@@ -58,7 +59,7 @@ export const PdfGenerator = (props: {
                 loadTemplate(props.tid, handleProfile(profile))
             })
         }
-    }, [props.tid, props.themeClr])
+    }, [props.tid, props.themeClr, props.font])
 
     const [ query, setQuery ] = useState("");
     const items: MenuProps['items'] = [
@@ -145,7 +146,8 @@ export const PdfGenerator = (props: {
         <>
             {contextHolder}
             <Dropdown menu={{ items }} trigger={['contextMenu']}>
-                <div id="pdf" className={`${styles.pdf} gap-1 bg-white`}>
+                <div id="pdf" className={`${styles.pdf} gap-1 bg-white`}
+                    style={{ fontFamily: font }}>
                     {result}
                 </div>
             </Dropdown>
