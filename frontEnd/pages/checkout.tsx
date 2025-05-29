@@ -43,6 +43,7 @@ export default function Checkout(props: any[]) {
                 setActiveStep(step);
             }
         } else if (activeStep != 0) {
+            console.log('here')
             setActiveStep(0);
         }
     }
@@ -76,17 +77,22 @@ export default function Checkout(props: any[]) {
     const goNextStep = () => {
         if (activeStep === undefined) return;
         if (activeStep === steps.length - 1) { router.push('/result') } 
-        else                                 { setActiveStep(cur => cur! + 1) }
+        else                                 { 
+            setActiveStep(cur => cur!+1) 
+            router.push(`/checkout?step=${activeStep+1}`)
+        }
     }
     const goTargetStep = (targetStep: number) => {
         // 手动保存 Heading 会有 bug，不存了
         if (targetStep != activeStep) {
             setActiveStep(targetStep);
+            router.push(`/checkout?step=${targetStep}`)
         }
     }
     const goPrevStep = () => { 
         if (activeStep === undefined || activeStep === 0) return;
         setActiveStep(cur => cur! - 1)
+        router.push(`/checkout?step=${activeStep-1}`)
     }
 
     // 表单信息
@@ -110,7 +116,8 @@ export default function Checkout(props: any[]) {
                             className={`
                                 cursor-pointer hover:text-[var(--blue)] duration-200
                                 ${activeStep === idx ? 'text-[var(--pink)]' : 'text-gray-500'}`}
-                            onClick={() => goTargetStep(idx)}
+                            data-step={idx}
+                            onClick={(e) => goTargetStep(parseInt(e.target.dataset.step))}
                             >
                                 {step[0]}
                             </div>
