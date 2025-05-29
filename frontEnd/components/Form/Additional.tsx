@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { useState } from "react";
 import { set, useForm } from "react-hook-form";
 import { string, z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -9,6 +8,7 @@ import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 
 import axios from "@/lib/axios";
+import { useRouter } from "next/router";
 
 const formSchema = z.object({
     title: z.string().min(1, { message: 'Can not be empty' }),
@@ -17,6 +17,7 @@ const formSchema = z.object({
 type formKey = "title";
 
 export const Additional = (props: { uuid: string, updateFormStatus: Function }) => {
+    const router = useRouter();
     useEffect(() => {
         if (props.uuid && props.uuid.length !== 0) {
             axios.get('/addi', {
@@ -25,7 +26,12 @@ export const Additional = (props: { uuid: string, updateFormStatus: Function }) 
                 }
             }).then((res) => {
                 if (res.status === 200) {
-                    for (let [key, val] of Object.entries(JSON.parse(res.data.sec.item.data))) {
+                    let data = res.data.sec.item.data;
+                    if (!data) {
+                        router.replace('/checkout?step=4');
+                        return
+                    }
+                    for (let [key, val] of Object.entries(JSON.parse(data))) {
                         form.setValue(key as formKey, val as string)
                     }
                     form.clearErrors()

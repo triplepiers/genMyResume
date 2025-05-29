@@ -154,8 +154,8 @@ function genSections(eduPF: any, wkPF: any, awardPF: any, skillPF: any, ssPF: an
         genWork(wkPF),
         genAward(awardPF),
         genSkill(skillPF),
+        ...genAdds(addsPF),
         genSS(ssPF),
-        ...genAdds(addsPF)
     ]
 }
 

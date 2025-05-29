@@ -1,6 +1,6 @@
 import { formDate, darkenColor, genItemTitle } from '@/lib/utils';
 import { 
-    BriefcaseBusinessIcon, GraduationCapIcon, SpeechIcon, ShapesIcon, TrophyIcon
+    BriefcaseBusinessIcon, GraduationCapIcon, SpeechIcon, ShapesIcon, TrophyIcon, PinIcon
 } from 'lucide-react';
 
 import { FullDarkHeader } from '@/components/Templates/Header/FullDark';
@@ -160,18 +160,35 @@ function genSS(ssPF: any, theme_clr: string) {
         </div>
     ) 
 }
-function genSections(headPF: any, eduPF: any, wkPF: any, awardPF: any, skillPF: any, ssPF: any, theme_clr: string) {
+function genAdds(addsPF: any, theme_clr: string) {
+    return addsPF.map((add: any) => {
+        let { title, more } = JSON.parse(add.data)
+        return {
+            section: add.uuid,
+            icon: (<><PinIcon /></>),
+            title: title,
+            content: (<div className='pl-[3rem] mt-2 w-full text-sm'>
+           <div className='relative'>
+                <div className='absolute top-[50%] -translate-y-[50%] left-[-2.35rem] 
+                        w-3 h-3 rounded-full' style={{ backgroundColor: theme_clr }}></div>
+                <div>{more}</div>
+           </div>
+        </div>)
+        }
+    })
+}
+function genSections(headPF: any, eduPF: any, wkPF: any, awardPF: any, skillPF: any, ssPF: any, addsPF: any, theme_clr: string) {
     let blocks = [
         genWork(wkPF, theme_clr),
         genEdu(eduPF, theme_clr),
         ...genSkill(skillPF, theme_clr),
         genAward(awardPF, theme_clr),
+        ...genAdds(addsPF, theme_clr)
     ]
     return blocks;
 }
-
-const genTemplate = (headPF: any, eduPF: any, wkPF: any, awardPF: any, skillPF: any, ssPF: any, theme_clr: string='#003D75') => {
-    let blocks = genSections(headPF, eduPF, wkPF, awardPF, skillPF, ssPF, theme_clr)
+const genTemplate = (headPF: any, eduPF: any, wkPF: any, awardPF: any, skillPF: any, ssPF: any, addsPF: any, theme_clr: string='#003D75') => {
+    let blocks = genSections(headPF, eduPF, wkPF, awardPF, skillPF, ssPF, addsPF, theme_clr)
     return (
         <div className='w-full h-auto flex'>
             <div className='w-[22%] shrink-0 h-auto text-white'
