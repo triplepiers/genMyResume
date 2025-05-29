@@ -3,6 +3,7 @@ import { getAllEdus } from "./Education.js";
 import { getAllWorks } from "./Work.js";
 import { getAward } from "./More.js";
 import { getAllSkills } from "./More.js";
+import { getAllAdds } from "./Additional.js";
 import { getSS } from "./SelfStatement.js";
 
 import tpDB from "../db/TemplateDB.js";
@@ -17,7 +18,8 @@ function getProfile(phone) {
             works: getAllWorks(phone),
             award: getAward(phone),
             skills: getAllSkills(phone),
-            ss: getSS(phone)
+            ss: getSS(phone),
+            adds: getAllAdds(phone),
         }
     } else {
         return false

@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { SummaryHead } from "@/components/ui/SummaryHead";
 import { AddiCard } from "../Cards/AddiCard";
 import { Additional } from "./Additional";
@@ -6,14 +7,22 @@ import { Additional } from "./Additional";
 import axios from "@/lib/axios";
 
 export const AdditionalWrap = (props: { updateFormMeta: Function }) => {
+    const router = useRouter();
+    const [ editIdx, setEditIdx ] = useState('') // add
+    const parseLabel = (labelStr: any) => {
+        if (labelStr) {
+            setEditIdx(labelStr)
+        }
+    }
     useEffect(() => {
         props.updateFormMeta({
             title: 'Additional Sections',
             desc: 'Add anything you like',
         })
+        const { uuid } = router.query;
+        parseLabel(uuid);
     }, [])
     const [ secList, setsecList ] = useState([])
-    const [ editIdx, setEditIdx ] = useState('') // add
 
     useEffect(() => {
         updateFormStatus()

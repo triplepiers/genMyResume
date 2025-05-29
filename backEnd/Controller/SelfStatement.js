@@ -1,8 +1,10 @@
+// TODO: 把 additional 也塞进去
 import ssDB from "../db/SelfStatementDB.js";
 import { isVIP } from "./User.js";
 import { getAllEdus } from "./Education.js";
 import { getAllWorks } from "./Work.js";
 import { getAllSkills } from "./More.js"
+import { getAllAdds } from "./Additional.js";
 import { genSelfStatement } from "../utils/llm.js";
 
 const { SSs } = ssDB.data;

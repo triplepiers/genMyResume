@@ -30,7 +30,7 @@ function genHead(headPF: any) {
             }
         </div>
     )
-} 
+}
 function genEdu(eduPF: any) {
     return {
         section: 'edu',
@@ -96,7 +96,7 @@ function genWork(wkPF: any) {
 function genAward(awardPF: any) {
     return {
         section: 'award',
-        title: 'Awards & Certifications', 
+        title: 'Awards & Certifications',
         content: (<div>{awardPF}</div>)
     }
 }
@@ -104,52 +104,64 @@ function genSkill(skillPF: any) {
     return {
         section: 'lan',
         title: 'Additional Information', content: (
-        <div>
-            {
-                skillPF.lans.length>0?(<div className='pl-1'>
-                    <b>Languages: </b> {
-                        skillPF.lans.map((lan:any, idx: number) => {
-                            return (<span key={idx}>
-                                {lan.lan}{lan.level.length>0?` (${lan.level})`:''}{idx<skillPF.lans.length-1?', ':''}
-                            </span>)
-                        })
-                    }
-                </div>):(<></>)
-            }
-            {
-                skillPF.customs.length>0?(<div className='pl-1'>
-                    <b>Skills: </b> {
-                        skillPF.customs.map((cst:any, idx: number) => {
-                            return (<span key={idx}>
-                                {cst.title}{cst.desc.length>0?` (${cst.desc})`:''}{idx<skillPF.customs.length-1?', ':''}
-                            </span>)
-                        })
-                    }
-                </div>):(<></>)
-            }
-        </div>
-    )}
+            <div>
+                {
+                    skillPF.lans.length > 0 ? (<div className='pl-1'>
+                        <b>Languages: </b> {
+                            skillPF.lans.map((lan: any, idx: number) => {
+                                return (<span key={idx}>
+                                    {lan.lan}{lan.level.length > 0 ? ` (${lan.level})` : ''}{idx < skillPF.lans.length - 1 ? ', ' : ''}
+                                </span>)
+                            })
+                        }
+                    </div>) : (<></>)
+                }
+                {
+                    skillPF.customs.length > 0 ? (<div className='pl-1'>
+                        <b>Skills: </b> {
+                            skillPF.customs.map((cst: any, idx: number) => {
+                                return (<span key={idx}>
+                                    {cst.title}{cst.desc.length > 0 ? ` (${cst.desc})` : ''}{idx < skillPF.customs.length - 1 ? ', ' : ''}
+                                </span>)
+                            })
+                        }
+                    </div>) : (<></>)
+                }
+            </div>
+        )
+    }
 }
 function genSS(ssPF: any) {
     return {
         section: 'ss',
-        title: 'Self-Statement', 
+        title: 'Self-Statement',
         content: (<div className='text-justify indent-4'>{ssPF}</div>)
     }
 }
-function genSections(eduPF: any, wkPF: any, awardPF: any, skillPF: any, ssPF: any) {
+function genAdds(addsPF: any) {
+    return addsPF.map((add: any) => {
+        let { title, more } = JSON.parse(add.data)
+        return {
+            section: add.uuid,
+            title: title,
+            content: (<div>{more}</div>)
+        }
+    })
+}
+function genSections(eduPF: any, wkPF: any, awardPF: any, skillPF: any, ssPF: any, addsPF: any) {
     return [
         genEdu(eduPF),
         genWork(wkPF),
         genAward(awardPF),
         genSkill(skillPF),
-        genSS(ssPF)
+        genSS(ssPF),
+        ...genAdds(addsPF)
     ]
 }
 
 const upperTitle = true
-const genTemplate = (headPF: any, eduPF: any, wkPF: any, awardPF: any, skillPF: any, ssPF: any) => {
-    let blocks = genSections(eduPF, wkPF, awardPF, skillPF, ssPF)
+const genTemplate = (headPF: any, eduPF: any, wkPF: any, awardPF: any, skillPF: any, ssPF: any, addsPF: any) => {
+    let blocks = genSections(eduPF, wkPF, awardPF, skillPF, ssPF, addsPF)
     return (
         <div className='w-full h-full px-[30px] py-[55px] flex flex-col justify-start items-center'>
             <>{genHead(headPF)}</>

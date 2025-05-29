@@ -1,10 +1,8 @@
 import Router from "koa-router";
 import {
     getProfile,
-    userExist,
     canDown,
-    hasBuy,
-    buy,
+
     hasDown
 } from "../Controller/Template.js";
 

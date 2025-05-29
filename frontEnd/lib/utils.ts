@@ -99,7 +99,8 @@ export function handleProfile(pfObj: any) {
     works,
     skill,
     award: pfObj.award,
-    ss: pfObj.ss
+    ss: pfObj.ss,
+    adds: pfObj.adds
   }
 }
 

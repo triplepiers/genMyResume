@@ -32,9 +32,9 @@ export const PdfGenerator = (props: {
 
     const loadTemplate = (tid: string, profile: any) => {
         if (tid.length === 0) return
-        let { head, edus, works, skill, award, ss } = profile;
+        let { head, edus, works, skill, award, ss, adds } = profile;
         let renderer = templates[tid] as Function;
-        setResult(renderer(head, edus, works, award, skill, ss, themeClr))
+        setResult(renderer(head, edus, works, award, skill, ss, adds, themeClr))
     }
 
     useEffect(() => {
@@ -98,6 +98,9 @@ export const PdfGenerator = (props: {
                     break;
                 case 'ss':
                     q = 'step=5';
+                    break;
+                default:
+                    q = `step=4&uuid=${secStr}`
                     break;
             }
             setQuery(q);
