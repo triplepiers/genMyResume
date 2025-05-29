@@ -151,8 +151,7 @@ const upperTitle = true
 const genTemplate = (headPF: any, eduPF: any, wkPF: any, awardPF: any, skillPF: any, ssPF: any) => {
     let blocks = genSections(eduPF, wkPF, awardPF, skillPF, ssPF)
     return (
-        <div className='w-full h-full px-[30px] py-[55px] flex flex-col justify-start items-center'
-            style={{ fontFamily: 'Times New Roman, Times, serif' }}>
+        <div className='w-full h-full px-[30px] py-[55px] flex flex-col justify-start items-center'>
             <>{genHead(headPF)}</>
             <div className='w-full flex flex-col gap-2'>
                 {

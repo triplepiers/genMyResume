@@ -147,8 +147,7 @@ function genSections(headPF: any, eduPF: any, wkPF: any, awardPF: any, skillPF: 
 const genTemplate = (headPF: any, eduPF: any, wkPF: any, awardPF: any, skillPF: any, ssPF: any, theme_clr: string='#333333') => {
     let {leftBlocks, rightBlocks} = genSections(headPF, eduPF, wkPF, awardPF, skillPF, ssPF, theme_clr)
     return (
-        <div className='w-full h-auto flex flex-col'
-         style={{ fontFamily: 'sans-serif' }}>
+        <div className='w-full h-auto flex flex-col'>
             <div data-section='head'>
                 <FullDarkHeader
                 ftClr='#FFF' bgClr={theme_clr}

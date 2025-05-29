@@ -155,8 +155,7 @@ const upperTitle = false
 const genTemplate = (headPF: any, eduPF: any, wkPF: any, awardPF: any, skillPF: any, ssPF: any, theme_clr: string='#003D75') => {
     let {leftBlocks, rightBlocks} = genSections(headPF, eduPF, wkPF, awardPF, skillPF, ssPF, theme_clr)
     return (
-        <div className='w-full h-full flex'
-            style={{ fontFamily: 'sans-serif' }}>
+        <div className='w-full h-full flex'>
             <div className='w-[35%] shrink-0'>{
                 leftBlocks.map((block: any, idx: number) => {
                     return (

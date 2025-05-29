@@ -153,8 +153,7 @@ const upperTitle = false
 const genTemplate = (headPF: any, eduPF: any, wkPF: any, awardPF: any, skillPF: any, ssPF: any, theme_clr: string='#003D75') => {
     let {leftBlocks, rightBlocks} = genSections(headPF, eduPF, wkPF, awardPF, skillPF, ssPF, theme_clr)
     return (
-        <div className='w-full h-full flex flex-col gap-[20px] px-[40px] py-[30px]'
-            style={{ fontFamily: 'sans-serif' }}>
+        <div className='w-full h-full flex flex-col gap-[20px] px-[40px] py-[30px]'>
             <div className='w-full flex'>
                 <div className='w-[50%] shrink-0' data-section='head'>
                     <FullDarkHeader 

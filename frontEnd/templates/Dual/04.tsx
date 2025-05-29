@@ -140,8 +140,7 @@ const upperTitle = false
 const genTemplate = (headPF: any, eduPF: any, wkPF: any, awardPF: any, skillPF: any, ssPF: any, theme_clr: string='#003D75') => {
     let {leftBlocks, rightBlocks} = genSections(headPF, eduPF, wkPF, awardPF, skillPF, ssPF, theme_clr)
     return (
-        <div className='w-full h-auto flex'
-            style={{ fontFamily: 'sans-serif' }}>
+        <div className='w-full h-auto flex'>
             <div className='grow-1'>{
                 rightBlocks.map((block: any, idx: number) => {
                     return (<div className='px-[20px] py-[20px]' data-section={block.section}>

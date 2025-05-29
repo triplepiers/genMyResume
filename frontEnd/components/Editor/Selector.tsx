@@ -13,6 +13,13 @@ import {
 
 import FontPicker from '@/lib/fontpicker.min.js';
 
+const useFonts = [
+    "Hanken Grotesk",
+    'Arial', 'Blinker', 'Bodoni MT', 'Century Gothic', 'Courier New',
+    'Fira Sans', 'Georgia', 'PT Sans', 'PT Sans Caption', 'PT Sans Linotype',
+    'Saira', 'Source Sans Pro', 'Tahoma', 'Times New Roman', 'Trebuchet MS', 'Verdana'
+  ];
+
 export const Selector = (props: {
     updateThemeClr: Function,
     updateFont: Function,
@@ -50,6 +57,7 @@ export const Selector = (props: {
                     font: useFont, // default
                     defaultSubsets: 'latin',
                     showCancelButton: false,
+                    googleFonts: useFonts
                 })
                 picker.on('pick', (fontInfo: any) => {
                     const neoFont = `"${fontInfo.family.name}", ${fontInfo.family.category}`;
@@ -58,10 +66,6 @@ export const Selector = (props: {
                         localStorage.setItem('font', neoFont);
                         updateFont(neoFont);
                     }
-                    
-                    // .addEventListener('click', () => {
-                    //     console.log('click')
-                    // })
                 })
                 // 避免选字体把遮罩创飞
                 picker.on('close', () => {
