@@ -95,7 +95,7 @@ export default function Result(props: any[]) {
                     updateThemeClr={switchThemeClr} defaultClr={themeClr} 
                     updateFont={switchFont}
                 />
-                <div className="custom-option-set" onClick={() => router.push('/checkout?step=5')}>
+                <div className="custom-option-set" onClick={() => router.push('/checkout?step=4')}>
                     <FaCirclePlus className="custom-option-icon" />
                     New Section
                 </div>

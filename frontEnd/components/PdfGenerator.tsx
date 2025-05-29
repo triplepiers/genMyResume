@@ -97,7 +97,7 @@ export const PdfGenerator = (props: {
                     q = 'step=3&mode=else';
                     break;
                 case 'ss':
-                    q = 'step=4';
+                    q = 'step=5';
                     break;
             }
             setQuery(q);

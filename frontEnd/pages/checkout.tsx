@@ -32,8 +32,8 @@ export default function Checkout(props: any[]) {
         ['Education', false],
         ['Work Experience', false],
         ['Skills', true],
-        ['Self-Statement', false],
         ['Additional', true],
+        ['Self-Statement', false],
     ]
     const [activeStep, setActiveStep] = useState<number>();
     const parseActiveStep = (stepStr: any) => {
@@ -60,9 +60,9 @@ export default function Checkout(props: any[]) {
             case 3:
                 return <MoreInfoWrap updateFormMeta={handleFormMeta}/>;
             case 4:
-                return <SelfStatement updateFormMeta={handleFormMeta}/>
-            case 5:
                 return <AdditionalWrap updateFormMeta={handleFormMeta}/>;
+            case 5:
+                return <SelfStatement updateFormMeta={handleFormMeta}/>;
             default:
                 throw new Error('Unknown Step!');
         }
