@@ -18,7 +18,7 @@ const useFonts = [
     'Arial', 'Blinker', 'Bodoni MT', 'Century Gothic', 'Courier New',
     'Fira Sans', 'Georgia', 'PT Sans', 'PT Sans Caption', 'PT Sans Linotype',
     'Saira', 'Source Sans Pro', 'Tahoma', 'Times New Roman', 'Trebuchet MS', 'Verdana'
-  ];
+];
 
 export const Selector = (props: {
     updateThemeClr: Function,
@@ -76,10 +76,9 @@ export const Selector = (props: {
                 })
 
                 fontPickerRef.current.addEventListener('click', () => {
-                    const previewlist = document.getElementById('fp__fonts')
-                    previewlist?.addEventListener('scroll', (e) => {
-                        console.log('scroll')
-                    })
+                    // 不显示 filter 栏目
+                    document.querySelector('#fp__modal .fpb__accordion')!.style.display = 'none';
+
                     const block = document.querySelector('[data-vaul-overlay]');
                     if (block) {
                         block.removeEventListener('click', closeDrawer)
