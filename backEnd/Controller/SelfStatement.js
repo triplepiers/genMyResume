@@ -1,4 +1,3 @@
-// TODO: 把 additional 也塞进去
 import ssDB from "../db/SelfStatementDB.js";
 import { isVIP } from "./User.js";
 import { getAllEdus } from "./Education.js";
@@ -92,6 +91,14 @@ function genSkills(phone) {
     });
     return res;
 }
+function genAdds(phone) {
+    let res = '';
+    getAllAdds(phone).forEach((item) => {
+        item = JSON.parse(item.data)
+        res += `\t- ${item.title}:\n \t\t${item.more}`
+    })
+    return res;
+}
 
 function getProfile(phone) {
 return `
@@ -100,7 +107,9 @@ ${genEduExp(phone)}
 - My Work Experience: \n
 ${genWorkExp(phone)}
 - My Additional Skills and Awards: \n
-${genSkills(phone)}\n`
+${genSkills(phone)}\n
+- And there are some additional informations:\n
+${genAdds(phone)}`
 }
 
 async function genSS(phone) {
