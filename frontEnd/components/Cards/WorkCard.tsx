@@ -21,7 +21,7 @@ export const WorkCard = (props: {
             <div>
                 <div className="font-bold text-lg leading-tight mb-1.5 flex flex-wrap gap-1">
                     <div>{data.title}{`${data.company.length>0?',':''}`}</div>
-                    <div>{data.company}</div>
+                    <div>{company}</div>
                 </div>
            {/*  */}
                 <div className="w-full px-1 pt-1 mt-1 border-t-1 flex flex-col items-end">
