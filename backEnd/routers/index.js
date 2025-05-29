@@ -8,6 +8,7 @@ import ssRouter from "./SelfStatement.js";
 import tpRouter from "./Template.js";
 import jobRouter from "./Job.js";
 import pathRouter from './Path.js';
+import addRouter from "./Additional.js";
 
 const routers = [
     cdkRouter,
@@ -19,7 +20,8 @@ const routers = [
     ssRouter,
     tpRouter,
     jobRouter,
-    pathRouter
+    pathRouter,
+    addRouter
 ]
 
 export default routers;

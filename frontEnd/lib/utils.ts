@@ -108,13 +108,13 @@ export const genItemTitle = {
       return `${degree === 'Enter your own' ? neodegree : degree}${degree.length > 0 ? ', ' : ''}${institution}`
     },
     SubTitle: (field: string, location: string) => {
-      const showGap = field.length > 0 && location.length > 0
+      const showGap = field && location && field.length > 0 && location.length > 0
       return `${capitalized(field)}${showGap ? ', ' : ''}${location}`
     }
   },
   WORK: {
     SubTitle: (company: string, location: string) => {
-      const showGap = company.length > 0 && location.length > 0
+      const showGap = company && location && company.length > 0 && location.length > 0
       return `${capitalized(company)}${showGap ? ', ' : ''}${location}`
     }
   }

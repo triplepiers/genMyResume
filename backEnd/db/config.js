@@ -13,7 +13,8 @@ const job_db_files = {
     rec_db_file: join(__dirname, 'JobRec.json'),
     detail_db_file: join(__dirname, 'jobDetail.json'),
     req_db_file: join(__dirname, 'jobReqs.json')
-}
+};
+const add_db_file = join(__dirname, 'Additional.json');
 
 export {
     user_db_file,
@@ -23,5 +24,6 @@ export {
     more_db_file,
     ss_db_file,
     tp_db_file,
-    job_db_files
+    job_db_files,
+    add_db_file
 }

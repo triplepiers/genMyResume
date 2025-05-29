@@ -6,6 +6,7 @@ import moreDB from "./MoreDB.js";
 import ssDB from './SelfStatementDB.js';
 import tpDB from "./TemplateDB.js";
 import { recDB } from "./JobRec.js";
+import addDB from "./AdditionalDB.js";
 
 const DBList = [
     userDB,
@@ -15,7 +16,8 @@ const DBList = [
     moreDB,
     ssDB,
     tpDB,
-    recDB
+    recDB,
+    addDB
 ]
 
 function initDBs() {

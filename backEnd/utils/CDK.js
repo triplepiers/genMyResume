@@ -17,6 +17,14 @@ function checkCDK(cdk, uId, templateId) {
     return cdk.toUpperCase() === cdkGen;
 }
 
+function genUUID() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    const r = Math.random() * 16 | 0;
+    const v = c === 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+}
+
 // 测试
 function test() {
     let cdk = genCDK('123456789', '1');
@@ -26,5 +34,6 @@ function test() {
 
 export {
     genCDK,
-    checkCDK
+    checkCDK,
+    genUUID
 }

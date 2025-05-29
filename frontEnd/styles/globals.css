@@ -170,3 +170,10 @@ body {
     opacity: 1;
   }
 }
+
+.truncate {
+  white-space: nowrap;      /* 禁止换行 */
+  overflow: hidden;         /* 隐藏溢出内容 */
+  text-overflow: ellipsis;  /* 显示省略号 */
+  max-width: 200px;         /* 设置最大宽度 */
+}
