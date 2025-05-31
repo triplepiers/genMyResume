@@ -1,7 +1,7 @@
 import lzStr from 'lz-string';
 import { recDB, detailDB, reqDB } from '../db/JobRec.js';
 import { getProfile } from './SelfStatement.js';
-import { genJobRecMsgs, getCompletion } from '../utils/llm.js';
+import { genJobRecMsgs, gemJobRecMatchMsgs, getCompletion } from '../utils/llm.js';
 
 const MINITES=2; // Searching Gap = ? min
 
@@ -48,14 +48,24 @@ function getJobReqs(jid) {
 
 // 提取指定 jid 的岗位描述
 function getJobDetails(jid) {
-    return details.find((job) => job.jid === jid).detail;
+    try {
+        let jobDetail = details.find((job) => job.jid === jid).detail;
+        return jobDetail
+    } catch (e) {
+        console.log(jid, e)
+        return false
+    }
 }
 
 function parseRes(res) {
     let cnt_match = 0;
     let desc = "";
+    let match = false;
     const lines = res.split('\n').filter(item => item.length > 0);
     lines.forEach(item => {
+        if (item[0] === '$' && item.length===15) {
+            match = true;
+        }
         let clr = 'red';
         let idx_r = item.search(/]/);
         if (idx_r === 7) { // True
@@ -69,6 +79,7 @@ function parseRes(res) {
     })
 
     return {
+        match,
         score: parseInt(cnt_match * 100 / lines.length, 10),
         desc
     }
@@ -85,14 +96,18 @@ function hasPrevRes(phone) {
     } else {
         if (Date.now() - entry.lastTime <= 60000*MINITES) { // Gap < 1min
             if  (entry.recs.length > 0) { // 很新，可以返回
+                // console.log('很新，可以返回')
                 return entry.recs;
             } else { // 很新，且在 working ...
+                // console.log('很新，在工作')
                 return [];
             }
         } else {
             if (entry.recs.length === 0) { // 旧的，在 working ...
+                // console.log('很旧，在工作')
                 return [];
             } else { // 旧的，还没查：update 一下 继续查
+                // console.log('很旧，准备干')
                 recDB.update(({ recs }) => recs.find((rec) => rec.phone === phone).recs = []);
             }
         }
@@ -108,10 +123,17 @@ function updateRec(phone, neo_recs) {
     })
 }
 
-async function assessJob(profile, jid) {
+async function assessJob(profile, jid, preferred) {
     let { reqs } = getJobReqs(jid);
+    let { title } = getJobDetails(jid);
+    let msg;
+    if (!preferred || preferred.length === 0) {
+        msg = genJobRecMsgs(profile, reqs);
+    } else {
+        msg = gemJobRecMatchMsgs(profile, reqs, title, preferred)
+    }
     return new Promise((resolve) => {
-        getCompletion(genJobRecMsgs(profile, reqs))
+        getCompletion(msg)
         .then((res) => {
             resolve({
                 jid,
@@ -123,7 +145,7 @@ async function assessJob(profile, jid) {
 
 // 返回：[] - 正在查
 //      [sth] - 查出来了
-async function genJobRec(n, phone) {
+async function genJobRec(n, phone, preferred) {
     let prevRes = hasPrevRes(phone);
     if (prevRes) {
         return Promise.resolve(prevRes);
@@ -131,30 +153,61 @@ async function genJobRec(n, phone) {
 
     let profile = getProfile(phone);
 
+
     // 抽样两倍（2N），然后返回 N 个
-    let promises = genUniqueRandNums(2*n, details.length)
-        .map(idx => assessJob(profile, details[idx].jid));
+    let promises = genUniqueRandNums(2*n, details.length-1)
+        .map(idx => {
+            // console.log(details[idx].jid)
+            try {
+                return assessJob(profile, details[idx].jid, preferred)
+            } catch (e) {
+                console.log('Can not Assess', idx, details[idx])
+                console.log(e)
+                return null
+            }
+        })
+        .filter(item => item !== null);
+    
     
     let res = await Promise.allSettled(promises).
         then(res => {
-            let sortPairs = [];
+            let matchSortPairs = [];
+            let dismatchSortPairs = [];
             let id2desc = {};
             let jobInfo = [];
             res.forEach(assess => {
                 if (assess.status === 'fulfilled') {
-                    let { jid, score, desc } = assess.value;
-                    sortPairs.push([score, jid]);
+                    let { jid, score, desc, match } = assess.value;
+                    if (match) {
+                        matchSortPairs.push([score, jid]);
+                    } else {
+                        dismatchSortPairs.push([score, jid]);
+                    }
                     id2desc[jid] = desc;
                 }
             })
             // 降序排序
-            sortPairs.sort(([a], [b]) => b-a); 
+            matchSortPairs.sort(([a], [b]) => b-a); 
             // selected
-            sortPairs.map(item => item[1])
-                .slice(0, n)
+            matchSortPairs.slice(0, n)
+                .map(item => item[1])
                 .forEach(jid => {
                     jobInfo.push({
                         jid,
+                        match: true,
+                        ...getJobDetails(jid),
+                        desc: lzStr.compress(id2desc[jid])
+                    })
+                })
+            // 降序排序
+            dismatchSortPairs.sort(([a], [b]) => b-a); 
+            // selected
+            dismatchSortPairs.slice(0, n-jobInfo.length)
+                .map(item => item[1])
+                .forEach(jid => {
+                    jobInfo.push({
+                        jid,
+                        match: false,
                         ...getJobDetails(jid),
                         desc: lzStr.compress(id2desc[jid])
                     })

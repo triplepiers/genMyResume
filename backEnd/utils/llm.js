@@ -31,6 +31,21 @@ Please don't output message that is not required, just show me the result.` },
     ];
 }
 
+function gemJobRecMatchMsgs(userInfo, jobReqs, jobTitle, preferJob) {
+    return [
+        { role: "system", content: "You are an experienced HR." },
+        { role: "user",   content: 
+`I am a recent graduate, currently seeking job opportunities in the e-commerce field in Hong Kong.\n
+This is my personal info:\n ${userInfo}.\n
+And here it's the requirements of a job: \n${jobReqs}\n\n
+For each requirement, check if my background matches:\n
+\t - Return in this format: \`- [Only True / False] [Original Requirement] ([Brief Reason])\`\n\n
+Besides, tell me wether this job title [${jobTitle}] is highly relative with my preferred job [${preferJob}]:
+\t - Return in this format: \`$ match: [Only True / False]\`\n
+Please don't output message that is not required, just show me the result.` },
+    ];
+}
+
 function genCareerPathMsgs(userInfo, compInfo) {
   return [
     { role: "system", content: "You are an experienced HR." },
@@ -97,6 +112,7 @@ async function genSelfStatement(userInfo) {
 export {
   genSelfStatement,
   genJobRecMsgs,
+  gemJobRecMatchMsgs,
   genCareerPathMsgs,
   getCompletion,
   getJSONCompletion
