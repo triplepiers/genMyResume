@@ -4,11 +4,8 @@ import { useRouter } from 'next/router';
 import axios from "@/lib/axios";
 
 import { createWorker } from 'tesseract.js';
-import * as pdfJS from 'pdfjs-dist/legacy/build/pdf.mjs';
-pdfJS.GlobalWorkerOptions.workerSrc = new URL(
-  'pdfjs-dist/legacy/build/pdf.worker.min.mjs',
-  import.meta.url
-).toString();
+import * as PDFJS from 'pdfjs-dist/legacy/build/pdf.mjs';
+PDFJS.GlobalWorkerOptions.workerSrc = '/pdf-dist/pdf.worker.min.mjs';
 
 import mammoth from 'mammoth';
 
@@ -59,8 +56,8 @@ export default function Select(props: any[]) {
             messageApi.error('Fail to parse, create from scratch', 3);
           }
           setTimeout(() => {
-              router.push('/checkout');
-            }, 3500);
+            router.push('/checkout');
+          }, 3500);
         })
     }
   }
@@ -99,7 +96,7 @@ export default function Select(props: any[]) {
     });
   }
   const loadPDF = async (file: any) => {
-    return pdfJS.getDocument({ data: file }).promise;
+    return PDFJS.getDocument({ data: file }).promise;
   }
   const PDFToImage = async (pdf: any) => {
     const images = [];
@@ -202,9 +199,9 @@ export default function Select(props: any[]) {
 }
 
 export function getStaticProps() {
-    return {
-        props: {
-            pageName: "Start",
-        },
-    };
+  return {
+    props: {
+      pageName: "Start",
+    },
+  };
 }
