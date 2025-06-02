@@ -21,7 +21,7 @@ function getSS(phone) {
 }
 
 function updateSS(phone, neo_data) {
-    if (!SSExist) {
+    if (!SSExist(phone)) {
         ssDB.update(({ SSs }) => SSs.push({
             phone: phone,
             useGen: false,

@@ -1,11 +1,11 @@
 'use client'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import axios from "@/lib/axios";
 
 import { createWorker } from 'tesseract.js';
-import * as PDFJS from 'pdfjs-dist/legacy/build/pdf.mjs';
-PDFJS.GlobalWorkerOptions.workerSrc = '/pdf-dist/pdf.worker.min.mjs';
+// import * as PDFJS from 'pdfjs-dist/legacy/build/pdf.mjs';
+// PDFJS.GlobalWorkerOptions.workerSrc = '/pdf-dist/pdf.worker.min.mjs';
 
 import mammoth from 'mammoth';
 
@@ -16,6 +16,17 @@ const { Dragger } = Upload;
 
 export default function Select(props: any[]) {
   const router = useRouter();
+  const [PDFJS, setPDFJS] = useState<any>();
+
+  useEffect(() => {
+    // 在客户端动态加载，否则会报 500（DOMMatrix undefined)
+    const loadPDFJS = async () => {
+      const pdfjs = await import('pdfjs-dist/legacy/build/pdf.mjs');
+      pdfjs.GlobalWorkerOptions.workerSrc = '/pdf-dist/pdf.worker.min.mjs';
+      setPDFJS(pdfjs);
+    }
+    loadPDFJS();
+  }, [])
 
   const [messageApi, contextHolder] = message.useMessage();
 

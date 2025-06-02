@@ -43,7 +43,6 @@ export default function Checkout(props: any[]) {
                 setActiveStep(step);
             }
         } else if (activeStep != 0) {
-            console.log('here')
             setActiveStep(0);
         }
     }
