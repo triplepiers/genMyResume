@@ -1,7 +1,7 @@
 import lzStr from 'lz-string';
 import { recDB, detailDB, reqDB } from '../db/JobRec.js';
 import { getProfile } from './SelfStatement.js';
-import { genJobRecMsgs, gemJobRecMatchMsgs, getCompletion } from '../utils/llm.js';
+import { genJobRecMsgs, genJobRecMatchMsgs, getCompletion } from '../utils/llm.js';
 
 const MINITES=2; // Searching Gap = ? min
 
@@ -130,7 +130,7 @@ async function assessJob(profile, jid, preferred) {
     if (!preferred || preferred.length === 0) {
         msg = genJobRecMsgs(profile, reqs);
     } else {
-        msg = gemJobRecMatchMsgs(profile, reqs, title, preferred)
+        msg = genJobRecMatchMsgs(profile, reqs, title, preferred)
     }
     return new Promise((resolve) => {
         getCompletion(msg)

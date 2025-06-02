@@ -20,8 +20,8 @@ const levelList = [ // low => high
 
 const str_spc = z.string()//.regex(/^[A-Za-z\s]+$/, { message: "Contains ONLY characters", });
 const formSchema = z.object({
-    lan:   str_spc.min(1),
-    level: str_spc.optional(),
+    lan:   str_spc.min(1, 'Required'),
+    level: str_spc,
 })
 type formKey = "lan" | "level";
 
@@ -107,7 +107,7 @@ export const Language = (props: { edit: number, updateFormStatus: Function }) =>
                     render={({ field }) => (
                         <FormItem>
                             <div className="flex gap-3">
-                                <FormLabel className="shrink-0 w-20">Level:</FormLabel>
+                                <FormLabel className="shrink-0 w-20">Level*:</FormLabel>
                                 <div className="grow-1 w-full">
                                     <Select onValueChange={(val) => setSelectVal(val)} defaultValue={selectVal} value={selectVal}>
                                         <FormControl>

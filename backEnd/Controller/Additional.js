@@ -8,7 +8,7 @@ function addExist(phone) {
 }
 
 function getAllAdds(phone) {
-    if(!addExist(phone)) {
+    if (!addExist(phone)) {
         return []
     } else {
         return adds.find((add) => add.phone === phone).data
@@ -21,11 +21,11 @@ function getUuidAdd(phone, uuid) {
     let idx = 0;
     for (const item of addList) {
         if (item.uuid === uuid) {
-            return {item, idx}
+            return { item, idx }
         }
         idx += 1;
     }
-    return {item:false, idx:-1}
+    return { item: false, idx: -1 }
 }
 
 // 直接 append
@@ -46,7 +46,7 @@ function addAdd(phone, data) {
         }];
         addDB.update(({ adds }) => adds.push({
             phone: phone,
-            data:  neo_data
+            data: neo_data
         }))
     }
     return neo_data
@@ -54,13 +54,13 @@ function addAdd(phone, data) {
 
 function updateUuidAdd(phone, data, uuid) {
     let prev_data = getAllAdds(phone);
-    let {item, idx} = getUuidAdd(phone, uuid);
+    let { item, idx } = getUuidAdd(phone, uuid);
     if (!item) return false;
 
-    let neo_data = [...prev_data.slice(0,idx), {
+    let neo_data = [...prev_data.slice(0, idx), {
         uuid: item.uuid,
         data: data
-    }, ...prev_data.slice(idx+1)];
+    }, ...prev_data.slice(idx + 1)];
 
     addDB.update(
         ({ adds }) => adds.find((add) => add.phone === phone).data = neo_data
@@ -68,12 +68,26 @@ function updateUuidAdd(phone, data, uuid) {
     return neo_data
 }
 
+// 仅用于 OCR
+function updateAllAdds(phone, neo_data) {
+    if (addExist(phone)) { // append
+        addDB.update(
+            ({ adds }) => adds.find((add) => add.phone === phone).data = neo_data
+        )
+    } else {               // new
+        addDB.update(({ adds }) => adds.push({
+            phone: phone,
+            data: neo_data
+        }))
+    }
+}
+
 function deleteUuidAdd(phone, uuid) {
     let prev_data = getAllAdds(phone);
-    let {item, idx} = getUuidAdd(phone, uuid);
+    let { item, idx } = getUuidAdd(phone, uuid);
     if (!item) return false;
 
-    let neo_data = [...prev_data.slice(0,idx), ...prev_data.slice(idx+1)];
+    let neo_data = [...prev_data.slice(0, idx), ...prev_data.slice(idx + 1)];
     addDB.update(
         ({ adds }) => adds.find((add) => add.phone === phone).data = neo_data
     )
@@ -86,5 +100,6 @@ export {
     getUuidAdd,
     addAdd,
     updateUuidAdd,
+    updateAllAdds,
     deleteUuidAdd
 }

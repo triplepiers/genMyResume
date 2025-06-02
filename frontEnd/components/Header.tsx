@@ -9,7 +9,7 @@ import { PurchaseCard } from "@/components/Cards/PurchaseCard";
 
 const subPages = [
     {
-        url: '/checkout',
+        url: '/select',
         title: 'Resume Design'
     },
     {

@@ -1,4 +1,5 @@
 import { Pencil, Trash2 } from "lucide-react"
+import { formDate } from "@/lib/utils"
 
 export const WorkCard = (props: { 
     idx: number, data: string,
@@ -9,9 +10,9 @@ export const WorkCard = (props: {
     const show_time = data.bg_month.length>0 || data.ed_month.length>0
     const sep_time  = data.bg_month.length>0 && data.ed_month.length>0
     const timeStr = `
-        ${data.bg_month.length>0?`${data.bg_month} ${data.bg_year}`:""}
+        ${data.bg_month.length>0?`${formDate(data.bg_month, data.bg_year, false)}`:""}
         ${sep_time?' ~ ':''}
-        ${data.ed_month.length>0?`${data.bg_month} ${data.ed_year}`:""}
+        ${data.ed_month.length>0?`${formDate(data.ed_month, data.ed_year, false)}`:""}
     `
     
     return (
@@ -20,19 +21,19 @@ export const WorkCard = (props: {
             {/* title wrap */}
             <div>
                 <div className="font-bold text-lg leading-tight mb-1.5 flex flex-wrap gap-1">
-                    <div>{data.title}{`${data.company.length>0?',':''}`}</div>
+                    <div>{data.title}</div>
                     <div>{company}</div>
                 </div>
            {/*  */}
                 <div className="w-full px-1 pt-1 mt-1 border-t-1 flex flex-col items-end">
                 {
-                    data.location.length>0?(
-                        <div className="text-sm text-gray-500">@ {data.location}</div>
+                    show_time?(
+                        <div className="text-sm text-gray-500">{timeStr}</div>
                     ):(<></>)
                 }
                 {
-                    show_time?(
-                        <div className="text-sm text-gray-500">{timeStr}</div>
+                    data.location&&data.location.length>0?(
+                        <div className="text-sm text-gray-500">@ {data.location}</div>
                     ):(<></>)
                 }
                 <div className="mt-1 flex gap-2">

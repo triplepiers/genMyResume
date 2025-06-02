@@ -5,8 +5,9 @@ export default function Home(props: any[]) {
   const logoURL = '/Logo_Dark.png';
 
   const Jump = () => {
-    // TODO: 这里缺一个登录验证
-    router.push('/checkout')
+    const account = localStorage.getItem('account');
+    if (!account) router.push('/login');
+    else          router.push('/select');
   }
   
   return (

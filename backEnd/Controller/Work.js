@@ -7,7 +7,7 @@ function workExist(phone) {
 }
 
 function getAllWorks(phone) {
-    if(!workExist(phone)) {
+    if (!workExist(phone)) {
         return []
     } else {
         return works.find((work) => work.phone === phone).data
@@ -17,7 +17,7 @@ function getAllWorks(phone) {
 // return srting / false(超出边界)
 function getIdxWork(phone, idx) {
     let workList = getAllWorks(phone)
-    if (idx<0 || idx>=workList.length) {
+    if (idx < 0 || idx >= workList.length) {
         return false; // out of range
     }
     return workList[idx]
@@ -35,7 +35,7 @@ function addWork(phone, data) {
         neo_data = [data];
         workDB.update(({ works }) => works.push({
             phone: phone,
-            data:  neo_data
+            data: neo_data
         }))
     }
     return neo_data
@@ -43,24 +43,38 @@ function addWork(phone, data) {
 
 function updateIdxWork(phone, data, idx) {
     let prev_data = getAllWorks(phone);
-    if (idx<0 || idx>=prev_data.length) {
+    if (idx < 0 || idx >= prev_data.length) {
         return false;
     }
 
-    let neo_data = [...prev_data.slice(0,idx), data, ...prev_data.slice(idx+1)];
+    let neo_data = [...prev_data.slice(0, idx), data, ...prev_data.slice(idx + 1)];
     workDB.update(
         ({ works }) => works.find((work) => work.phone === phone).data = neo_data
     )
     return neo_data
 }
 
+// 仅用于 OCR
+function updateAllWorks(phone, neo_data) {
+    if (workExist(phone)) {
+        workDB.update(
+            ({ works }) => works.find((work) => work.phone === phone).data = neo_data
+        )
+    } else {
+        workDB.update(({ works }) => works.push({
+            phone: phone,
+            data: neo_data
+        }))
+    }
+}
+
 function deleteIdxWork(phone, idx) {
     let prev_data = getAllWorks(phone);
-    if (idx<0 || idx>=prev_data.length) {
+    if (idx < 0 || idx >= prev_data.length) {
         return false;
     }
 
-    let neo_data = [...prev_data.slice(0,idx), ...prev_data.slice(idx+1)];
+    let neo_data = [...prev_data.slice(0, idx), ...prev_data.slice(idx + 1)];
     workDB.update(
         ({ works }) => works.find((work) => work.phone === phone).data = neo_data
     )
@@ -73,5 +87,6 @@ export {
     getIdxWork,
     addWork,
     updateIdxWork,
+    updateAllWorks,
     deleteIdxWork
 }

@@ -13,17 +13,21 @@ function getHead(phone) {
 async function addHead(phone, data) {
     await headDB.update(({ heads }) => heads.push({
         phone: phone,
-        data:  data
+        data: data
     }));
 }
 
 async function updateHead(phone, neo_data) {
-    // 判断是否相等
-    let old_data = getHead(phone);
-    if (old_data !== neo_data) {
-        await headDB.update(
-            ({ heads }) => heads.find((head) => head.phone === phone).data = neo_data
-        );
+    if (headExist(phone)) {
+        // 判断是否相等
+        let old_data = getHead(phone);
+        if (old_data !== neo_data) {
+            await headDB.update(
+                ({ heads }) => heads.find((head) => head.phone === phone).data = neo_data
+            );
+        }
+    } else {
+        addHead(phone, neo_data);
     }
 }
 

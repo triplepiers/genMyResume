@@ -7,7 +7,7 @@ function eduExist(phone) {
 }
 
 function getAllEdus(phone) {
-    if(!eduExist(phone)) {
+    if (!eduExist(phone)) {
         return []
     } else {
         return edus.find((edu) => edu.phone === phone).data
@@ -17,7 +17,7 @@ function getAllEdus(phone) {
 // return srting / false(超出边界)
 function getIdxEdu(phone, idx) {
     let eduList = getAllEdus(phone)
-    if (idx<0 || idx>=eduList.length) {
+    if (idx < 0 || idx >= eduList.length) {
         return false; // out of range
     }
     return eduList[idx]
@@ -35,7 +35,7 @@ function addEdu(phone, data) {
         neo_data = [data];
         eduDB.update(({ edus }) => edus.push({
             phone: phone,
-            data:  neo_data
+            data: neo_data
         }))
     }
     return neo_data
@@ -43,24 +43,38 @@ function addEdu(phone, data) {
 
 function updateIdxEdu(phone, data, idx) {
     let prev_data = getAllEdus(phone);
-    if (idx<0 || idx>=prev_data.length) {
+    if (idx < 0 || idx >= prev_data.length) {
         return false;
     }
 
-    let neo_data = [...prev_data.slice(0,idx), data, ...prev_data.slice(idx+1)];
+    let neo_data = [...prev_data.slice(0, idx), data, ...prev_data.slice(idx + 1)];
     eduDB.update(
         ({ edus }) => edus.find((edu) => edu.phone === phone).data = neo_data
     )
     return neo_data
 }
 
+// 仅用于 parse Resume
+function updateAllEdus(phone, neo_data) {
+    if (eduExist(phone)) {
+        eduDB.update(
+            ({ edus }) => edus.find((edu) => edu.phone === phone).data = neo_data
+        )
+    } else {
+        eduDB.update(({ edus }) => edus.push({
+            phone: phone,
+            data: neo_data
+        }))
+    }
+}
+
 function deleteIdxEdu(phone, idx) {
     let prev_data = getAllEdus(phone);
-    if (idx<0 || idx>=prev_data.length) {
+    if (idx < 0 || idx >= prev_data.length) {
         return false;
     }
 
-    let neo_data = [...prev_data.slice(0,idx), ...prev_data.slice(idx+1)];
+    let neo_data = [...prev_data.slice(0, idx), ...prev_data.slice(idx + 1)];
     eduDB.update(
         ({ edus }) => edus.find((edu) => edu.phone === phone).data = neo_data
     )
@@ -73,5 +87,6 @@ export {
     getIdxEdu,
     addEdu,
     updateIdxEdu,
+    updateAllEdus,
     deleteIdxEdu
 }

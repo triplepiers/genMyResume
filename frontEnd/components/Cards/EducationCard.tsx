@@ -1,4 +1,5 @@
-import { Pencil, Trash2 } from "lucide-react"
+import { Pencil, Trash2 } from "lucide-react";
+import { formDate } from "@/lib/utils";
 
 export const EducationCard = (props: { 
     idx: number, data: string,
@@ -12,9 +13,9 @@ export const EducationCard = (props: {
     const show_time = data.bg_month.length>0 || data.ed_month.length>0
     const sep_time  = data.bg_month.length>0 && data.ed_month.length>0
     const timeStr = `
-        ${data.bg_month.length>0?`${data.bg_month} ${data.bg_year}`:""}
+        ${data.bg_month.length>0?`${formDate(data.bg_month, data.bg_year, false)}`:""}
         ${sep_time?' ~ ':''}
-        ${data.ed_month.length>0?`${data.bg_month} ${data.ed_year}`:""}
+        ${data.ed_month.length>0?`${formDate(data.bg_month, data.ed_year, false)}`:""}
     `
     
     return (
@@ -24,7 +25,7 @@ export const EducationCard = (props: {
             <div>
                 <div className="font-bold text-lg leading-none mb-1.5">{`${degree}${data.institution}`}</div>
                 {
-                    data.field.length===0?(<></>):
+                    !data.field||data.field.length===0?(<></>):
                     (<div className="pl-1"><b>Field:</b> {data.field}</div>)
                 }
                 <div className="w-full px-1 pt-1 mt-1 border-t-1 flex flex-col items-end">
@@ -34,7 +35,7 @@ export const EducationCard = (props: {
                     ):(<></>)
                 }
                 {
-                    data.location.length>0?(
+                    data.location&&data.location.length>0?(
                         <div className="text-sm text-gray-500">@ {data.location}</div>
                     ):(<></>)
                 }
