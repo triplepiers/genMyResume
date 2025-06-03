@@ -1,10 +1,12 @@
 import lzStr from 'lz-string';
+import pLimit from 'p-limit';
 import { readFile } from 'fs/promises';
 import { recDB, detailDB, reqDB } from '../db/JobRec.js';
 import { getProfile } from './SelfStatement.js';
 import { genJobRecMsgs, genJobRecMatchMsgs, getCompletion } from '../utils/llm.js';
 
 const MINITES = 2; // Searching Gap = ? min
+const LIMIT = 20;  // limit=10 的时候 1min 都搞不完 ...
 const TITLE_FILE_PATH = './data/jobTitle.json';
 
 // load from local file
@@ -97,31 +99,38 @@ function getPrefIdxs(n, preferred) {
     jtitleList.forEach((item, idx) => {
         let title = item.title.toLowerCase();
         if (title.includes(preferred)) {
-            // matchedJids.push(item.jid);
-            matchedJids.push(idx);
-            jid2match[item.jid] = true;
+            matchedJids.push([idx, item.jid]);
             return;
         } else {
             let percent = similarityPercentage(preferred, title)
             if (percent > 0.65) {
-                // matchedJids.push(item.jid);
-                matchedJids.push(idx);
-                jid2match[item.jid] = true;
+                matchedJids.push([idx, item.jid]);
                 return;
             }
         }
-        // dismatchJids.push(item.jid);
-        dismatchJids.push(idx);
-        jid2match[item.jid] = false;
+        dismatchJids.push([idx, item.jid]);
     })
     // 抽样
-    matchedJids = genUniqueRandNums(n, matchedJids.length - 1).map(idx => matchedJids[idx]);
+    let tmp = [];
+    matchedJids = genUniqueRandNums(n, matchedJids.length - 1)
+        .forEach(idx => {
+            let item = matchedJids[idx];
+            tmp.push(item[0]);
+            jid2match[item[1]] = true;
+        })
+    matchedJids = tmp;
+    tmp = [];
     let todo = n - matchedJids.length;
     if (todo>0) {
-        dismatchJids = genUniqueRandNums(todo, dismatchJids.length-1).map(idx => dismatchJids[idx]);
-    } else {
-        dismatchJids = [];
-    }
+        dismatchJids = genUniqueRandNums(todo, dismatchJids.length-1)
+            .forEach(idx => {
+                let item = dismatchJids[idx];
+                tmp.push(item[0]);
+                jid2match[item[1]] = false;
+            })
+    } 
+    dismatchJids = tmp;
+    
     return {
         useIdxs:  matchedJids.concat(dismatchJids),
         jid2match
@@ -195,7 +204,7 @@ function getJobDetails(jid) {
         let jobDetail = details.find((job) => job.jid === jid).detail;
         return jobDetail
     } catch (e) {
-        console.log(jid, e)
+        console.log('Fail to load job detail', jid, e)
         return false
     }
 }
@@ -290,10 +299,10 @@ async function assessJob(profile, jid, preferred) {
 // 返回：[] - 正在查
 //      [sth] - 查出来了
 async function genJobRec(n, phone, preferred) {
-    let prevRes = hasPrevRes(phone);
-    if (prevRes) {
-        return Promise.resolve(prevRes);
-    }
+    // let prevRes = hasPrevRes(phone);
+    // if (prevRes) {
+    //     return Promise.resolve(prevRes);
+    // }
 
     let profile = getProfile(phone);
     let USE_PREF = preferred.length > 0;
@@ -301,23 +310,20 @@ async function genJobRec(n, phone, preferred) {
     // 抽样两倍（2N），然后返回 N 个
     let useIdxs = [], jid2match = {};
     if (USE_PREF) {
-        let tmp = getPrefIdxs(2*n, preferred);
-        useIdxs = tmp.useIdxs;
-        jid2match = tmp.jid2match;
+        ({ useIdxs, jid2match } = getPrefIdxs(2*n, preferred));
     } else {
         useIdxs = genUniqueRandNums(2 * n, details.length - 1);
     }
+
+    const limit = pLimit(LIMIT); // 限制并发
     let promises = useIdxs.map(idx => {
             try {
-                return assessJob(profile, details[idx].jid, preferred)
+                return limit(() => assessJob(profile, details[idx].jid, preferred))
             } catch (e) {
                 console.log('Can not Assess', idx, details[idx])
                 console.log(e)
-                return null
             }
         })
-        .filter(item => item !== null);
-
 
     let res = await Promise.allSettled(promises).
         then(res => {
@@ -365,6 +371,7 @@ async function genJobRec(n, phone, preferred) {
             updateRec(phone, jobInfo);
             return jobInfo;
         })
+
     return res;
 }
 

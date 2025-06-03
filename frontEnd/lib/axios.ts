@@ -2,9 +2,9 @@ import axios from "axios";
 
 // 统一配置代理
 const apiClient = axios.create({
-    // baseURL: 'http://localhost:8080',  // test local
+    // baseURL: 'http://localhost:8080/api',  // test local
     baseURL: 'http://20.2.117.32/api', // test remote
-    timeout: 60000 // 60s
+    timeout: 120000 // 120s => 限制并发之后有点慢
 })
 
 // 请求拦截器：给 GET / POST 统一塞 phone
