@@ -11,16 +11,19 @@ const TITLE_FILE_PATH = './data/jobTitle.json';
 let jtitleList = [];
 try {
     const rawData = await readFile(TITLE_FILE_PATH, 'utf-8');
-    jtitleList = JSON.parse(rawData).titles;
+    jtitleList = JSON.parse(rawData).titles.map(item => {
+        return {
+            jid: item.jid,
+            // Capitalize
+            title: item.title.toLowerCase().replace(/\b\w/g, char => char.toUpperCase())
+        }
+    });
     console.log(`${jtitleList.length} Job Titles loaded.`);
 } catch (err) {
     console.error('读取文件出错:', err);
 }
 let compressed = lzStr.compress(JSON.stringify(
-    [...new Set(jtitleList.map(item => {
-        // Capitalize
-        return item.title.toLowerCase().replace(/\b\w/g, char => char.toUpperCase());
-    }))] // 去重
+    [...new Set(jtitleList.map(item => item.title))] // 去重
 ));
 
 const details = detailDB.data.jobs;
@@ -44,7 +47,7 @@ function genUniqueRandNums(count, max) {
 // 从 details 中抽取 n 个
 function getRandDetails(n) {
     let res = [];
-    const uniqueIdxs = genUniqueRandNums(n, details.length);
+    const uniqueIdxs = genUniqueRandNums(n, details.length-1);
     uniqueIdxs.forEach(idx => {
         let item = details[idx];
         res.push({
@@ -53,6 +56,76 @@ function getRandDetails(n) {
         });
     })
     return res;
+}
+
+// 计算编辑距离
+function levenshteinDistance(a, b) {
+    const matrix = [];
+    for (let i = 0; i <= b.length; i++) {
+        matrix[i] = [i];
+    }
+    for (let j = 0; j <= a.length; j++) {
+        matrix[0][j] = j;
+    }
+    for (let i = 1; i <= b.length; i++) {
+        for (let j = 1; j <= a.length; j++) {
+            if (b.charAt(i - 1) === a.charAt(j - 1)) {
+                matrix[i][j] = matrix[i - 1][j - 1];
+            } else {
+                matrix[i][j] = Math.min(
+                    matrix[i - 1][j - 1] + 1, // 替换
+                    matrix[i][j - 1] + 1,     // 插入
+                    matrix[i - 1][j] + 1      // 删除
+                );
+            }
+        }
+    }
+    return matrix[b.length][a.length];
+}
+// 计算百分比编辑距离
+function similarityPercentage(str1, str2) {
+    const maxLength = Math.max(str1.length, str2.length);
+    if (maxLength === 0) return 100;
+    const distance = levenshteinDistance(str1, str2);
+    return (1 - distance / maxLength); // * 100;
+}
+
+function getPrefIdxs(n, preferred) {
+    let matchedJids = [], dismatchJids = []; // 现在存的是 details 里的 idx
+    let jid2match = {};
+    preferred = preferred.toLowerCase();
+    jtitleList.forEach((item, idx) => {
+        let title = item.title.toLowerCase();
+        if (title.includes(preferred)) {
+            // matchedJids.push(item.jid);
+            matchedJids.push(idx);
+            jid2match[item.jid] = true;
+            return;
+        } else {
+            let percent = similarityPercentage(preferred, title)
+            if (percent > 0.65) {
+                // matchedJids.push(item.jid);
+                matchedJids.push(idx);
+                jid2match[item.jid] = true;
+                return;
+            }
+        }
+        // dismatchJids.push(item.jid);
+        dismatchJids.push(idx);
+        jid2match[item.jid] = false;
+    })
+    // 抽样
+    matchedJids = genUniqueRandNums(n, matchedJids.length - 1).map(idx => matchedJids[idx]);
+    let todo = n - matchedJids.length;
+    if (todo>0) {
+        dismatchJids = genUniqueRandNums(todo, dismatchJids.length-1).map(idx => dismatchJids[idx]);
+    } else {
+        dismatchJids = [];
+    }
+    return {
+        useIdxs:  matchedJids.concat(dismatchJids),
+        jid2match
+    }
 }
 
 // 直接发一坨过去会触发限速：RateLimitError: 429
@@ -158,6 +231,7 @@ function parseRes(res) {
 function hasPrevRes(phone) {
     let entry = recs.find((rec) => rec.phone === phone);
     if (!entry) { // 没查过，更新 recs = [] 表示 working
+        // console.log('没查过')
         recDB.update(({ recs }) => recs.push({
             phone,
             lastTime: Date.now(),
@@ -222,12 +296,18 @@ async function genJobRec(n, phone, preferred) {
     }
 
     let profile = getProfile(phone);
-
+    let USE_PREF = preferred.length > 0;
 
     // 抽样两倍（2N），然后返回 N 个
-    let promises = genUniqueRandNums(2 * n, details.length - 1)
-        .map(idx => {
-            // console.log(details[idx].jid)
+    let useIdxs = [], jid2match = {};
+    if (USE_PREF) {
+        let tmp = getPrefIdxs(2*n, preferred);
+        useIdxs = tmp.useIdxs;
+        jid2match = tmp.jid2match;
+    } else {
+        useIdxs = genUniqueRandNums(2 * n, details.length - 1);
+    }
+    let promises = useIdxs.map(idx => {
             try {
                 return assessJob(profile, details[idx].jid, preferred)
             } catch (e) {
@@ -241,13 +321,12 @@ async function genJobRec(n, phone, preferred) {
 
     let res = await Promise.allSettled(promises).
         then(res => {
-            let matchSortPairs = [];
-            let dismatchSortPairs = [];
-            let id2desc = {};
-            let jobInfo = [];
+            let matchSortPairs = [], dismatchSortPairs = [];
+            let id2desc = {}, jobInfo = [];
             res.forEach(assess => {
                 if (assess.status === 'fulfilled') {
                     let { jid, score, desc, match } = assess.value;
+                    if (USE_PREF) match = match || jid2match[jid];
                     if (match) {
                         matchSortPairs.push([score, jid]);
                     } else {

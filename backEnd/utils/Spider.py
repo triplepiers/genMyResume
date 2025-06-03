@@ -33,10 +33,10 @@ def getReqs(jid):
                     tags.find_all('p')
                 ]
         print('Req Not Found')
-        return None
+        return False
     else:
         print('Request Failed', response.status_code)
-        return None
+        return False
 
 def getJobInfo(job):
     jid = job['data-job-id'] # 8-bit string
@@ -45,15 +45,9 @@ def getJobInfo(job):
 
     compName = job.find(attrs={'data-automation': f'jobCompany'}).text
     compNameSet.add(compName)
-
-    jobTitle = job.find(attrs={'id': f'job-title-{jid}'}).text
-    jobTitleList.append({
-        'jid': jid,
-        'title': jobTitle
-    })
-
+    
     return jid, {
-        'title': jobTitle,
+        'title': job.find(attrs={'id': f'job-title-{jid}'}).text,
         'company': compName,
         'location': job.find(attrs={'data-automation': f'jobLocation'}).text,
         'classification': f"{job.find(attrs={'data-automation': f'jobSubClassification'}).text} {job.find(attrs={'data-automation': f'jobClassification'}).text}",
@@ -70,7 +64,7 @@ def scrabPage(pageIdx):
         for idx, job in enumerate(soup.select('[data-testid="job-card"]')):
             print(f'Job {pageIdx}-{idx}')
             jid, detail, reqs = getJobInfo(job)
-            if reqs == None or len(reqs) == 0:
+            if reqs == False or len(reqs) == 0:
                 continue
             else:
                 print('OK')
@@ -81,6 +75,10 @@ def scrabPage(pageIdx):
             reqList.append({
                 'jid': jid,
                 'reqs': reqs
+            })
+            jobTitleList.append({
+                'jid': jid,
+                'title': detail['title']
             })
             # time.sleep(random.randint(5, 20))
             time.sleep(random.randint(1, 3))

@@ -126,11 +126,14 @@ export default function Jobs(props: any[]) {
                     setTimeout(() => router.replace('/select'), 2000);
                     return;
                 } else {
-                    setJobTitles(
-                        JSON.parse(lzStr.decompress(compressed)).map((jTitle: string) => {
-                            return { value: jTitle, label: jTitle }
+                    // 字母序排序
+                    let titles = JSON.parse(lzStr.decompress(compressed)).sort()
+                        .map((jTitle: string) => {
+                            return {
+                                value: jTitle, labbel: jTitle
+                            }
                         })
-                    )
+                    setJobTitles(titles);
                 }
             })
         }
@@ -153,10 +156,6 @@ export default function Jobs(props: any[]) {
                                 style={{ width: '100%' }}
                                 showSearch
                                 placeholder="Select Job Title"
-                                // 字母序排序
-                                filterSort={(optionA, optionB) =>
-                                    (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
-                                }
                                 onChange={resetPreferred}
                                 onClear={() => resetPreferred("")}
                                 options={jobTitles}
