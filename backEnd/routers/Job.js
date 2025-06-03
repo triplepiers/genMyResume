@@ -1,7 +1,7 @@
 import Router from "koa-router";
 import { headExist } from "../Controller/Head.js";
 import { isVIP } from "../Controller/User.js";
-import { genJobRec } from "../Controller/Job.js";
+import { genJobRec, getTitleList } from "../Controller/Job.js";
 
 const jobRouter = new Router({
     prefix: '/job'
@@ -47,6 +47,12 @@ jobRouter.get('/', async (ctx, nxt) => {
             }
         )
     })    
+})
+
+// 获取 job Title 列表
+jobRouter.get('/titles', (ctx, nxt) => {
+    ctx.response.body = JSON.stringify({ titles: getTitleList() }); // compressed
+    return ctx.status = 200
 })
 
 export default jobRouter;

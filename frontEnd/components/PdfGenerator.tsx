@@ -53,7 +53,7 @@ export const PdfGenerator = (props: {
                         type: 'error',
                         content: 'Please complete your information first',
                     });
-                    setTimeout(() => router.replace('/checkout'), 2000);
+                    setTimeout(() => router.replace('/select'), 2000);
                     return;
                 }
                 loadTemplate(props.tid, handleProfile(profile))

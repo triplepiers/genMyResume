@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 
 import lzStr from 'lz-string';
-import { Table, Descriptions, message, Button, Input, Space, Tag } from 'antd';
+import { Table, Descriptions, message, Button, Select, Space, Tag } from 'antd';
 
 import axios from '@/lib/axios';
 
@@ -21,7 +21,7 @@ const cols = [
         dataIndex: 'match',
         render: (match: boolean) => (
             <>{
-                match?(<Tag color='green'>Match</Tag>):(<Tag>Dismatch</Tag>)
+                match ? (<Tag color='green'>Match</Tag>) : (<Tag>Dismatch</Tag>)
             }</>
         ),
     },
@@ -43,15 +43,20 @@ const cols = [
 ]
 
 export default function Jobs(props: any[]) {
-    const iptRef = useRef(null);
     const router = useRouter();
     const [messageApi, contextHolder] = message.useMessage();
     const [isVIP, setIsVIP] = useState(false);
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState([]);
+    const [jobTitles, setJobTitles] = useState([]);
+    const [preferred, setPreferred] = useState('');
+
+    const resetPreferred = (neoVal: string) => {
+        if (neoVal === undefined) return;
+        if (neoVal !== preferred) setPreferred(neoVal);
+    }
 
     const SearchJobs = () => {
-        let preferred = iptRef.current!.input.value;
         setLoading(true)
         messageApi.open({
             type: 'loading',
@@ -78,7 +83,7 @@ export default function Jobs(props: any[]) {
                     type: 'error',
                     content: 'Please complete your information first',
                 });
-                setTimeout(() => router.replace('/checkout'), 2000);
+                setTimeout(() => router.replace('/select'), 2000);
                 return;
             }
             if (details.length === 0) {
@@ -106,6 +111,28 @@ export default function Jobs(props: any[]) {
             if (localStorage.getItem('isVIP')) {
                 setIsVIP(localStorage.getItem('isVIP') !== 'false');
             }
+            axios.get('/job/titles').then(res => {
+                if (res.status === 200) {
+                    return res.data.titles
+                } else {
+                    return false
+                }
+            }).then(compressed => {
+                if (!compressed) {
+                    messageApi.open({
+                        type: 'error',
+                        content: 'Please complete your information first',
+                    });
+                    setTimeout(() => router.replace('/select'), 2000);
+                    return;
+                } else {
+                    setJobTitles(
+                        JSON.parse(lzStr.decompress(compressed)).map((jTitle: string) => {
+                            return { value: jTitle, label: jTitle }
+                        })
+                    )
+                }
+            })
         }
     }, [])
     return (
@@ -118,8 +145,22 @@ export default function Jobs(props: any[]) {
                         <p>According to your resume, we found some jobs that suits you the most.</p>
                         {!isVIP ? <p><b>Become our VIP to see more ...</b></p> : <></>}
                         <Space.Compact style={{ width: '100%', marginTop: '15px' }}>
-                            <Input defaultValue="" placeholder="Your preferred job position"
-                                disabled={loading} ref={iptRef} />
+                            {/* <Input defaultValue="" placeholder="Your preferred job position"
+                                disabled={loading} ref={iptRef} /> */}
+                            <Select
+                                disabled={loading}
+                                allowClear
+                                style={{ width: '100%' }}
+                                showSearch
+                                placeholder="Select Job Title"
+                                // 字母序排序
+                                filterSort={(optionA, optionB) =>
+                                    (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
+                                }
+                                onChange={resetPreferred}
+                                onClear={() => resetPreferred("")}
+                                options={jobTitles}
+                            />
                             <Button type="primary" style={{ backgroundColor: 'var(--blue)' }}
                                 onClick={SearchJobs} disabled={loading}>Search</Button>
                         </Space.Compact>

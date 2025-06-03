@@ -19,12 +19,28 @@ Please don't output message that is not required, just show me the result.` },
   ];
 }
 
+function genJobTitleMatchMsgs(jobTitle, preferJob) {
+  return [
+    { role: "system", content: "You are an experienced HR." },
+    {
+      role: "user", content:
+`Judge wether this job title [${jobTitle}] is highly relative with my preferred job [${preferJob}]:\n
+Return in this format: 
+\`\`\`JSON
+{
+  match: [true / false]
+}
+\`\`\`
+Please don't output message that is not required, just show me the result.` },
+  ];
+}
+
 function genJobRecMsgs(userInfo, jobReqs) {
   return [
     { role: "system", content: "You are an experienced HR." },
     {
       role: "user", content:
-        `I am a recent graduate, currently seeking job opportunities in the e-commerce field in Hong Kong.\n
+`I am a recent graduate, currently seeking job opportunities in the e-commerce field in Hong Kong.\n
 This is my personal info:\n ${userInfo}.\n
 And here it's the requirements of a job: \n${jobReqs}\n\n
 For each requirement, check if my background matches:\n
@@ -189,6 +205,7 @@ async function genSelfStatement(userInfo) {
 
 export {
   genSelfStatement,
+  genJobTitleMatchMsgs,
   genJobRecMsgs,
   genJobRecMatchMsgs,
   genCareerPathMsgs,

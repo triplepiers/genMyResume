@@ -59,7 +59,7 @@ export default function PathSimulator(props: any[]) {
               type: 'error',
               content: 'Please complete your information first',
             });
-            setTimeout(() => router.replace('/checkout'), 2000);
+            setTimeout(() => router.replace('/select'), 2000);
             return;
           } else {
             setCompList(
