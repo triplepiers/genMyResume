@@ -11,7 +11,7 @@
     "send": "scp backEnd.zip seabee@20.2.117.32:~/BK.zip",
     "clean": "rm -f backEnd.zip",
     "update": "cd utils && python Spider.py",
-    "sync": "npm run syncDetail && npm run syncReqsn && npm run syncCompany && npm run syncTitle",
+    "sync": "npm run syncDetail && npm run syncReqs && npm run syncCompany && npm run syncTitle",
     "syncDetail": "scp ./data/jobDetail.json seabee@20.2.117.32:~/backEnd/data/jobDetail.json",
     "syncReqs": "scp ./data/jobReqs.json seabee@20.2.117.32:~/backEnd/data/jobReqs.json",
     "syncCompany": "scp ./data/company.json seabee@20.2.117.32:~/backEnd/data/company.json",
