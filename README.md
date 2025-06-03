@@ -23,7 +23,18 @@ if (options.bgcolor) {
 }
 ```
 
-## 服务器上的 build 脚本
+## 服务器上的 build 脚本*
+- 后端项目：直接 `rm -rf *` 会导致原有数据丢失，请遵循以下顺序
+
+    ```bash
+    # local backEnd => 把新的代码包整体丢过去
+    npm run build
+    # server => 自动解压，并恢复原数据
+    ./back.sh
+    # local backEnd => 同步最新的爬虫数据
+    npm run sync 
+    ```
+
 ```bash
 # stop
 sudo pm2 stop frontEnd/.next/standalone/server.js
