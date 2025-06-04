@@ -16,7 +16,6 @@
 ## TODO
 
 - 添加富文本编辑器 [TinyMice](https://juejin.cn/post/7124588377541705736)
-- 更新 README 中的页面功能介绍
 
 ## Feature
 
@@ -319,7 +318,7 @@ server {
 
 ## 页面功能介绍
 
-### 首页（UPDATE）
+### 首页
 
 ![](./imgs/Home.png)
 
@@ -341,12 +340,6 @@ server {
 
   - 目前只打了 Copyright
   - 有需要放的联系方式可以列一下
-
-#### 新增内容
-
-![](./imgs/Header.png)
-
-- 新增 "岗位推荐" 和 "职业路径模拟" 页面 的标签页
 
 - 适配屏幕稍窄的情况（ hover 后出现具体菜单选项）：
 
@@ -381,6 +374,14 @@ server {
 
 ### 个人信息表单
 
+#### 初始化方式选择
+
+![](./imgs/Select.png)
+
+- 支持 拖拽/从文件列表 选择文件
+- 支持对 DOCX/PDF 中的简历进行解析（你也可以直接手填）
+- 识别完成后会跳转至表单页面进行确认
+
 #### Heading：姓名和联系方式
 
 ![](./imgs/Heading.png)
@@ -403,9 +404,12 @@ server {
 
 ![](./imgs/Skills(list).png)
 
-#### Additional Blocks（TODO）
+#### Additional Blocks
 
-> 功能上等价于 Zety 的 Add a Section
+![](./imgs/Additional.png)
+
+- 功能上等价于 Zety 的 Add a Section
+- TODO: 支持富文本编辑器
 
 #### Self Statement
 
@@ -417,7 +421,7 @@ server {
 
 ![](./imgs/SelfStatemtn.png)
 
-### 下载与查看（UPDATE）
+### 下载与查看
 
 在这个页面可以查看渲染结果
 
@@ -438,17 +442,21 @@ server {
 
   ![](./imgs/Download.png)
 
-#### 新增内容
+#### 自定义主题
 
 - 支持模版选择：支持 zety 的所有模版（9单列+9双列）+ 一个单独给过我的单列模版
 
   ![](./imgs/switchTemplate.png)
 
-- 支持主题色切换：Heading 部分字体在颜色较深时，会自动切换为白色
+- 支持主题色和字体切换
+  
+  - Heading 部分字体在颜色较深时，会自动切换为白色
+
+  - 由于 canvas 效果不稳定，仅支持部分 GoogleFont 字体（会同时影响标题和正文）
 
   ![](./imgs/switchTheme.png)
 
-### 职业路径推荐（NEW）
+### 职业路径推荐
 
 - <span style="color:red;">缺少能够统一查询公司信息的途径，公司信息简介暂缺</span>
 
@@ -464,12 +472,20 @@ server {
 - 推送逻辑：普通用户推送 10 条 & VIP 用户推送 30 条
 
   1. 从数据库里抽 2N 条数据（计算所有 200 条会很慢）
+
+      如果用户给定了 Preferred Job，将根据 字符串包含关系+编辑距离 筛选相符岗位
+
+      抽样将首先在 match 的岗位中进行，不足时用 dismatch 岗位补足
+
   2. 用 DeepSeek 判断用户简历与 JD 是否一致（每一条后面会附上理由）
   3. 根据符合比例降序排序，推送前 N  条
 
-- 可能的问题：<span style="color:red;">Apply 按钮会跳回 JobsDB，有时候会要求登录</span>
+- 可能的问题
+  
+  - <span style="color:red;">Apply 按钮会跳回 JobsDB，有时候会要求登录</span>
+  - <span style="color:red;">限制了最大并发 20 个 Promise 请求，API 工作太慢可能导致请求超时（前端没处理）</span>
 
-### 职业路径模拟（NEW）
+### 职业路径模拟
 
 支持模拟用户 未来三年 内，在两家公司的不同职业路径发展结果
 
