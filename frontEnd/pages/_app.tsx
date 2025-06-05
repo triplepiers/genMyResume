@@ -20,6 +20,8 @@ import { useEffect } from "react";
 
 import Head from "next/head";
 import type { AppProps } from "next/app";
+import { CustomerServiceOutlined } from '@ant-design/icons';
+import { FloatButton } from 'antd';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 
@@ -42,6 +44,17 @@ export default function App({ Component, pageProps }: AppProps) {
         pageProps.noHeader ? <></> : <Header />
       }
       <Component {...pageProps} />
+      <a href="https://www.zjuers.com" target="_blank">
+        <FloatButton
+          style={{ insetInlineEnd: 40 }}
+          icon={<CustomerServiceOutlined />}
+          tooltip={{
+            title: 'Feedback',
+            color: 'var(--pink)',
+            placement: 'left',
+          }}
+        />
+      </a>
       {
         pageProps.noFooter ? <></> : <Footer />
       }
