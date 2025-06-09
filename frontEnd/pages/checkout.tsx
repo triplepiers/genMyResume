@@ -13,7 +13,7 @@ import { ChevronRight } from "lucide-react";
 const btn_base_style = '\
 cursor-pointer rounded-md font-medium\
 block px-4 py-[0.2rem] min-w-[6rem] shrink-0\
-duration-300 hover:-translate-y-1'
+brightness-100 hover:brightness-125'
 
 type FormMeta =  { title: string, desc: string }
 

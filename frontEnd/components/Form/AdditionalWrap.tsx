@@ -1,4 +1,4 @@
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { SummaryHead } from "@/components/ui/SummaryHead";
 import { AddiCard } from "../Cards/AddiCard";
@@ -38,12 +38,15 @@ export const AdditionalWrap = (props: { updateFormMeta: Function }) => {
     const changeSecInfo = (e: any, uuid: string) => {
         setEditIdx(uuid)
     }
-    const removewkInfo = (e: any, uuid: string) => {
+    const removeAddi = (e: any, uuid: string) => {
         axios.post('/addi/delete', {uuid})
-        setTimeout(()=>{
-            setEditIdx('')
-            updateFormStatus()
-        }, 500)
+        .then(res => res.status)
+        .then(status => {
+            if (status === 200) {
+                setEditIdx('')
+                updateFormStatus()
+            }
+        })
     }
     const swtichToAdd = () => {
         setEditIdx('')
@@ -58,7 +61,7 @@ export const AdditionalWrap = (props: { updateFormMeta: Function }) => {
                         secList.map((item, idx) => (
                             <AddiCard idx={item.uuid} data={item.data}
                                 handleEdit={(e: any) => changeSecInfo(e, item.uuid)}
-                                handleDelete={(e: any) => removewkInfo(e,  item.uuid)}
+                                handleDelete={(e: any) => removeAddi(e,  item.uuid)}
                                 key={idx} />
                         ))
                     }

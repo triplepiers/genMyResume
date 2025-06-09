@@ -16,7 +16,7 @@ const moreRouter = new Router({
 /* 拦截，统一 check user是否存在
    201 { 没带 }
 */
-moreRouter.use((ctx, nxt) => {
+moreRouter.use(async (ctx, nxt) => {
     if (ctx.method == 'GET') {
         var { phone }  = ctx.query;
     } else {
@@ -27,7 +27,7 @@ moreRouter.use((ctx, nxt) => {
     } else {
         ctx.phone = phone;
     }
-    nxt();
+    await nxt();
 })
 
 // 202 不存在
@@ -36,11 +36,14 @@ moreRouter.get('/award', (ctx, nxt) => {
     ctx.response.body = JSON.stringify({ award: getAward(phone) });
     return ctx.status = 200
 })
-moreRouter.post('/award', (ctx, nxt) => {
+moreRouter.post('/award', async (ctx, nxt) => {
     let phone = ctx.phone;
     let { data } = ctx.request.body;
-    updateAward(phone, data);
-    return ctx.status = 200;
+    return new Promise(async (resolve) => {
+        await updateAward(phone, data);
+        ctx.status = 200;
+        resolve();
+    })
 })
 
 // 单个
@@ -57,23 +60,33 @@ moreRouter.get('/skill/all', (ctx, nxt) => {
     return ctx.status = 200
 })
 
-moreRouter.post('/skill/add', (ctx, nxt) => {
+moreRouter.post('/skill/add', async (ctx, nxt) => {
     let phone = ctx.phone;
     let { data } = ctx.request.body;
-    addSkill(phone, data)
-    return ctx.status = 200
+    return new Promise(async (resolve) => {
+        await addSkill(phone, data);
+        ctx.status = 200;
+        resolve();
+    })
 })
-moreRouter.post('/skill/update', (ctx, nxt) => {
+
+moreRouter.post('/skill/update', async (ctx, nxt) => {
     let phone = ctx.phone;
     let { idx, data } = ctx.request.body;
-    updateIdxSkiil(phone, data, idx)
-    return ctx.status = 200
+    return new Promise(async (resolve) => {
+        await updateIdxSkiil(phone, data, idx);
+        ctx.status = 200;
+        resolve();
+    })
 })
-moreRouter.post('/skill/delete', (ctx, nxt) => {
+moreRouter.post('/skill/delete', async (ctx, nxt) => {
     let phone = ctx.phone;
     let { idx } = ctx.request.body;
-    deleteIdxSkill(phone, idx)
-    return ctx.status = 200
+    return new Promise(async (resolve) => {
+        await deleteIdxSkill(phone, idx);
+        ctx.status = 200;
+        resolve();
+    })
 })
 
 export default moreRouter;

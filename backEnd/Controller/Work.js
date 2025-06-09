@@ -24,61 +24,62 @@ function getIdxWork(phone, idx) {
 }
 
 // 直接 append
-function addWork(phone, data) {
+async function addWork(phone, data) {
     let neo_data;
     if (workExist(phone)) { // append
         neo_data = [...getAllWorks(phone), data];
-        workDB.update(
+        await workDB.update(
             ({ works }) => works.find((work) => work.phone === phone).data = neo_data
         )
     } else {               // new
         neo_data = [data];
-        workDB.update(({ works }) => works.push({
+        await workDB.update(({ works }) => works.push({
             phone: phone,
             data: neo_data
         }))
     }
-    return neo_data
+    return //neo_data
 }
 
-function updateIdxWork(phone, data, idx) {
+async function updateIdxWork(phone, data, idx) {
     let prev_data = getAllWorks(phone);
     if (idx < 0 || idx >= prev_data.length) {
         return false;
     }
 
     let neo_data = [...prev_data.slice(0, idx), data, ...prev_data.slice(idx + 1)];
-    workDB.update(
+    await workDB.update(
         ({ works }) => works.find((work) => work.phone === phone).data = neo_data
     )
-    return neo_data
+    return// neo_data
 }
 
 // 仅用于 OCR
-function updateAllWorks(phone, neo_data) {
+async function updateAllWorks(phone, neo_data) {
     if (workExist(phone)) {
-        workDB.update(
+        await workDB.update(
             ({ works }) => works.find((work) => work.phone === phone).data = neo_data
         )
     } else {
-        workDB.update(({ works }) => works.push({
+        await workDB.update(({ works }) => works.push({
             phone: phone,
             data: neo_data
         }))
     }
+    return;
 }
 
-function deleteIdxWork(phone, idx) {
+async function deleteIdxWork(phone, idx) {
     let prev_data = getAllWorks(phone);
     if (idx < 0 || idx >= prev_data.length) {
         return false;
     }
 
     let neo_data = [...prev_data.slice(0, idx), ...prev_data.slice(idx + 1)];
-    workDB.update(
+    await workDB.update(
         ({ works }) => works.find((work) => work.phone === phone).data = neo_data
     )
-    return neo_data
+    return //neo_data
 }
 
 export {

@@ -76,10 +76,13 @@ export const MoreInfoWrap = (props: { updateFormMeta: Function }) => {
     }
     const removeSkillInfo = (e: any, idx: number) => {
         axios.post('/more/skill/delete', { idx })
-        setTimeout(() => {
-            setEditIdx(-1)
-            updateFormStatus()
-        }, 500)
+        .then(res => res.status)
+        .then(status => {
+            if (status === 200) {
+                setEditIdx(-1)
+                updateFormStatus()
+            }
+        })
     }
     const swtichToAdd = () => {
         setEditIdx(-1)

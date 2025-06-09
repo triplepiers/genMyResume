@@ -29,14 +29,14 @@ function getUuidAdd(phone, uuid) {
 }
 
 // 直接 append
-function addAdd(phone, data) {
+async function addAdd(phone, data) {
     let neo_data;
     if (addExist(phone)) { // append
         neo_data = [...getAllAdds(phone), {
             uuid: genUUID(),
             data: data
         }];
-        addDB.update(
+        await addDB.update(
             ({ adds }) => adds.find((add) => add.phone === phone).data = neo_data
         )
     } else {               // new
@@ -44,15 +44,15 @@ function addAdd(phone, data) {
             uuid: genUUID(),
             data: data
         }];
-        addDB.update(({ adds }) => adds.push({
+        await addDB.update(({ adds }) => adds.push({
             phone: phone,
             data: neo_data
         }))
     }
-    return neo_data
+    return //neo_data
 }
 
-function updateUuidAdd(phone, data, uuid) {
+async function updateUuidAdd(phone, data, uuid) {
     let prev_data = getAllAdds(phone);
     let { item, idx } = getUuidAdd(phone, uuid);
     if (!item) return false;
@@ -62,36 +62,37 @@ function updateUuidAdd(phone, data, uuid) {
         data: data
     }, ...prev_data.slice(idx + 1)];
 
-    addDB.update(
+    await addDB.update(
         ({ adds }) => adds.find((add) => add.phone === phone).data = neo_data
     )
-    return neo_data
+    return //neo_data
 }
 
 // 仅用于 OCR
-function updateAllAdds(phone, neo_data) {
+async function updateAllAdds(phone, neo_data) {
     if (addExist(phone)) { // append
-        addDB.update(
+        await addDB.update(
             ({ adds }) => adds.find((add) => add.phone === phone).data = neo_data
         )
     } else {               // new
-        addDB.update(({ adds }) => adds.push({
+        await addDB.update(({ adds }) => adds.push({
             phone: phone,
             data: neo_data
         }))
     }
+    return //neo_data
 }
 
-function deleteUuidAdd(phone, uuid) {
+async function deleteUuidAdd(phone, uuid) {
     let prev_data = getAllAdds(phone);
     let { item, idx } = getUuidAdd(phone, uuid);
     if (!item) return false;
 
     let neo_data = [...prev_data.slice(0, idx), ...prev_data.slice(idx + 1)];
-    addDB.update(
+    await addDB.update(
         ({ adds }) => adds.find((add) => add.phone === phone).data = neo_data
     )
-    return neo_data
+    return //neo_data
 }
 
 export {

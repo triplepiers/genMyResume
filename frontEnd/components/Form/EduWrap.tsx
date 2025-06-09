@@ -36,10 +36,13 @@ export const EducationWrap = (props: { updateFormMeta: Function }) => {
     const removeEduInfo = (e: any, idx:number) => {
         // del
         axios.post('/edu/delete', {idx})
-        setTimeout(()=>{
-            setEditIdx(-1)
-            updateFormStatus()
-        }, 500)
+        .then(res => res.status)
+        .then(status => {
+            if (status === 200) {
+                setEditIdx(-1)
+                updateFormStatus()
+            }
+        })
     }
     const swtichToAdd = () => {
         setEditIdx(-1)

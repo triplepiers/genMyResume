@@ -299,10 +299,10 @@ async function assessJob(profile, jid, preferred) {
 // 返回：[] - 正在查
 //      [sth] - 查出来了
 async function genJobRec(n, phone, preferred) {
-    // let prevRes = hasPrevRes(phone);
-    // if (prevRes) {
-    //     return Promise.resolve(prevRes);
-    // }
+    let prevRes = hasPrevRes(phone);
+    if (prevRes) {
+        return Promise.resolve(prevRes);
+    }
 
     let profile = getProfile(phone);
     let USE_PREF = preferred.length > 0;

@@ -15,7 +15,7 @@ const addRouter = new Router({
 /* 拦截，统一 check user是否存在
    201 { 没带 }
 */
-addRouter.use((ctx, nxt) => {
+addRouter.use(async (ctx, nxt) => {
     if (ctx.method == 'GET') {
         var { phone }  = ctx.query;
     } else {
@@ -26,7 +26,7 @@ addRouter.use((ctx, nxt) => {
     } else {
         ctx.phone = phone;
     }
-    nxt();
+    await nxt();
 })
 
 // 获取：指定 idx
@@ -45,25 +45,34 @@ addRouter.get('/all', (ctx, nxt) => {
     return ctx.status = 200
 })
 
-addRouter.post('/add', (ctx, nxt) => {
+addRouter.post('/add', async (ctx, nxt) => {
     let phone = ctx.phone;
     let { data } = ctx.request.body;
-    addAdd(phone, data);
-    return ctx.status = 200
+    return new Promise(async (resolve) => {
+        await addAdd(phone, data);
+        ctx.status = 200;
+        resolve();
+    })
 })
 
-addRouter.post('/update', (ctx, nxt) => {
+addRouter.post('/update', async (ctx, nxt) => {
     let phone = ctx.phone;
     let { uuid, data } = ctx.request.body;
-    updateUuidAdd(phone, data, uuid)
-    return ctx.status = 200
+    return new Promise(async (resolve) => {
+        await updateUuidAdd(phone, data, uuid);
+        ctx.status = 200;
+        resolve();
+    })
 })
 
-addRouter.post('/delete', (ctx, nxt) => {
+addRouter.post('/delete', async (ctx, nxt) => {
     let phone = ctx.phone;
     let { uuid } = ctx.request.body;
-    deleteUuidAdd(phone, uuid)
-    return ctx.status = 200
+    return new Promise(async (resolve) => {
+        await deleteUuidAdd(phone, uuid);
+        ctx.status = 200;
+        resolve();
+    })
 })
 
 export default addRouter;

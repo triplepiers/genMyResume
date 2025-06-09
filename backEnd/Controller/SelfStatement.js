@@ -20,18 +20,19 @@ function getSS(phone) {
     }
 }
 
-function updateSS(phone, neo_data) {
+async function updateSS(phone, neo_data) {
     if (!SSExist(phone)) {
-        ssDB.update(({ SSs }) => SSs.push({
+        await ssDB.update(({ SSs }) => SSs.push({
             phone: phone,
             useGen: false,
             data:  neo_data
         }))
     } else {
-        ssDB.update(
+        await ssDB.update(
             ({ SSs }) => SSs.find((ss) => ss.phone === phone).data = neo_data
         )
     }
+    return;
 }
 
 function canGen(phone) {
@@ -45,18 +46,19 @@ function canGen(phone) {
     }
 }
 
-function hasGen(phone) {
+async function hasGen(phone) {
     if (!SSExist(phone)) {
-        ssDB.update(({ SSs }) => SSs.push({
+        await ssDB.update(({ SSs }) => SSs.push({
             phone: phone,
             useGen: true,
             data:  ""
         }))
     } else {
-        ssDB.update(
+        await ssDB.update(
             ({ SSs }) => SSs.find((ss) => ss.phone === phone).useGen = true
         )
     }
+    return
 }
 
 function genEduExp(phone) {

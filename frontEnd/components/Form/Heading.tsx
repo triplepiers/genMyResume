@@ -62,9 +62,11 @@ export const Heading = (props: { updateFormMeta: Function, updateFormStatus: Fun
     // save to server
     axios.post('/head', {
       data: JSON.stringify(values)
-    }).then((res) => {
-      // 没啥要干的了, go next
-      props.updateFormStatus();  
+    }).then(res => res.status)
+    .then(status => {
+      if (status === 200) {
+        props.updateFormStatus(); // 没啥要干的了, go next
+      }
     })
                                   
   }

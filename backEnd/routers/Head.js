@@ -8,7 +8,7 @@ const headRouter = new Router({
 /* 拦截，统一 check user是否存在
    201 { 没带 }
 */
-headRouter.use((ctx, nxt) => {
+headRouter.use(async (ctx, nxt) => {
     if (ctx.method == 'GET') {
         var { phone }  = ctx.query;
     } else {
@@ -19,7 +19,7 @@ headRouter.use((ctx, nxt) => {
     } else {
         ctx.phone = phone;
     }
-    nxt();
+    await nxt();
 })
 
 // 获取
@@ -36,14 +36,17 @@ headRouter.get('/', (ctx, nxt) => {
 }) 
 
 // 更新
-headRouter.post('/', (ctx, nxt) => {
+headRouter.post('/', async (ctx, nxt) => {
     let { phone, data } = ctx.request.body;
-    if (!headExist(phone)) {
-        addHead(phone, data);
-    } else {
-        updateHead(phone, data);
-    }
-    return ctx.status = 200
+    return new Promise(async (resolve) => {
+        if (!headExist(phone)) {
+            await addHead(phone, data);
+        } else {
+            await updateHead(phone, data);
+        }
+        ctx.status = 200;
+        resolve();
+    })
 })
 
 export default headRouter;

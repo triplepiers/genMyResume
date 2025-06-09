@@ -15,6 +15,7 @@ async function addHead(phone, data) {
         phone: phone,
         data: data
     }));
+    return;
 }
 
 async function updateHead(phone, neo_data) {
@@ -27,8 +28,9 @@ async function updateHead(phone, neo_data) {
             );
         }
     } else {
-        addHead(phone, neo_data);
+        await addHead(phone, neo_data);
     }
+    return;
 }
 
 export {

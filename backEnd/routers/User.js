@@ -9,16 +9,16 @@ const userRouter = new Router({
    201 { 没带 }
    202 { 不存在 }
 */
-userRouter.use((ctx, nxt) => {
+userRouter.use(async (ctx, nxt) => {
     if (ctx.url.includes('signin')) {
-        nxt();
+        await nxt();
     } else {
         let { phone } = ctx.request.body;
         if (!phone) {
             return ctx.status = 201;
         }
         if (userExist(phone)) {
-            nxt();
+            await nxt();
         } else {
             return ctx.status = 202;
         }
@@ -29,15 +29,17 @@ userRouter.use((ctx, nxt) => {
     status: 204 { 手机号已经存在 }
             200 { account: 'phone' }
 */
-userRouter.post('/signin', (ctx, nxt) => {
+userRouter.post('/signin', async (ctx, nxt) => {
     let { phone, pwd } = ctx.request.body;
     if (userExist(phone)) {
         return ctx.status = 204
     }
-    // add
-    addUser(phone, pwd)
-    ctx.response.body = JSON.stringify({ account: phone });
-    return ctx.status = 200
+    return new Promise(async (resolve) => {
+        await addUser(phone, pwd);
+        ctx.response.body = JSON.stringify({ account: phone });
+        ctx.status = 200;
+        resolve();
+    })
 })
 
 /* login
@@ -55,10 +57,13 @@ userRouter.post('/', (ctx, nxt) => {
 })
 
 
-userRouter.post('/vip/add', (ctx, nxt) => {
+userRouter.post('/vip/add', async (ctx, nxt) => {
     let { phone } = ctx.request.body;
-    modVIP(phone, true);
-    return ctx.status = 200
+    return new Promise(async (resolve) => {
+        await modVIP(phone, true);
+        ctx.status = 200;
+        resolve();
+    })
 })
 
 

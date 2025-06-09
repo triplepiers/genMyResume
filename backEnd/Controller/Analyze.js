@@ -9,7 +9,7 @@ import { updateSS } from "./SelfStatement.js";
 import { updateAllAdds } from "./Additional.js";
 
 
-function headleHead(uid, parsed) {
+async function handleHead(uid, parsed) {
     let phone = parsed.phone;
     phone = phone.split(')')[1] || phone;
     phone = phone.replace(/\D/g, '').substring(0, 8);
@@ -17,10 +17,11 @@ function headleHead(uid, parsed) {
         phone = phone + ''.padStart(8 - phone.length, '0')
     }
     parsed.phone = `(+862) ${phone.substring(0,4)} ${phone.substring(4,8)}`;
-    updateHead(uid, JSON.stringify(parsed))
+    await updateHead(uid, JSON.stringify(parsed))
+    return;
 }
 
-function handleEdus(uid, parsed) {
+async function handleEdus(uid, parsed) {
     let edus = [];
     parsed.forEach(edu => {
         let isNeoDegree = !([
@@ -52,10 +53,11 @@ function handleEdus(uid, parsed) {
         }
         edus.push(JSON.stringify(info));
     })
-    updateAllEdus(uid, edus);
+    await updateAllEdus(uid, edus);
+    return;
 }
 
-function handleWorks(uid, parsed) {
+async function handleWorks(uid, parsed) {
     let works = [];
     parsed.forEach(work => {
         let info = {
@@ -70,10 +72,11 @@ function handleWorks(uid, parsed) {
         }
         works.push(JSON.stringify(info))
     })
-    updateAllWorks(uid, works);
+    await updateAllWorks(uid, works);
+    return;
 }
 
-function handleMores(uid, award, lans, skills) {
+async function handleMores(uid, award, lans, skills) {
     let skillList = [];
     lans.forEach(lan => {
         let validLevel = [
@@ -96,10 +99,11 @@ function handleMores(uid, award, lans, skills) {
             desc: skill.description
         }))
     })
-    updateBothInfo(uid, award, skillList);
+    await updateBothInfo(uid, award, skillList);
+    return;
 }
 
-function handleAdditionals(uid, parsed) {
+async function handleAdditionals(uid, parsed) {
     let adds = [];
     parsed.forEach(add => {
         adds.push({
@@ -110,21 +114,22 @@ function handleAdditionals(uid, parsed) {
             })
         })
     })
-    updateAllAdds(uid, adds);
+    await updateAllAdds(uid, adds);
+    return;
 }
 
 function analyzeResume(uid, resume) {
     return new Promise((resolve) => {
         getJSONCompletion(genResumeAnalyzeMsgs(resume))
-            .then(jsonStr => {
+            .then(async jsonStr => {
                 try {
                     let res = JSON.parse(jsonStr);
-                    headleHead(uid, res.head);
-                    handleEdus(uid, res.educations);
-                    handleWorks(uid, res.workExperiences);
-                    handleMores(uid, res.awards, res.languages, res.skills);
-                    updateSS(uid, res.selfStatement);
-                    handleAdditionals(uid, res.additionalBlocks);
+                    await handleHead(uid, res.head);
+                    await handleEdus(uid, res.educations);
+                    await handleWorks(uid, res.workExperiences);
+                    await handleMores(uid, res.awards, res.languages, res.skills);
+                    await updateSS(uid, res.selfStatement);
+                    await handleAdditionals(uid, res.additionalBlocks);
                     resolve(true); // success
                 } catch(e) {
                     resolve(false);

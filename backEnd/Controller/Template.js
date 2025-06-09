@@ -30,11 +30,11 @@ function userExist(phone) {
     return (tps.find((tp) => tp.phone === phone) !== undefined)
 }
 
-function canDown(phone, tid) {
+async function canDown(phone, tid) {
     let tpInfo = tps.find((tp) => tp.phone === phone);
     // 从来没下载过，可以
     if (!tpInfo) { 
-        tpDB.update(({ tps }) => tps.push({
+        await tpDB.update(({ tps }) => tps.push({
             phone: phone,
             purchased: [{
                 tid,
@@ -47,7 +47,7 @@ function canDown(phone, tid) {
     // 没下过当前这个，可以
     let purchaseRecord = tpInfo.purchased.find((pRecord) => pRecord.tid === tid);
     if (!purchaseRecord) {
-        tpDB.update(({ tps }) => {
+        await tpDB.update(({ tps }) => {
             tps.find((tp) => tp.phone === phone).purchased.push({
                 tid,
                 hasDown: true,
@@ -71,10 +71,10 @@ function hasBuy(phone, tid) {
     return purchaseRecord.hasBuy
 }
 
-function buy(phone, tid) {
+async function buy(phone, tid) {
     let tpInfo = tps.find((tp) => tp.phone === phone);
     if (!tpInfo) {
-        tpDB.update(({ tps }) => tps.push({
+        await tpDB.update(({ tps }) => tps.push({
             phone: phone,
             purchased: [{
                 tid,
@@ -85,7 +85,7 @@ function buy(phone, tid) {
     } else {
         let purchaseRecord = tpInfo.purchased.find((pRecord) => pRecord.tid === tid);
         if (!purchaseRecord) {
-            tpDB.update(({ tps }) => {
+            await tpDB.update(({ tps }) => {
                 tps.find((tp) => tp.phone === phone).purchased.push({
                     tid,
                     hasDown: false,
@@ -93,17 +93,18 @@ function buy(phone, tid) {
                 })
             })
         } else {
-            tpDB.update(({ tps }) => {
+            await tpDB.update(({ tps }) => {
                 tps.find((tp) => tp.phone === phone).purchased.find((pRecord) => pRecord.tid === tid).hasBuy = true
             })
         }
     }
+    return;
 }
 
-function hasDown(phone, tid) {
+async function hasDown(phone, tid) {
     let tpInfo = tps.find((tp) => tp.phone === phone);
     if(!tpInfo) {
-        tpDB.update(({ tps }) => tps.push({
+        await tpDB.update(({ tps }) => tps.push({
             phone: phone,
             purchased: [{
                 tid,
@@ -115,7 +116,7 @@ function hasDown(phone, tid) {
     }
     let purchaseRecord = tpInfo.purchased.find((pRecord) => pRecord.tid === tid);
     if (!purchaseRecord) {
-        tpDB.update(({ tps }) => {
+        await tpDB.update(({ tps }) => {
             tps.find((tp) => tp.phone === phone).purchased.push({
                 tid,
                 hasDown: true,
@@ -124,9 +125,10 @@ function hasDown(phone, tid) {
         })
         return
     }
-    tpDB.update(({ tps }) => {
+    await tpDB.update(({ tps }) => {
         tps.find((tp) => tp.phone === phone).purchased.find((pRecord) => pRecord.tid === tid).hasDown = true
     })
+    return;
 }
 
 export {

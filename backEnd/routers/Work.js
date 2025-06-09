@@ -15,7 +15,7 @@ const workRouter = new Router({
 /* 拦截，统一 check user是否存在
    201 { 没带 }
 */
-workRouter.use((ctx, nxt) => {
+workRouter.use(async (ctx, nxt) => {
     if (ctx.method == 'GET') {
         var { phone }  = ctx.query;
     } else {
@@ -26,7 +26,7 @@ workRouter.use((ctx, nxt) => {
     } else {
         ctx.phone = phone;
     }
-    nxt();
+    await nxt();
 })
 
 // 获取：指定 idx
@@ -45,25 +45,35 @@ workRouter.get('/all', (ctx, nxt) => {
     return ctx.status = 200
 })
 
-workRouter.post('/add', (ctx, nxt) => {
+workRouter.post('/add', async (ctx, nxt) => {
     let phone = ctx.phone;
     let { data } = ctx.request.body;
-    addWork(phone, data);
-    return ctx.status = 200
+    return new Promise(async (resolve) => {
+        await addWork(phone, data);
+        ctx.status = 200
+        resolve();
+    })
+    
 })
 
-workRouter.post('/update', (ctx, nxt) => {
+workRouter.post('/update', async (ctx, nxt) => {
     let phone = ctx.phone;
     let { idx, data } = ctx.request.body;
-    updateIdxWork(phone, data, idx)
-    return ctx.status = 200
+    return new Promise(async (resolve) => {
+        await updateIdxWork(phone, data, idx)
+        ctx.status = 200
+        resolve();
+    })
 })
 
-workRouter.post('/delete', (ctx, nxt) => {
+workRouter.post('/delete', async (ctx, nxt) => {
     let phone = ctx.phone;
     let { idx } = ctx.request.body;
-    deleteIdxWork(phone, idx)
-    return ctx.status = 200
+    return new Promise(async (resolve) => {
+        await deleteIdxWork(phone, idx)
+        ctx.status = 200
+        resolve();
+    })
 })
 
 export default workRouter;

@@ -28,11 +28,11 @@ export const Awards = (props: { updateFormStatus: Function }) => {
         resolver: zodResolver(formSchema),
     })
     
-    async function onSubmit(values: z.infer<typeof formSchema>) {
+    function onSubmit(values: z.infer<typeof formSchema>) {
         if (values.awards !== awardsInfo) {
             axios.post('/more/award', {
                 data:  values.awards
-            })
+            }) // 这边默认成功更新，就不在 then 里更新客户端内容了
         }
     }
     return (

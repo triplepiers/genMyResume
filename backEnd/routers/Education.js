@@ -14,7 +14,7 @@ const eduRouter = new Router({
 /* 拦截，统一 check user是否存在
    201 { 没带 }
 */
-eduRouter.use((ctx, nxt) => {
+eduRouter.use(async (ctx, nxt) => {
     if (ctx.method == 'GET') {
         var { phone }  = ctx.query;
     } else {
@@ -25,7 +25,7 @@ eduRouter.use((ctx, nxt) => {
     } else {
         ctx.phone = phone;
     }
-    nxt();
+    await nxt();
 })
 
 // 获取：指定 idx
@@ -44,25 +44,34 @@ eduRouter.get('/all', (ctx, nxt) => {
     return ctx.status = 200
 })
 
-eduRouter.post('/add', (ctx, nxt) => {
+eduRouter.post('/add', async (ctx, nxt) => {
     let phone = ctx.phone;
     let { data } = ctx.request.body;
-    addEdu(phone, data);
-    return ctx.status = 200
+    return new Promise(async (resolve) => {
+        await addEdu(phone, data);
+        ctx.status = 200;
+        resolve();
+    })
 })
 
-eduRouter.post('/update', (ctx, nxt) => {
+eduRouter.post('/update', async (ctx, nxt) => {
     let phone = ctx.phone;
     let { idx, data } = ctx.request.body;
-    updateIdxEdu(phone, data, idx)
-    return ctx.status = 200
+    return new Promise(async (resolve) => {
+        await updateIdxEdu(phone, data, idx);
+        ctx.status = 200;
+        resolve();
+    })
 })
 
-eduRouter.post('/delete', (ctx, nxt) => {
+eduRouter.post('/delete', async (ctx, nxt) => {
     let phone = ctx.phone;
     let { idx } = ctx.request.body;
-    deleteIdxEdu(phone, idx)
-    return ctx.status = 200
+    return new Promise(async (resolve) => {
+        await deleteIdxEdu(phone, idx);
+        ctx.status = 200;
+        resolve();
+    })
 })
 
 export default eduRouter;

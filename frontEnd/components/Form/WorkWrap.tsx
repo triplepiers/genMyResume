@@ -35,10 +35,13 @@ export const WorkWrap = (props: { updateFormMeta: Function }) => {
     }
     const removewkInfo = (e: any, idx: number) => {
         axios.post('/work/delete', {idx})
-        setTimeout(()=>{
-            setEditIdx(-1)
-            updateFormStatus()
-        }, 500)
+        .then(res => res.status)
+        .then(status => {
+            if (status === 200) {
+                setEditIdx(-1)
+                updateFormStatus()
+            }
+        })
     }
     const swtichToAdd = () => {
         setEditIdx(-1)

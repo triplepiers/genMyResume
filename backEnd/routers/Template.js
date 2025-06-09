@@ -42,19 +42,26 @@ tpRouter.get('/profile', (ctx, nxt) => {
 })
 
 // 查询是够可以下载
-tpRouter.get('/down', (ctx, nxt) => {
+tpRouter.get('/down', async (ctx, nxt) => {
     let phone = ctx.phone;
     let { tid } = ctx.query;
-    ctx.response.body = JSON.stringify({ canDown: canDown(phone, tid) });
-    return ctx.status = 200
+    return new Promise(async (resolve) => {
+        let res = await canDown(phone, tid);
+        ctx.response.body = JSON.stringify({ canDown: res });
+        ctx.status = 200;
+        resolve();
+    })
 })
 
 // 修改下载状态
-tpRouter.post('/down', (ctx, nxt) => {
+tpRouter.post('/down', async (ctx, nxt) => {
     let phone = ctx.phone;
     let { tid } = ctx.request.body;
-    hasDown(phone, tid);
-    return ctx.status = 200;
+    return new Promise(async (resolve) => {
+        await hasDown(phone, tid);
+        ctx.status = 200;
+        resolve();
+    })
 })
 
 // OCR 处理 + 序列化
@@ -63,7 +70,7 @@ tpRouter.post('/down', (ctx, nxt) => {
 tpRouter.post('/analyze', async (ctx, nxt) => {
     let phone = ctx.phone;
     let { resume } = ctx.request.body;
-    return await new Promise((resolve) => {
+    return new Promise((resolve) => {
         if (resume.length === 0) { // 不分析了
             ctx.status = 200
             resolve()

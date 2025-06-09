@@ -1,5 +1,4 @@
-import { useEffect } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { set, useForm } from "react-hook-form";
 import { string, z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -57,6 +56,7 @@ export const Education = (props: { edit: number, updateFormStatus: Function }) =
     const [bgYear,  setbgYear]  = useState("")
     const [edMonth, setedMonth] = useState("")
     const [edYear,  setedYear]  = useState("")
+    const [isLoading, setIsLoading] = useState(false);
     useEffect(() => {
         if (props.edit !== -1)  {
             axios.get('/edu', {
@@ -121,23 +121,31 @@ export const Education = (props: { edit: number, updateFormStatus: Function }) =
             ed_year:     edYear,
             more:        values.more
         }
-
+        setIsLoading(true);
         if (props.edit === -1) {
             axios.post('/edu/add', {
                 data:  JSON.stringify(vals)
+            }).then(res => res.status)
+            .then(status => {
+                console.log(status)
+                if (status === 200) {
+                    Clear(); // clear input
+                    setIsLoading(false);
+                    props.updateFormStatus();
+                }
             })
-            // clear input
-            Clear();
         } else {
             axios.post('/edu/update', {
                 data:  JSON.stringify(vals),
                 idx:   props.edit
+            }).then(res => res.status)
+            .then(status => {
+                if (status === 200) {
+                    setIsLoading(false);
+                    props.updateFormStatus();
+                }
             })
-        }
-        // go next
-        setTimeout(() => {
-            props.updateFormStatus();   
-        }, 500)                      
+        }                    
     }
 
     const Clear = () => {
@@ -341,12 +349,12 @@ export const Education = (props: { edit: number, updateFormStatus: Function }) =
                             </FormItem>
                         )}
                 /></div>
-                <button type="submit" id='GO' 
-                    className={`cursor-pointer rounded-md font-medium 
+                <button type="submit" id='GO' disabled={isLoading}
+                    className={`cursor-pointer rounded-md font-medium duration-1000
                         bg-[var(--${props.edit===-1?"green":"pink"})]
                         text-[var(--${props.edit===-1?"fore":"back"}ground)]
                         block px-4 py-[0.2rem] min-w-[6rem]`}>
-                    <>{props.edit===-1?"Add":"Update"}</>
+                    <>{isLoading ? 'Loading' : props.edit===-1?"Add":"Update"}</>
                 </button>
             </form>
         </Form>

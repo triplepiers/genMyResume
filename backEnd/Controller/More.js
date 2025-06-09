@@ -15,18 +15,19 @@ function getAward(phone) {
     }
 }
 
-function updateAward(phone, data) {
+async function updateAward(phone, data) {
     if (!moreExist(phone)) {
-        moreDB.update(({ mores }) => mores.push({
+        await moreDB.update(({ mores }) => mores.push({
             phone: phone,
             award: data,
             skills: []
         }))
     } else {
-        moreDB.update(
+        await moreDB.update(
             ({ mores }) => mores.find((more) => more.phone === phone).award = data
         )
     }
+    return;
 }
 
 function getAllSkills(phone) {
@@ -45,60 +46,60 @@ function getIdxSkill(phone, idx) {
     return skillList[idx]
 }
 
-function addSkill(phone, data) {
+async function addSkill(phone, data) {
     let neo_data;
     if (moreExist(phone)) { // append
         neo_data = [...getAllSkills(phone), data];
-        moreDB.update(
+        await moreDB.update(
             ({ mores }) => mores.find((more) => more.phone === phone).skills = neo_data
         )
     } else {               // new
         neo_data = [data];
-        moreDB.update(({ mores }) => mores.push({
+        await moreDB.update(({ mores }) => mores.push({
             phone: phone,
             award: "",
             skills: neo_data
         }))
     }
-    return neo_data
+    return //neo_data
 }
 
-function updateIdxSkiil(phone, data, idx) {
+async function updateIdxSkiil(phone, data, idx) {
     let prev_data = getAllSkills(phone);
     if (idx < 0 || idx >= prev_data.length) {
         return false;
     }
 
     let neo_data = [...prev_data.slice(0, idx), data, ...prev_data.slice(idx + 1)];
-    moreDB.update(
+    await moreDB.update(
         ({ mores }) => mores.find((more) => more.phone === phone).skills = neo_data
     )
-    return neo_data
+    return// neo_data
 }
 
-function deleteIdxSkill(phone, idx) {
+async function deleteIdxSkill(phone, idx) {
     let prev_data = getAllSkills(phone);
     if (idx < 0 || idx >= prev_data.length) {
         return false;
     }
 
     let neo_data = [...prev_data.slice(0, idx), ...prev_data.slice(idx + 1)];
-    moreDB.update(
+    await moreDB.update(
         ({ mores }) => mores.find((more) => more.phone === phone).skills = neo_data
     )
-    return neo_data
+    return //neo_data
 }
 
 // 仅用于 OCR
-function updateBothInfo(phone, award, skills) {
+async function updateBothInfo(phone, award, skills) {
     if (!moreExist(phone)) {
-        moreDB.update(({ mores }) => mores.push({
+        await moreDB.update(({ mores }) => mores.push({
             phone: phone,
             award: award,
             skills: skills
         }))
     } else {
-        moreDB.update(
+        await moreDB.update(
             ({ mores }) => {
                 let info = mores.find((more) => more.phone === phone);
                 info.award = award;
@@ -106,6 +107,7 @@ function updateBothInfo(phone, award, skills) {
             }
         )
     }
+    return;
 }
 
 export {

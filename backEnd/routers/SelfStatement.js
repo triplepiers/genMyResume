@@ -50,7 +50,7 @@ ssRouter.get('/gen', (ctx, nxt) => {
 // 生成
 ssRouter.post('/gen', async (ctx, nxt) => {
     let phone = ctx.phone;
-    return await new Promise((resolve) => {
+    return new Promise((resolve) => {
         genSS(phone).then((res) => {
             ctx.response.body = JSON.stringify({ ss: res.slice(1,-1) });
             ctx.status = 200
