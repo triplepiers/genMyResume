@@ -35,8 +35,9 @@ async function updateSS(phone, neo_data) {
     return;
 }
 
-function canGen(phone) {
-    if (isVIP(phone)) {
+async function canGen(phone) {
+    let isvip = await isVIP(phone);
+    if (isvip) {
         return true;
     } else {
         if (!SSExist(phone)) { return true; }
@@ -115,7 +116,8 @@ ${genAdds(phone)}`
 }
 
 async function genSS(phone) {
-    if(!canGen(phone)) {
+    let cangen = await canGen(phone);
+    if(!cangen) {
         return "You have used the generation function, please update your self-statement manually."
     }
     hasGen(phone);

@@ -32,7 +32,8 @@ jobRouter.use(async (ctx, nxt) => {
 jobRouter.get('/', async (ctx, nxt) => {
     let phone = ctx.phone;
     let { preferred } = ctx.query;
-    let n = isVIP(phone)?30:10; // VIP:30, 普:10
+    let isvip = await isVIP(phone);
+    let n = isvip?30:10; // VIP:30, 普:10
     
     return new Promise((resolve) => {
         genJobRec(n, phone, preferred).then(

@@ -33,10 +33,8 @@ function userExist(phone) {
 
 async function canDown(phone, tid) {
     // 是会员随便下
-    if (isVIP(phone)) {
-        return true;
-    }
-    
+    let isvip = await isVIP(phone);
+    if (isvip) return true;
     let tpInfo = tps.find((tp) => tp.phone === phone);
     // 从来没下载过，可以
     if (!tpInfo) { 
@@ -62,9 +60,7 @@ async function canDown(phone, tid) {
         })
         return true
     }
-    if (!purchaseRecord.hasDown) {
-        return true
-    }
+    if (!purchaseRecord.hasDown) return true;
     // 来过就是下过，看有没有买
     return purchaseRecord.hasBuy
 }

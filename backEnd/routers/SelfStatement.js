@@ -42,10 +42,15 @@ ssRouter.post('/', (ctx, nxt) => {
 })
 
 // 能不能用 gen
-ssRouter.get('/gen', (ctx, nxt) => {
+ssRouter.get('/gen', async (ctx, nxt) => {
     let phone = ctx.phone;
-    ctx.response.body = JSON.stringify({ canGen: canGen(phone) });
-    return ctx.status = 200
+    return new Promise(async (resolve) => {
+        let cangen = await canGen(phone)
+        ctx.response.body = JSON.stringify({ canGen: cangen });
+        ctx.status = 200;
+        resolve();
+    })
+    
 })
 // 生成
 ssRouter.post('/gen', async (ctx, nxt) => {

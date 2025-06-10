@@ -40,7 +40,7 @@ export default function Result(props: any[]) {
         download: () => {
             // check purchased
             axios.get('/tp/down', {
-                params: { tid: 'tid' }
+                params: { tid }
             }).then((res) => {
                 let canDown = res.data.canDown
                 if (canDown) {

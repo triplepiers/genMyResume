@@ -64,11 +64,11 @@ export const PurchaseCard = (props: {
             if (res.status === 200) {
                 if (res.data) {
                     setBtnType(BtnType.success)
-                    if (tid==='vip') {
-                        axios.post('/usr/vip/add')
+                    if (tid.includes('vip')) {
+                        axios.post('/usr/vip/add', { tVIP: parseInt(tid) })
                     }
                     setTimeout(() => {
-                        if (tid==='vip') {
+                        if (tid.includes('vip')) {
                             props.updateShow(false, true);
                         } else {
                             handleExt();
