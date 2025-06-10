@@ -1,7 +1,14 @@
+import { useEffect } from "react";
+import { useRouter } from "next/router";
 import { LoginCard } from "@/components/Cards/LoginCard";
 import { SigninCard } from "@/components/Cards/SigninCard";
 
 export default function Login(props: any[]) {
+    const router = useRouter();
+    // 登录拦截器
+    useEffect(() => {
+        if (localStorage.getItem('account')) router.push('/');
+    }, []);
     return (
         <div className="flex flex-col flex-wrap items-center justify-center gap-y-[2rem]
              w-screen min-h-[calc(100vh-var(--header-height))] p-20 scroll">

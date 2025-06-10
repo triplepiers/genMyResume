@@ -65,11 +65,14 @@ export const PurchaseCard = (props: {
                 if (res.data) {
                     setBtnType(BtnType.success)
                     if (tid==='vip') {
-                        localStorage.setItem('isVIP', 'true');
                         axios.post('/usr/vip/add')
                     }
                     setTimeout(() => {
-                        handleExt();
+                        if (tid==='vip') {
+                            props.updateShow(false, true);
+                        } else {
+                            handleExt();
+                        }
                     }, 2000);
                 } else {
                     setBtnType(BtnType.error)

@@ -28,10 +28,7 @@ export const Header = () => {
     const [windowWidth, setWindowWidth] = useState<number>();
     const [account, setAccount] = useState("");
     const [isVIP, setIsVIP] = useState(false);
-    const [showCard, setShowCard] = useState(false);
-    const handleUpdateShowCard =  (neoShowCard: boolean) => {
-        setShowCard(neoShowCard);
-    }
+    
     useEffect(() => {
         if (localStorage.getItem('account')) {
             setAccount(localStorage.getItem('account') as string);
@@ -40,6 +37,7 @@ export const Header = () => {
             setIsVIP(localStorage.getItem('isVIP') !== 'false');
         }
     }, [router.pathname]);
+
     useEffect(() => {
         setWindowWidth(window.innerWidth);
         const handleResize = () => {
@@ -62,9 +60,7 @@ export const Header = () => {
     }
 
     const beVIP = () => {
-        if (!isVIP) {
-            setShowCard(true);
-        }
+        if (!isVIP) router.push('/vip');
     }
 
     return (
@@ -144,13 +140,6 @@ export const Header = () => {
                     }
                 </div>
             </header>
-            {
-                showCard ?
-                    (<PurchaseCard
-                        tid="vip" title="Oops! You are not VIP now"
-                        updateShow={handleUpdateShowCard}
-                    />) : (<></>)
-            }
             </>
     )
 };

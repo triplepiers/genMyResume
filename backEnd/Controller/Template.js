@@ -5,6 +5,7 @@ import { getAward } from "./More.js";
 import { getAllSkills } from "./More.js";
 import { getAllAdds } from "./Additional.js";
 import { getSS } from "./SelfStatement.js";
+import { isVIP } from "./User.js";
 
 import tpDB from "../db/TemplateDB.js";
 
@@ -31,6 +32,11 @@ function userExist(phone) {
 }
 
 async function canDown(phone, tid) {
+    // 是会员随便下
+    if (isVIP(phone)) {
+        return true;
+    }
+    
     let tpInfo = tps.find((tp) => tp.phone === phone);
     // 从来没下载过，可以
     if (!tpInfo) { 
