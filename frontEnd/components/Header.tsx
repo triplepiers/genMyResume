@@ -79,7 +79,7 @@ export const Header = () => {
                             subPages.map(itemInfo => (
                                 <div key={itemInfo.url} 
                                     onClick={() => {
-                                        if (account.length>0) router.push(itemInfo.url);
+                                        if (account.length>0||itemInfo.url==='/pricing') router.push(itemInfo.url);
                                         else router.push('/login');
                                     }}
                                     className="h-full flex items-center px-2 border-[var(--blue)]
