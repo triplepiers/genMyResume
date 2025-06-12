@@ -44,7 +44,7 @@ export default function App({ Component, pageProps }: AppProps) {
         pageProps.noHeader ? <></> : <Header />
       }
       <Component {...pageProps} />
-      <a href="https://www.zjuers.com" target="_blank">
+      <a href="https://www.wjx.cn/vm/Q0yawOH.aspx#" target="_blank">
         <FloatButton
           style={{ insetInlineEnd: 40 }}
           icon={<CustomerServiceOutlined />}
