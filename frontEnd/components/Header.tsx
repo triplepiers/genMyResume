@@ -5,9 +5,11 @@ import { Flame } from "lucide-react";
 import { MenuOutlined } from '@ant-design/icons';
 import { Dropdown, Space } from "antd";
 
-import { PurchaseCard } from "@/components/Cards/PurchaseCard";
-
 const subPages = [
+    {
+        url: '/pricing',
+        title: 'Pricing'
+    },
     {
         url: '/select',
         title: 'Resume Design'
@@ -59,10 +61,6 @@ export const Header = () => {
         router.push('/')
     }
 
-    const beVIP = () => {
-        if (!isVIP) router.push('/vip');
-    }
-
     return (
         <>
             <header className="bg-black/[0.8] backdrop-blur-sm shadow-xl text-white
@@ -77,7 +75,7 @@ export const Header = () => {
 
                 <div className="flex gap-[1rem] items-center h-full">
                     {
-                        !windowWidth || windowWidth > 720 ?
+                        !windowWidth || windowWidth > 840 ?
                             subPages.map(itemInfo => (
                                 <div key={itemInfo.url} 
                                     onClick={() => {
@@ -124,11 +122,12 @@ export const Header = () => {
                                         {account.slice(0, 2)}*{account.slice(-4, -1)}
                                     </span>
                                 </div>
-                                <Flame className={`
-                                w-[1.5rem] h-[1.5rem] p-[0.2rem] border-1 border-transparent rounded duration-200
-                                ${isVIP ? "text-[var(--blue)] hover:border-[var(--blue)]" : "hover:border-[var(--background)]"}`}
-                                    onClick={beVIP}
-                                />
+                                <Link href='pricing'>
+                                    <Flame className={`
+                                    w-[1.5rem] h-[1.5rem] p-[0.2rem] border-1 border-transparent rounded duration-200
+                                    ${isVIP ? "text-[var(--blue)] hover:border-[var(--blue)]" : "hover:border-[var(--background)]"}`}
+                                    />
+                                </Link>
                             </div>
                         ) : (
                             <Link href={'/login'}><button className="bg-[var(--pink)] font-bold
