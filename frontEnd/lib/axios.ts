@@ -3,7 +3,7 @@ import axios from "axios";
 // 统一配置代理
 const apiClient = axios.create({
     // baseURL: 'http://localhost:8080/api',  // test local
-    baseURL: 'http://20.2.117.32/api', // test remote
+    baseURL: 'http://www.seabee.icu/api/',
     timeout: 120000 // 120s => 限制并发之后有点慢
 })
 
