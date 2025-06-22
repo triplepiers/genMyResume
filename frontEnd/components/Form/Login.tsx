@@ -1,11 +1,11 @@
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { string, z } from "zod"
+import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 
 import { Form, FormItem, FormField, FormLabel, FormControl, FormDescription, FormMessage } from "../ui/form";
-import { Loader2, Plus } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input, PhoneInput } from "../ui/input";
 
@@ -29,21 +29,41 @@ export const LoginForm = () => {
     const [btnType, setBtnType]  = useState(BtnType.normal)
     const [errMsg,  setErrMsg]   = useState("")
 
+    const [useHK, setUseHK] = useState<boolean>();
+    useEffect(() => {
+        if (localStorage.getItem("useHK") === null) {
+            localStorage.setItem("useHK", "true");
+            setUseHK(true);
+        } else {
+            setUseHK(localStorage.getItem("useHK") === "true");
+        }
+    });
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
     })
     function onSubmit(values: z.infer<typeof formSchema>) {
         // 检查用户名
-        let phone = values.phone;
+        let phone = values.phone.replace(/\D/g, '');
         if (phone.length === 0) {
             form.setError('phone', { message: 'Required'})
             return
-        } else if (phone.length < 9) {
-            form.setError('phone', { message: 'Incomplete'})
-            return
         } else {
-            values.phone = `${phone.slice(0,4)}${phone.slice(5)}`
+            
+            if (useHK) {
+                if (phone.length !== 8) {
+                    form.setError('phone', { message: 'Incomplete'})
+                    return
+                }
+            } else {
+                if (phone.length !== 11) {
+                    form.setError('phone', { message: 'Incomplete'})
+                    return
+                }
+            }
         }
+        values.phone = phone;
+
         setBtnType(BtnType.wait);
         axios.post('/usr', {
             phone:    values.phone,
@@ -80,11 +100,11 @@ export const LoginForm = () => {
                         <FormItem>
                             <FormLabel>Phone Number*</FormLabel>
                             <FormControl>
-                                <PhoneInput placeholder="eg. 1234 5678" 
-                                    {...field} onChange={(e) => handlePhone(e, form, 'phone')}/>
+                                <PhoneInput placeholder={`eg. 1234 5678${useHK?'':' 901'}`} 
+                                    {...field} onChange={(e) => handlePhone(e, form, 'phone', useHK!)}/>
                             </FormControl>
                             <FormDescription>
-                                8 letters HongKong Phone Number as your account
+                                {useHK?'8 letters HongKong':'11 letters mainland'} Phone Number as your account
                             </FormDescription>
                             <FormMessage />
                         </FormItem>

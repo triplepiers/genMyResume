@@ -1,5 +1,5 @@
 import * as React from "react"
-
+import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils"
 
 function Input({ className, type, ...props }: React.ComponentProps<"input">) {
@@ -18,7 +18,16 @@ function Input({ className, type, ...props }: React.ComponentProps<"input">) {
   )
 }
 
-function PhoneInput({ className, type, ...props }: React.ComponentProps<"input">) {
+function PhoneInput({ className, type, ...props}: React.ComponentProps<"input">) {
+  const [useHK, setUseHK] = useState<boolean>();
+  useEffect(() => {
+    if (localStorage.getItem("useHK") === null) {
+      localStorage.setItem("useHK", "true");
+      setUseHK(true);
+    } else {
+      setUseHK(localStorage.getItem("useHK") === "true");
+    }
+  });
   return (
     <div className="w-full relative">
       <input
@@ -33,11 +42,10 @@ function PhoneInput({ className, type, ...props }: React.ComponentProps<"input">
         {...props}
       />
       <div className="absolute left-0 top-0 text-sm h-full px-2 flex items-center">
-        (+852)
+        {useHK? "(+852)" : "(+86)"}
       </div>
     </div>
   )
 }
-
 
 export { Input, PhoneInput }

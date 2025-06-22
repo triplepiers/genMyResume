@@ -1,4 +1,5 @@
 import { clsx, type ClassValue } from "clsx"
+import { Cone } from "lucide-react";
 import { twMerge } from "tailwind-merge"
 
 export function cn(...inputs: ClassValue[]) {
@@ -125,12 +126,20 @@ export const genItemTitle = {
 /*
   Bug: 删空格的时候光标会跳回最后面
 */
-export const handlePhone = (e: any, form: any, field: string) => {
-  let neo_res = e.target.value
-    .replace(/\D/g, '') // numbersONLY
-    .substring(0, 8)    // not longer than 8
-  if (neo_res.length >= 5) {
-    neo_res = `${neo_res.substring(0, 4)} ${neo_res.substring(4)}`;
+export const handlePhone = (e: any, form: any, field: string, useHK: boolean) => {
+  let neo_res = e.target.value.replace(/\D/g, '') // numbersONLY
+  if (useHK) {
+    neo_res = neo_res.substring(0, 8)    // not longer than 8
+    if (neo_res.length >= 5) {
+      neo_res = `${neo_res.substring(0, 4)} ${neo_res.substring(4)}`;
+    }
+  } else {
+    neo_res = neo_res.substring(0, 11)    // not longer than 8
+    if (neo_res.length >= 9) {
+      neo_res = `${neo_res.substring(0, 4)} ${neo_res.substring(4, 8)} ${neo_res.substring(8)}`;
+    } else if (neo_res.length >= 5) {
+      neo_res = `${neo_res.substring(0, 4)} ${neo_res.substring(4)}`;
+    }
   }
   form.setValue(field, neo_res);
 }
