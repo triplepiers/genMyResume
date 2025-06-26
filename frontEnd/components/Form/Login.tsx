@@ -39,6 +39,16 @@ export const LoginForm = () => {
         }
     });
 
+    const switchFormat = () => {
+        if (useHK) {
+            localStorage.setItem("useHK", "false");
+            setUseHK(false);
+        } else {
+            localStorage.setItem("useHK", "true");
+            setUseHK(true);
+        }
+    }
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
     })
@@ -104,7 +114,12 @@ export const LoginForm = () => {
                                     {...field} onChange={(e) => handlePhone(e, form, 'phone', useHK!)}/>
                             </FormControl>
                             <FormDescription>
-                                {useHK?'8 letters HongKong':'11 letters mainland'} Phone Number as your account
+                                {useHK?'8 letters HongKong':'11 letters mainland'} Phone Number as your account<br/>
+                                <span 
+                                    onClick={switchFormat}
+                                    className="text-[var(--blue)] cursor-pointer">
+                                    Use <b>{useHK?'mainland':'HongKong'}</b> format
+                                </span> 
                             </FormDescription>
                             <FormMessage />
                         </FormItem>

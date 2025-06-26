@@ -42,6 +42,16 @@ export const SigninForm = () => {
             setUseHK(localStorage.getItem("useHK") === "true");
         }
     });
+
+    const switchFormat = () => {
+        if (useHK) {
+            localStorage.setItem("useHK", "false");
+            setUseHK(false);
+        } else {
+            localStorage.setItem("useHK", "true");
+            setUseHK(true);
+        }
+    }
     
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -130,7 +140,12 @@ export const SigninForm = () => {
                                 />
                             </FormControl>
                             <FormDescription>
-                                {useHK? '8 letters HongKong': '11 letters mainland'} Phone Number
+                                {useHK? '8 letters HongKong': '11 letters mainland'} Phone Number<br/>
+                                <span 
+                                    onClick={switchFormat}
+                                    className="text-[var(--pink)] cursor-pointer">
+                                    Use <b>{useHK?'mainland':'HongKong'}</b> format
+                                </span>
                             </FormDescription>
                             <FormMessage />
                         </FormItem>

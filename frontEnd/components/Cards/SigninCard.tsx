@@ -4,7 +4,7 @@ export const SigninCard = () => {
     return (
         <div className="custom-card-base">
             <h2 className="text-xl font-bold text-[var(--pink)] mb-2 w-full text-center">
-                Sign In
+                Sign Up
             </h2>
             <SigninForm/>
         </div>
