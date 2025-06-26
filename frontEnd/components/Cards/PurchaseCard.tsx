@@ -20,18 +20,20 @@ enum BtnType {
 };
 
 export const PurchaseCard = (props: {
-    updateShow: Function, 
+    updateShow: Function,
     tid: string, title: string
 }) => {
     var tid = props.tid;
+    const logoURL = `/charge/${tid.includes('vip')?tid[0]==='1'?'30':'128':'5'}.png`;
+
     useEffect(() => {
         // buy CDK: 没用，只是在后台把 CDK 打出来
         axios.post('/cdk', { tid }) // TODO：这个需要放出来
     }, [])
-    
-    const [OTPVal,  setOTPVal]   = useState("");
-    const [btnType, setBtnType]  = useState(BtnType.tooShort);
- 
+
+    const [OTPVal, setOTPVal] = useState("");
+    const [btnType, setBtnType] = useState(BtnType.tooShort);
+
     // var cdk: string = '072076D953E9';     // TODO：这个需要删掉
 
     const handleChange = (newVal: string) => {
@@ -58,7 +60,7 @@ export const PurchaseCard = (props: {
         // return 
 
         await axios.post('/cdk/check', {
-            cdk: OTPVal, 
+            cdk: OTPVal,
             tid
         }).then(res => {
             if (res.status === 200) {
@@ -88,20 +90,24 @@ export const PurchaseCard = (props: {
 
     return (
         <div className="custom-hover-page-middle custom-card-base">
-            <div className="w-full flex justify-between">
-                <h2 className="font-bold text-xl mb-1 text-[var(--foreground)]">
-                    {props.title}
-                </h2>
-                <button className="cursor-pointer" onClick={handleExt}>
-                    <Plus className="rotate-45 hover:rotate-90 duration-100
-                    text-[var(--pink)]"/>
-                </button>
+            <button className="cursor-pointer absolute right-0 top-0 px-[10px] py-[10px]" onClick={handleExt}>
+                <Plus className="rotate-45 hover:rotate-90 duration-100 text-[var(--pink)]"/>
+            </button>
+            <div className="w-full flex justify-center items-center gap-x-5 gap-y-2 mt-3 mb-5 flex-col md:flex-row">
+                <div className="w-30 h-30 shrink-0">
+                    <img src={logoURL} alt="charge" className="rounded" />
+                </div>
+                <div className="h-fit md:h-30 flex flex-col justify-center">
+                    <h2 className="font-bold text-xl mb-1 text-[var(--foreground)]">
+                        {props.title}
+                    </h2>
+                    <p className="mb-3">
+                        Please enter the code key you received.
+                    </p>
+                </div>
             </div>
-            <p className="mb-5">
-                Please enter the code key you received.
-            </p>
             <InputOTP disabled={btnType === BtnType.wait}
-            maxLength={12} pattern="^[a-zA-Z0-9]+$" onChange={handleChange} value={OTPVal}>
+                maxLength={12} pattern="^[a-zA-Z0-9]+$" onChange={handleChange} value={OTPVal}>
                 <InputOTPGroup>
                     <InputOTPSlot index={0} />
                     <InputOTPSlot index={1} />
@@ -124,30 +130,30 @@ export const PurchaseCard = (props: {
                 </InputOTPGroup>
             </InputOTP>
             <div className="w-full flex justify-center mt-5">
-                <Button disabled={btnType!==BtnType.fineLen && btnType!==BtnType.error} 
-                 variant={btnType===BtnType.error?"destructive":"default"}
-                 className={btnType===BtnType.success?"bg-[var(--green)]":""}
-                 onClick={validate}>
+                <Button disabled={btnType !== BtnType.fineLen && btnType !== BtnType.error}
+                    variant={btnType === BtnType.error ? "destructive" : "default"}
+                    className={btnType === BtnType.success ? "bg-[var(--green)]" : ""}
+                    onClick={validate}>
                     {
-                        (btnType===BtnType.wait) ? (<>
+                        (btnType === BtnType.wait) ? (<>
                             <Loader2 className="animate-spin" />
                             Please wait
-                        </>):(<></>)
+                        </>) : (<></>)
                     }
                     {
-                        (btnType===BtnType.error) ? (
+                        (btnType === BtnType.error) ? (
                             <>Wrong CDK</>
-                        ):(<></>)
+                        ) : (<></>)
                     }
                     {
-                        (btnType===BtnType.success) ? (
+                        (btnType === BtnType.success) ? (
                             <>Success!</>
-                        ):(<></>)
+                        ) : (<></>)
                     }
                     {
-                        (btnType!==BtnType.error && btnType!==BtnType.success && btnType!==BtnType.wait)?(
+                        (btnType !== BtnType.error && btnType !== BtnType.success && btnType !== BtnType.wait) ? (
                             <>Validate</>
-                        ):(<></>)
+                        ) : (<></>)
                     }
                 </Button>
             </div>
