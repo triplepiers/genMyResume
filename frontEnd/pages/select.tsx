@@ -151,10 +151,10 @@ export default function Select(props: any[]) {
       <div className='min-w-screen max-w-screen min-h-[calc(100vh-var(--header-height))]
             overflow-x-hidden py-10 relative flex flex-col gap-y-10 items-center justify-center'>
         <div className='flex flex-col items-center w-100%'>
-          <h1 className='text-3xl font-bold'>Do you have an existing resume?</h1>
-          <div>If so, you can just review, edit, and update it with new information</div>
+          <h1 className='text-3xl font-bold text-center pb-2'>Do you have an existing resume?</h1>
+          <div className='text-center'>If so, you can just review, edit, and update it with new information</div>
         </div>
-        <div className='shrink-0 flex flex-wrap gap-10 w-100% pb-5'>
+        <div className='shrink-0 flex flex-wrap justify-center gap-10 w-100% pb-5'>
           <div className='flex-1 shrink-0 min-w-75 flex flex-col gap-y-2 items-center'>
             <div className={`text-xl font-bold flex gap-x-1 duration-100 ${!fromScratch ? 'text-[var(--green)]' : ''}`}>
               {!fromScratch ? <CircleCheck style={{ height: '1em' }} /> : ''}

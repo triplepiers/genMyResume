@@ -95,9 +95,9 @@ export default function VIP(props: any[]) {
     return (
         <>
             <div className="min-w-screen max-w-screen min-h-[calc(100vh-var(--header-height))] py-10 px-30 flex flex-col gap-y-10 items-center">
-                <div className="flex flex-col items-center gap-y-3">
-                    <h1 className="text-3xl font-black">Become Our VIP</h1>
-                    <div className="text-[var(--pink)]"><b>Offer:</b> Free upgrade to <b>Monthly Plan</b> for the first 50 registrations !</div>
+                <div className="min-w-80 flex flex-col items-center gap-y-2">
+                    <h1 className="text-3xl font-black text-center w-full">Become Our VIP</h1>
+                    <div className="text-[var(--pink)] text-center w-full"><b>Offer:</b> Free upgrade to <b>Monthly Plan</b> for the first 50 registrations !</div>
                 </div>
                 <div className="w-full flex flex-wrap gap-5 justify-center ">
                     {

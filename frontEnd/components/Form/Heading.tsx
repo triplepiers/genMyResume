@@ -13,11 +13,11 @@ type formKey = "name" | "surname" | "profession" | "city" | "province" | "postco
 const formSchema = z.object({
   name:       z.string().min(2, { message: "Name must be at least 2 characters.", }).regex(/^[A-Za-z]+$/, { message: "Contains ONLY characters", }),
   surname:    z.string().min(2, { message: "Surname must be at least 2 characters.", }),
-  profession: z.string().regex(/^[A-Za-z\s]+$/).optional(),
-  city:       z.string().regex(/^[A-Za-z\s]+$/).optional(),
-  province:   z.string().regex(/^[A-Za-z\s]+$/).optional(),
-  postcode:   z.string().regex(/^\d{6}$/, { message: '6-bit numbers'}).optional(),
-  phone:      z.string().optional(),
+  profession: z.optional(z.string().regex(/^[A-Za-z\s]*$/)),
+  city:       z.optional(z.string().regex(/^[A-Za-z\s]*$/)),
+  province:   z.optional(z.string().regex(/^[A-Za-z\s]*$/)),
+  postcode:   z.optional(z.string().regex(/^\d{6}$/, { message: '6-bit numbers'})),
+  phone:      z.optional(z.string()),
   email:      z.string().min(1, { message: "Required"}).email({ message: "Invalid Format"})
 })
 

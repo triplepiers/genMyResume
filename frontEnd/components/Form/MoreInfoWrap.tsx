@@ -101,7 +101,7 @@ export const MoreInfoWrap = (props: { updateFormMeta: Function }) => {
                     Other Skills
                 </h2>
                 <div className="form-wrap-container">
-                    <div className="form-wrap-left-col overflow-hidden w-70">
+                    <div className="form-wrap-left-col overflow-hidden w-90 md:w-70">
                         {/* Summary Head */}
                         <div className="flex justify-between mb-1">
                             <h3 className="text-xl font-bold">Summary</h3>
@@ -147,7 +147,7 @@ export const MoreInfoWrap = (props: { updateFormMeta: Function }) => {
                             )
                         }</div>
                     </div>
-                    <div className="pl-5 w-90">
+                    <div className="pl-5 w-100 md:w-90">
                         <h3 className="text-xl font-bold mb-2">Edit Your Skills</h3>
                         <Tabs defaultValue={mode} value={mode} className="w-50%">
                             <TabsList className="mb-2">

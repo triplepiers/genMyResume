@@ -96,9 +96,9 @@ export const SelfStatement = (props: { updateFormMeta: Function }) => {
             <div className="flex gap-5 justify-center">
                 <Button disabled={btnType===BtnType.wait||!canGen} 
                  className={`cursor-pointer rounded-md font-medium 
-                        bg-${canGen?'[var(--green)]':'gray-500'}
                         text-[var(--background)]
                         block px-4 py-[0.2rem] min-w-[6rem] flex gap-1 justify-center items-center`}
+                style={{ backgroundColor: canGen ? 'var(--green)' : 'gray' }}
                  onClick={genSS}>
                     {
                         (btnType===BtnType.wait) ? (<>

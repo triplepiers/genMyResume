@@ -56,7 +56,7 @@ export const AdditionalWrap = (props: { updateFormMeta: Function }) => {
         <div className="form-wrap-container">
             <div className="form-wrap-left-col overflow-hidden">
                 <SummaryHead handleClick={swtichToAdd} />
-                <div className="flex flex-col gap-2 min-w-60">
+                <div className="flex flex-col gap-2 min-w-90 md:min-w-60">
                     {
                         secList.map((item, idx) => (
                             <AddiCard idx={item.uuid} data={item.data}

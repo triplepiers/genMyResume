@@ -51,7 +51,7 @@ export const WorkWrap = (props: { updateFormMeta: Function }) => {
         <div className="form-wrap-container">
             <div className="form-wrap-left-col overflow-hidden">
                 <SummaryHead handleClick={swtichToAdd} />
-                <div className="flex flex-col gap-2 min-w-110">
+                <div className="flex flex-col gap-2 min-w-80 md:min-w-110">
                     {
                         wkList.map((item, idx) => (
                             <WorkCard idx={idx} data={item} 

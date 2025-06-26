@@ -52,7 +52,7 @@ export const EducationWrap = (props: { updateFormMeta: Function }) => {
         <div className="form-wrap-container">
             <div className="form-wrap-left-col overflow-hidden">
                 <SummaryHead handleClick={swtichToAdd} />
-                <div className="flex flex-col gap-2 min-w-60">
+                <div className="flex flex-col gap-2 w-80 md:min-w-60">
                 {
                     eduList.map((item, idx) => 
                         (<EducationCard idx={idx} data={item} 

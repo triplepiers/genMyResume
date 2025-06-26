@@ -143,17 +143,17 @@ export default function Jobs(props: any[]) {
             {contextHolder}
             <div className="min-w-screen max-w-screen min-h-[calc(100vh-var(--header-height))]">
                 <div className="w-full flex justify-center pt-10 px-10">
-                    <div className="text-lg">
+                    <div className="text-lg max-w-[90vw] bg-yellow-500">
                         <h1 className="text-3xl font-black pb-3">Job Search</h1>
                         <p>According to your resume, we found some jobs that suits you the most.</p>
                         {!isVIP ? <p><b>Become our VIP to see more ...</b></p> : <></>}
-                        <Space.Compact style={{ width: '100%', marginTop: '15px' }}>
+                        <Space.Compact style={{ width: '100%', marginTop: '15px'}}>
                             {/* <Input defaultValue="" placeholder="Your preferred job position"
                                 disabled={loading} ref={iptRef} /> */}
                             <Select
                                 disabled={loading}
                                 allowClear
-                                style={{ width: '100%' }}
+                                style={{ width: '100%', maxWidth: 'calc(100vw - 150px)' }}
                                 showSearch
                                 placeholder="Select Job Title"
                                 onChange={resetPreferred}

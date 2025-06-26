@@ -150,7 +150,7 @@ export default function Checkout(props: any[]) {
             <div className="grow-1 w-100%
             flex flex-col items-center justify-center">
                 <h1 className="text-3xl font-bold">{formTitle}</h1>
-                <p dangerouslySetInnerHTML={{ __html: formDesc}} className="mt-2 mb-5"></p>
+                <p dangerouslySetInnerHTML={{ __html: formDesc}} className="mt-2 mb-5 text-center"></p>
                 <div className="w-full max-w-190 flex justify-center">
                     {(getStepContent(activeStep!))}
                 </div>

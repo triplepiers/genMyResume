@@ -165,7 +165,7 @@ export const Education = (props: { edit: number, updateFormStatus: Function }) =
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}
-                className="grid grid-cols-2 gap-5 space-y-0 w-110">
+                className="grid grid-cols-2 gap-5 space-y-0 min-w-80 md:w-110">
                 <div className="col-span-2 sm:col-span-1"><FormField
                     control={form.control}
                     name="institution"

@@ -69,7 +69,7 @@ export const Header = () => {
                 <Link href={'/'}>
                     <div className="flex items-end">
                         <img src={logoURL} alt="logo" className="w-8"/>
-                        <span className="font-bold text-xl">Resume Edge</span>
+                        <span className="font-bold text-xl text-wrap leading-none">Resume Edge</span>
                     </div>
                 </Link>
 
