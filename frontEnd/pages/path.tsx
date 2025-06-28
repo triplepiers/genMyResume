@@ -7,9 +7,12 @@ import axios from '@/lib/axios';
 import lzStr from 'lz-string';
 
 import { genEchartConfig } from '@/lib/configs';
+import { PurchaseCard } from '@/components/Cards/PurchaseCard';
 
 export default function PathSimulator(props: any[]) {
   const [messageApi, contextHolder] = message.useMessage();
+  const [canGen, setCanGen] = useState(false);
+  const [showPurchase, setShowPurchase] = useState(false);
 
   const [isLoadA, setIsLoadA] = useState(false);
   const [compA, setCompA] = useState<string>();
@@ -25,6 +28,20 @@ export default function PathSimulator(props: any[]) {
   const chartRef = useRef<HTMLDivElement>(null);
   // 路由相关
   const router = useRouter();
+
+  // 判断是否需要充值
+  const isNeedCharge = () => {
+    // 因为 Chrome 116 之后禁用了 disabled 组件冒泡，所以只能设 pointer-events: none + 父组件监听
+    if (!canGen) setShowPurchase(true);
+  }
+
+  const handlePurchase = (show: boolean, charged: boolean) => {
+    setShowPurchase(show);
+    if (charged) {
+      setCanGen(true);
+      localStorage.removeItem('hadGenPath'); // 充值后可以重新生成
+    }
+  }
 
   // load Status
   useEffect(() => {
@@ -45,6 +62,11 @@ export default function PathSimulator(props: any[]) {
     const account = localStorage.getItem('account');
     if (!account) router.push('/login');
     else {
+      // 看看之前有没有生成过
+      const isVIP = localStorage.getItem('isVIP') === 'true';
+      const hadGen = localStorage.getItem('hadGenPath') === 'true';
+      if (isVIP || !hadGen) setCanGen(true);
+      // 获取公司列表
       axios.get('/path')
         .then(res => {
           if (res.status === 200) {
@@ -95,6 +117,8 @@ export default function PathSimulator(props: any[]) {
     chartInstance.setOption(genEchartConfig(
       compA, compB, sal_A, sal_B, jg_idx_A, jg_idx_B
     ));
+    localStorage.setItem('hadGenPath', 'true'); // 标记已经生成过了
+    setCanGen(false); // 生成后不能再生成了
   }, [sal_A, sal_B]);
 
   const handleSelectA = (neoVal: string) => {
@@ -138,7 +162,8 @@ export default function PathSimulator(props: any[]) {
   }
 
   return (
-    <>{contextHolder}
+    <>
+      {contextHolder}
       <div className="flex flex-col items-center
       w-screen min-h-[calc(100vh-var(--header-height))] pt-5 pb-20 px-10">
         <div className="w-full flex justify-center pt-10 px-10 mb-[2rem]">
@@ -148,10 +173,11 @@ export default function PathSimulator(props: any[]) {
           </div>
         </div>
         <div className='w-full flex flex-wrap justify-center md:flex-row gap-x-10 gap-y-2 mb-[1rem]'>
-          <div className='flex items-center gap-x-2'>
+          <div className='flex items-center gap-x-2' onClick={isNeedCharge}>
             <div className='text-[var(--blue)] font-bold text-nowrap'>Company 1: </div>
             <Select
               disabled={isLoadA}
+              className={`pointer-events-${canGen ? 'auto' : 'none'}`}
               showSearch
               placeholder="Select Company"
               style={{ width: 280 }}
@@ -159,10 +185,11 @@ export default function PathSimulator(props: any[]) {
               options={genCompList(compB)}
             />
           </div>
-          <div className='flex items-center gap-2'>
+          <div className='flex items-center gap-2' onClick={isNeedCharge}>
             <div className='text-[var(--pink)] font-bold text-nowrap'>Company 2: </div>
             <Select
               disabled={isLoadB}
+              className={`pointer-events-${canGen ? 'auto' : 'none'}`}
               showSearch
               placeholder="Select Company"
               style={{ width: 280 }}
@@ -182,6 +209,9 @@ export default function PathSimulator(props: any[]) {
           }
         </div>
       </div>
+      {
+        showPurchase ? <PurchaseCard tid='path' title='Exceeded the free usage limit' updateShow={handlePurchase} /> : <></>
+      }
     </>
   )
 }

@@ -1,13 +1,14 @@
 import { useEffect } from "react";
 import { useState } from "react";
-import { set, useForm } from "react-hook-form";
-import { string, z } from "zod"
+import { useForm } from "react-hook-form";
+import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 
-import { Form, FormItem, FormField, FormLabel, FormControl, FormMessage } from "../ui/form";
+import { Form, FormItem, FormField, FormControl, FormMessage } from "../ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
+import { PurchaseCard } from "@/components/Cards/PurchaseCard";
 
 import axios from "@/lib/axios";
 
@@ -22,6 +23,7 @@ const formSchema = z.object({
 export const SelfStatement = (props: { updateFormMeta: Function }) => {
     const [canGen, setCanGen] = useState(false)
     const [btnType, setBtnType]  = useState(BtnType.norm);
+    const [showPurchase, setShowPurchase] = useState(false);
     useEffect(() => {
         props.updateFormMeta({
             title: 'Self Statement',
@@ -52,8 +54,12 @@ export const SelfStatement = (props: { updateFormMeta: Function }) => {
         axios.post('/ss', { data: values.selfStatement }) // save
     }
 
+    const tryGen = () => {
+        if (!canGen) setShowPurchase(true);
+        else         genSS();
+    }
+
     const genSS = () => {
-        if (!canGen) return;
         setBtnType(BtnType.wait)
         axios.post('/ss/gen')
         .then((res) => {
@@ -69,7 +75,13 @@ export const SelfStatement = (props: { updateFormMeta: Function }) => {
         })
     }
 
+    const handlePurchase = (show: boolean, charged: boolean) => {
+        setShowPurchase(show);
+        if (charged) genSS();
+    }
+    
     return (
+        <>
         <div className="flex flex-col gap-2 w-full items-center">
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)}
@@ -94,12 +106,11 @@ export const SelfStatement = (props: { updateFormMeta: Function }) => {
                 </form>
             </Form>
             <div className="flex gap-5 justify-center">
-                <Button disabled={btnType===BtnType.wait||!canGen} 
+                <Button disabled={btnType===BtnType.wait} 
                  className={`cursor-pointer rounded-md font-medium 
-                        text-[var(--background)]
+                        text-[var(--background)] bg-[var(--green)] hover:bg-[var(--green)]
                         block px-4 py-[0.2rem] min-w-[6rem] flex gap-1 justify-center items-center`}
-                style={{ backgroundColor: canGen ? 'var(--green)' : 'gray' }}
-                 onClick={genSS}>
+                 onClick={tryGen}>
                     {
                         (btnType===BtnType.wait) ? (<>
                             <Loader2 className="animate-spin" />
@@ -119,5 +130,10 @@ export const SelfStatement = (props: { updateFormMeta: Function }) => {
                 </button>
             </div>
         </div>
+        {
+            showPurchase ? <PurchaseCard updateShow={handlePurchase} tid='ss' title='Exceeded the free usage limit'/> : <></>
+        }
+        
+        </>
     )
 }

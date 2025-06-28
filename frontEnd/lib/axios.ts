@@ -4,7 +4,7 @@ import axios from "axios";
 const apiClient = axios.create({
     // baseURL: 'http://localhost:8080/api',  // test local
     baseURL: 'http://www.seabee.icu/api/',
-    timeout: 120000 // 120s => 限制并发之后有点慢
+    timeout: 1200000 // 120s => 限制并发之后有点慢
 })
 
 // 请求拦截器：给 GET / POST 统一塞 phone

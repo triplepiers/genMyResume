@@ -24,7 +24,18 @@ export const PurchaseCard = (props: {
     tid: string, title: string
 }) => {
     var tid = props.tid;
-    const logoURL = `/charge/${tid.includes('vip')?tid[0]==='1'?'30':'128':'5'}.png`;
+    /* 定价:
+        - default: 2$ (模版/自我介绍)
+        - vip: 30$ (1vip - monthly), 128$ (2vip - permenant)
+        - else: 5$ (JobRec/10, Path/time)
+    */
+    var price = 2;
+    if (tid.includes('vip')) {
+        price = tid[0] === '1' ? 30 : 128;
+    } else if (['rec', 'path'].includes(tid)) {
+        price = 5;
+    }
+    const logoURL = `/charge/${price}.png`;
 
     useEffect(() => {
         // buy CDK: 没用，只是在后台把 CDK 打出来
@@ -70,7 +81,7 @@ export const PurchaseCard = (props: {
                         axios.post('/usr/vip/add', { tVIP: parseInt(tid) })
                     }
                     setTimeout(() => {
-                        if (tid.includes('vip')) {
+                        if (tid.includes('vip') || ['ss', 'path', 'rec'].includes(tid)) {
                             props.updateShow(false, true);
                         } else {
                             handleExt();

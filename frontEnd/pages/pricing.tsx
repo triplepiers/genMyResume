@@ -20,7 +20,7 @@ const Plans = [
             Free for the 1<sup>st</sup> time,<br /> then 2 <span className="text-[0.6em]">HKD</span> / Time
         </div>,
         job: <div className="pl-[1em]">
-            5 <span className="text-[0.6em]">HKD</span> / 10 Recommended Results
+            10 Recommended Results / Time
         </div>,
         path: <div className="pl-[1em]">
             5 <span className="text-[0.6em]">HKD</span> / Time
@@ -31,7 +31,7 @@ const Plans = [
         price: <div className="font-bold my-2"><span className="text-3xl">30</span> HKD / 30Days</div>,
         resume: <div>✅</div>,
         ss: <div>✅</div>,
-        job: <div className="pl-[1em]">30 Recommended Results / Day</div>,
+        job: <div className="pl-[1em]">30 Recommended Results / Time</div>,
         path: <div className="pl-[1em]">30 Times / Month</div>
     }, {
         id: 2,

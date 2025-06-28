@@ -5,6 +5,7 @@ import Link from "next/link";
 
 import lzStr from 'lz-string';
 import { Table, Descriptions, message, Button, Select, Space, Tag } from 'antd';
+import { PurchaseCard } from '@/components/Cards/PurchaseCard';
 
 import axios from '@/lib/axios';
 
@@ -44,6 +45,10 @@ const cols = [
 
 export default function Jobs(props: any[]) {
     const router = useRouter();
+
+    const [canGen, setCanGen] = useState(false);
+    const [showPurchase, setShowPurchase] = useState(false);
+
     const [messageApi, contextHolder] = message.useMessage();
     const [isVIP, setIsVIP] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -55,6 +60,19 @@ export default function Jobs(props: any[]) {
         if (neoVal === undefined) return;
         if (neoVal !== preferred) setPreferred(neoVal);
     }
+
+    // 判断是否需要充值
+  const isNeedCharge = () => {
+    if (!canGen) setShowPurchase(true);
+  }
+
+  const handlePurchase = (show: boolean, charged: boolean) => {
+    setShowPurchase(show);
+    if (charged) {
+      setCanGen(true);
+      localStorage.removeItem('hadGenRec'); // 充值后可以重新生成
+    }
+  }
 
     const SearchJobs = () => {
         setLoading(true)
@@ -100,6 +118,8 @@ export default function Jobs(props: any[]) {
                 }
             }))
             setLoading(false);
+            localStorage.setItem('hadGenRec', 'true'); // 标记已经生成过了
+            // setCanGen(false); // 生成后不能再生成了
         })
     }
 
@@ -108,9 +128,13 @@ export default function Jobs(props: any[]) {
         const account = localStorage.getItem('account');
         if (!account) router.push('/login');
         else {
-            if (localStorage.getItem('isVIP')) {
-                setIsVIP(localStorage.getItem('isVIP') !== 'false');
-            }
+            // 看看之前有没有生成过
+            const isVIP = localStorage.getItem('isVIP') === 'true';
+            const hadGen = localStorage.getItem('hadGenRec') === 'true';
+            setIsVIP(isVIP);
+            setCanGen(true); // 默认可以生成
+            // if (isVIP || !hadGen) setCanGen(true);
+            // 获取职位列表
             axios.get('/job/titles').then(res => {
                 if (res.status === 200) {
                     return res.data.titles
@@ -143,16 +167,17 @@ export default function Jobs(props: any[]) {
             {contextHolder}
             <div className="min-w-screen max-w-screen min-h-[calc(100vh-var(--header-height))]">
                 <div className="w-full flex justify-center pt-10 px-10">
-                    <div className="text-lg max-w-[90vw] bg-yellow-500">
+                    <div className="text-lg max-w-[90vw]">
                         <h1 className="text-3xl font-black pb-3">Job Search</h1>
                         <p>According to your resume, we found some jobs that suits you the most.</p>
                         {!isVIP ? <p><b>Become our VIP to see more ...</b></p> : <></>}
-                        <Space.Compact style={{ width: '100%', marginTop: '15px'}}>
+                        <Space.Compact style={{ width: '100%', marginTop: '15px'}} onClick={isNeedCharge}>
                             {/* <Input defaultValue="" placeholder="Your preferred job position"
                                 disabled={loading} ref={iptRef} /> */}
                             <Select
                                 disabled={loading}
                                 allowClear
+                                className={`pointer-events-${canGen ? 'auto' : 'none'}`}
                                 style={{ width: '100%', maxWidth: 'calc(100vw - 150px)' }}
                                 showSearch
                                 placeholder="Select Job Title"
@@ -160,8 +185,11 @@ export default function Jobs(props: any[]) {
                                 onClear={() => resetPreferred("")}
                                 options={jobTitles}
                             />
-                            <Button type="primary" style={{ backgroundColor: 'var(--blue)' }}
-                                onClick={SearchJobs} disabled={loading}>Search</Button>
+                            <Button type="primary" 
+                                style={{ backgroundColor: 'var(--blue)' }} className={`pointer-events-${canGen ? 'auto' : 'none'}`}
+                                onClick={SearchJobs} disabled={loading}>
+                                Search
+                            </Button>
                         </Space.Compact>
                     </div>
                 </div>
@@ -202,6 +230,9 @@ export default function Jobs(props: any[]) {
                     />
                 </div>
             </div>
+            {
+                showPurchase ? <PurchaseCard tid='rec' title='Exceeded the free usage limit' updateShow={handlePurchase} /> : <></>
+            }
         </>
     );
 }
