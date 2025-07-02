@@ -30,11 +30,9 @@ ResumeEdge 是一个面向香港学生的一站式求职网站，是简历网站
 
     - 提供多种模版，支持切换字体和主题色
     - 支持将结果导出为 PNG / PDF 格式
-
 - 求职方面
 
     - 岗位推荐：根据求职者意向与简历内容，推送 jobsDB 上的真实岗位
-- 
     - 职业路径模拟：支持对比就职于两家企业后的职业发展路径变化趋势（纯模拟）
 
 ## 技术栈与项目结构
@@ -77,7 +75,7 @@ ResumeEdge 是一个面向香港学生的一站式求职网站，是简历网站
     - 文件识别：
 
         - PDF 基于 [tesseract.js](https://github.com/naptha/tesseract.js#tesseractjs) 的 OCR 功能实现
-  
+        
           - 相关代码 [参考](https://github.com/racosa/pdf2text-ocr) 并修改成了 TS 版本
           - pdf-dist 部分的配置很坑爹（dev 能跑但打包疯狂报错），详见 `select.tsx`
 
@@ -323,24 +321,18 @@ server {
 
 ![](./imgs/Home.png)
 
-- 标签页
-  - 会显示 `[网页名] | [当前页面]`
-  - TODO：网站名字没起
-
+- 标签页：会显示 `[网页名] | [当前页面]`
+  
 - 顶栏
   - 左侧的 Logo 链接到首页
-    - TODO：LOGO 还没选
+  - 中间是菜单
   - 右侧是登录按钮
-    - TODO：Options 没加超链接
-
+  
 - 主体
-  - 点了 Button 会跳到填表的页面
+  - 点了 Button 会跳到 "简历初始化方式选择" 的页面
   - 如果还没登录就会跳到 “登录/注册” 页面
 
-- 底栏
-
-  - 目前只打了 Copyright
-  - 有需要放的联系方式可以列一下
+- 底栏：目前只打了 Copyright
 
 - 适配屏幕稍窄的情况（ hover 后出现具体菜单选项）：
 
@@ -436,14 +428,15 @@ server {
 
 ![](./imgs/TempSingle.png)
 
-- 点击 Template 可以切换 单列/双列的模版
+- 点击 Template 可以切换 单列/双列的模版（包含 Zety 的十八个模版）
 
-  - 会把 Zety 的十八个模版都写出来的orz
+  > 下面这个是双列的模版
 
-  - 下面这个是双列的模版
+  ![](./imgs/TempDual.png)
 
-    ![](./imgs/TempDual.png)
-
+- 右键可以点选 Edit 返回编辑对应模块
+  ![](./imgs/GoEdit.png)
+  
 - 点击 Download 可以下载 PNG/PDF
 
   - 有限制未购买模版时仅下载一次
