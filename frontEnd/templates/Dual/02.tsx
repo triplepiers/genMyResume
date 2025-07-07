@@ -1,7 +1,10 @@
+/*
+ * Copyright (c) 2025 SeaBee All rights reserved.
+ */
+
 import { genItemTitle } from '@/lib/utils';
 import { 
-    BriefcaseBusinessIcon, GraduationCapIcon, SpeechIcon, ShapesIcon, TrophyIcon, UserIcon, PinIcon,
-    icons
+    BriefcaseBusinessIcon, GraduationCapIcon, SpeechIcon, ShapesIcon, TrophyIcon, UserIcon, PinIcon
 } from 'lucide-react';
 
 import { FullDarkHeader } from '@/components/Templates/Header/FullDark';

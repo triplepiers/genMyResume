@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2025 SeaBee All rights reserved.
+ */
+
 import { useState } from "react";
 import { PaletteBtn } from "@/components/Editor/PaletteBtn";
 import { ColorPicker } from "@/components/Editor/ColorPicker";

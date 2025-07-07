@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2025 SeaBee All rights reserved.
+ */
+
 import Router from "koa-router";
 import {
     getProfile,

@@ -1,5 +1,10 @@
 "use client"
 
+/*
+ * Adapted from shadcn/ui (https://github.com/shadcn/ui), licensed under MIT.
+ * Original copyright by shadcn.
+ */
+
 import * as React from "react"
 import * as LabelPrimitive from "@radix-ui/react-label"
 

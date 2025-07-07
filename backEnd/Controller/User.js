@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2025 SeaBee All rights reserved.
+ */
+
 import userDB from "../db/UserDB.js";
 
 const { users } = userDB.data;

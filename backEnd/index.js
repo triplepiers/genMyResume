@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2025 SeaBee All rights reserved.
+ */
+
 import Koa from 'koa';
 import Router from 'koa-router';
 import cors from '@koa/cors';

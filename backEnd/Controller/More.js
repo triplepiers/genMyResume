@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2025 SeaBee All rights reserved.
+ */
+
 import moreDB from "../db/MoreDB.js";
 
 const { mores } = moreDB.data;

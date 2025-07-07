@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2025 SeaBee All rights reserved.
+ */
+
 import { user_db_file as db_file } from './config.js';
 import { JSONFilePreset } from 'lowdb/node';
 

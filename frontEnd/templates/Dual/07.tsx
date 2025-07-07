@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2025 SeaBee All rights reserved.
+ */
+
 // 和 D06 没啥区别就是说
 import { darkenColor, genItemTitle } from '@/lib/utils';
 import { FullDarkHeader } from '@/components/Templates/Header/FullDark';

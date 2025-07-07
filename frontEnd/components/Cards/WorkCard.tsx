@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2025 SeaBee All rights reserved.
+ */
+
 import { Pencil, Trash2 } from "lucide-react"
 import { formDate } from "@/lib/utils"
 

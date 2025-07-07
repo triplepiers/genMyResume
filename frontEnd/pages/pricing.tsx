@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2025 SeaBee All rights reserved.
+ */
+
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { PurchaseCard } from "@/components/Cards/PurchaseCard";

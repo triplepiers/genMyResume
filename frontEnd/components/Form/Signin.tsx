@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2025 SeaBee All rights reserved.
+ */
+
 import { useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";

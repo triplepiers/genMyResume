@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2025 SeaBee All rights reserved.
+ */
+
 import ssDB from "../db/SelfStatementDB.js";
 import { isVIP } from "./User.js";
 import { getAllEdus } from "./Education.js";

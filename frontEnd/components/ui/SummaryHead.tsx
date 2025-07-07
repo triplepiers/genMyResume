@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2025 SeaBee All rights reserved.
+ */
+
 import { SquarePlus } from "lucide-react";
 
 export const SummaryHead = (props: { handleClick: any }) => {

@@ -1,3 +1,8 @@
+/*
+ * Adapted from shadcn/ui (https://github.com/shadcn/ui), licensed under MIT.
+ * Original copyright by shadcn.
+ */
+
 import * as React from "react"
 import * as CheckboxPrimitive from "@radix-ui/react-checkbox"
 import { CheckIcon } from "lucide-react"

@@ -1,10 +1,13 @@
+/*
+ * Copyright (c) 2025 SeaBee All rights reserved.
+ */
+
 import { genItemTitle } from '@/lib/utils';
 import { FullDarkHeader } from '@/components/Templates/Header/FullDark';
 import { NoIconTitle } from '@/components/Templates/BlockTitle/NoIcon';
 import { NoIconContact } from '@/components/Templates/Contact/NoIcon';
 import { LRItem } from '@/components/Templates/Item/LR';
 import { LevelDot } from '@/components/Templates/showLevel/Dot';
-import { AnyMxRecord } from 'dns';
 
 const upperTitle = false
 const mFirst = false

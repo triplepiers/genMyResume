@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2025 SeaBee All rights reserved.
+ */
+
 import { headExist, getHead } from "./Head.js";
 import { getAllEdus } from "./Education.js";
 import { getAllWorks } from "./Work.js";

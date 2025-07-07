@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2025 SeaBee All rights reserved.
+ */
+
 import OpenAI from "openai";
 import 'dotenv/config';
 

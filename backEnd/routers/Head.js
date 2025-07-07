@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2025 SeaBee All rights reserved.
+ */
+
 import Router from "koa-router";
 import { headExist, getHead, addHead, updateHead } from "../Controller/Head.js";
 

@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2025 SeaBee All rights reserved.
+ */
+
 import "@/styles/globals.css";
 import '@/styles/customTailWind.css';
 import "@/styles/fontpicker.min.css";

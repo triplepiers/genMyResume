@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2025 SeaBee All rights reserved.
+ */
+
 import headDB from "../db/HeadDB.js";
 
 const { heads } = headDB.data;

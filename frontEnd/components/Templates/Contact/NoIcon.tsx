@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2025 SeaBee All rights reserved.
+ */
+
 export const NoIconContact = (props: {
     inline: boolean,
     phone: string, email: string,

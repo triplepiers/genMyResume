@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2025 SeaBee All rights reserved.
+ */
+
 // D01 左右镜像版本 ...
 import { darkenColor, genItemTitle } from '@/lib/utils';
 import { FullDarkHeader } from '@/components/Templates/Header/FullDark';

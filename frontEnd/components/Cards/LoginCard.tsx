@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2025 SeaBee All rights reserved.
+ */
+
 import { LoginForm } from "../Form/Login"
 
 export const LoginCard = () => {

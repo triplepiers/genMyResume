@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2025 SeaBee All rights reserved.
+ */
+
 import { formDate } from "@/lib/utils"
 
 function genDateBlock(

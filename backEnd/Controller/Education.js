@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2025 SeaBee All rights reserved.
+ */
+
 import eduDB from "../db/EduDB.js";
 
 const { edus } = eduDB.data;

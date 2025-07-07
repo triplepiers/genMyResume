@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2025 SeaBee All rights reserved.
+ */
+
 import workDB from "../db/WorkDB.js";
 
 const { works } = workDB.data;

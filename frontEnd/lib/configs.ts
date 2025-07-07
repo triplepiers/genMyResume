@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2025 SeaBee All rights reserved.
+ */
+
 const jobGrades = ['Entry-Level', 'Mid-Level', 'Senior-Level', 'Management-Level'];
 const EchartBasicOption = {
     legend: {

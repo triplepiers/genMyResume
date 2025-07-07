@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2025 SeaBee All rights reserved.
+ */
+
 import { capitalized, formDate } from '@/lib/utils';
 
 function genHead(headPF: any) {

@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2025 SeaBee All rights reserved.
+ */
+
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod"

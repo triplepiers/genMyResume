@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2025 SeaBee All rights reserved.
+ */
+
 import { genCDK, checkCDK } from "../utils/CDK.js";
 import { buy } from "../Controller/Template.js";
 import Router from "koa-router";

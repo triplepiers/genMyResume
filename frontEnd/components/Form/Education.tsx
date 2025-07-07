@@ -1,6 +1,10 @@
+/*
+ * Copyright (c) 2025 SeaBee All rights reserved.
+ */
+
 import { useEffect, useState } from "react";
-import { set, useForm } from "react-hook-form";
-import { string, z } from "zod"
+import { useForm } from "react-hook-form";
+import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"

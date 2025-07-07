@@ -1,8 +1,15 @@
 /*
-    Ref:
-    https://www.oryoy.com/news/shi-yong-react-he-jspdf-shi-xian-dom-zhuan-pdf-de-xiang-xi-bu-zhou-yu-dai-ma-shi-li.html
+    
 */
 'use client'
+
+/*
+ * Copyright (c) 2025 SeaBee All rights reserved.
+ * 
+ * Credit to:
+ *  https://www.oryoy.com/news/shi-yong-react-he-jspdf-shi-xian-dom-zhuan-pdf-de-xiang-xi-bu-zhou-yu-dai-ma-shi-li.html
+ */
+
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import styles from '@/styles/pdf.module.css';

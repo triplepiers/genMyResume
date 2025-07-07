@@ -1,12 +1,14 @@
 'use client'
+
+/*
+ * Copyright (c) 2025 SeaBee All rights reserved.
+ */
+
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import axios from "@/lib/axios";
 
 import { createWorker } from 'tesseract.js';
-// import * as PDFJS from 'pdfjs-dist/legacy/build/pdf.mjs';
-// PDFJS.GlobalWorkerOptions.workerSrc = '/pdf-dist/pdf.worker.min.mjs';
-
 import mammoth from 'mammoth';
 
 import { CircleCheck, NotebookPen } from 'lucide-react';

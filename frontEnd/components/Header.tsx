@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2025 SeaBee All rights reserved.
+ */
+
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";

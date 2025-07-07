@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2025 SeaBee All rights reserved.
+ */
+
 // 属于是和 Education 没啥区别
 import Router from "koa-router";
 import {

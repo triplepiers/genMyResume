@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2025 SeaBee All rights reserved.
+ */
+
 // 主要用于充值，生成的 CDK 是一个 16 位十六进制（大写）字符串
 import CryptoJS from "crypto-js";
 const MD5 = CryptoJS.MD5;

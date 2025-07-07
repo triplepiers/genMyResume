@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2025 SeaBee All rights reserved.
+ */
+
 import axios from "@/lib/axios";
 import { useState, useEffect } from "react";
 

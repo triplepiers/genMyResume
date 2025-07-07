@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2025 SeaBee All rights reserved.
+ */
+
 import { MailIcon, PhoneIcon } from 'lucide-react';
 
 export const IconContact = (props: {

@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2025 SeaBee All rights reserved.
+ */
+
 import { SigninForm } from "../Form/Signin";
 
 export const SigninCard = () => {

@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2025 SeaBee All rights reserved.
+ */
+
 import { job_db_files } from './config.js';
 import { JSONFilePreset } from 'lowdb/node';
 

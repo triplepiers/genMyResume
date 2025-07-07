@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2025 SeaBee All rights reserved.
+ */
+
 function levelToIdx(level: string) {
     switch (level) {
         case 'Elementary':

@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2025 SeaBee All rights reserved.
+ */
+
 import userDB from "./UserDB.js";
 import headDB from "./HeadDB.js";
 import eduDB from "./EduDB.js";

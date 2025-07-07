@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2025 SeaBee All rights reserved.
+ */
+
 export const NoIconTitle = (props: {
     titleFont?: string,
     underLine: boolean, topLine: boolean,

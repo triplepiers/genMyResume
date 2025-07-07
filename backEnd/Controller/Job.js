@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2025 SeaBee All rights reserved.
+ */
+
 import lzStr from 'lz-string';
 import pLimit from 'p-limit';
 import { readFile } from 'fs/promises';

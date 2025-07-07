@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2025 SeaBee All rights reserved.
+ */
+
 import { useEffect } from "react";
 import { useState } from "react";
 import { Work } from "./Work";

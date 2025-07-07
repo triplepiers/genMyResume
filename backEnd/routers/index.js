@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2025 SeaBee All rights reserved.
+ */
+
 import cdkRouter from "./CDK.js";
 import userRouter from "./User.js";
 import headRouter from "./Head.js";

@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2025 SeaBee All rights reserved.
+ */
+
 import { useRouter } from "next/router";
 
 export default function Home(props: any[]) {

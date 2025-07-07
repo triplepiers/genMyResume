@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2025 SeaBee All rights reserved.
+ */
+
 export const IconTitle = (props: {
     icon: any, rounded: boolean, rotate?: boolean,
     underLine: boolean, topLine: boolean,

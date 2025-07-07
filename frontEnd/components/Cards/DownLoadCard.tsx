@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2025 SeaBee All rights reserved.
+ */
+
 import axios from "@/lib/axios";
 import { Plus, FileDown, ImageDown } from "lucide-react";
 

@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2025 SeaBee All rights reserved.
+ */
+
 import Router from "koa-router";
 import { headExist } from "../Controller/Head.js";
 import { isVIP } from "../Controller/User.js";

@@ -1,4 +1,9 @@
 'use client'
+
+/*
+ * Copyright (c) 2025 SeaBee All rights reserved.
+ */
+
 import { useEffect, useState, useRef } from "react";
 
 import { Palette } from "@/components/Editor/Palette";

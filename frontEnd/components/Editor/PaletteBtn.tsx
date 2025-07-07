@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2025 SeaBee All rights reserved.
+ */
+
 export const PaletteBtn = (props: {
     bgClr: string, idx: number, onBtnClick: Function, selected: boolean
 }) => {

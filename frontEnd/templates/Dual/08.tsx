@@ -1,4 +1,8 @@
-import { darkenColor, genItemTitle } from '@/lib/utils';
+/*
+ * Copyright (c) 2025 SeaBee All rights reserved.
+ */
+
+import { genItemTitle } from '@/lib/utils';
 import { FullDarkHeader } from '@/components/Templates/Header/FullDark';
 import { NoIconTitle } from '@/components/Templates/BlockTitle/NoIcon';
 import { NoIconContact } from '@/components/Templates/Contact/NoIcon';

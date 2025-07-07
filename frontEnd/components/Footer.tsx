@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2025 SeaBee All rights reserved.
+ */
+
 export const Footer = () => {
     return (
         <footer className="h-40

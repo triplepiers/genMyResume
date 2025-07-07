@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2025 SeaBee All rights reserved.
+ */
+
 import addDB from "../db/AdditionalDB.js";
 import { genUUID } from "../utils/CDK.js";
 

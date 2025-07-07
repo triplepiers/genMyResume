@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2025 SeaBee All rights reserved.
+ */
+
 import S01 from './01'
 import S02 from './02'
 import S03 from './03'

@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2025 SeaBee All rights reserved.
+ */
+
 import { IconContact } from "../Contact/Icon";
 import { NoIconContact } from "../Contact/NoIcon";
 import { isDarkColor } from "@/lib/utils";

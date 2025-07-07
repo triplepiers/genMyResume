@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2025 SeaBee All rights reserved.
+ */
+
 import { useState, useEffect } from "react";
 
 import { FaFileLines } from "react-icons/fa6";
