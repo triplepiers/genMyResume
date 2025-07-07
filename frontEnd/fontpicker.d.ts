@@ -1,3 +1,8 @@
+/*
+ * Adapted from zygomatic (https://www.jsfontpicker.com), licensed under MIT.
+ * Original copyright by zygomatic.
+ */
+
 import { default as default_2 } from 'events';
 
 declare type Category = 'serif' | 'sans-serif' | 'display' | 'handwriting' | 'monospace';
