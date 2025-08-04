@@ -1,5 +1,7 @@
 """
     Copyright (c) 2025 SeaBee All rights reserved.
+    BUG: 由于 jobsdb 现在采取了更严格的反爬机制，目前用 requests 直接请求已经不可行了
+    可以用 requests-html 代替 requests 来模拟浏览器行为，同时注意设置 cookie
 """
 
 import requests
