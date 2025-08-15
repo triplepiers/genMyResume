@@ -1,22 +1,20 @@
 """
     Copyright (c) 2025 SeaBee All rights reserved.
     
-    Due to jobsDB has strengthened its anti-scraping mechanisum, selenium is currently being used as a replacement for the requests library for scraping.
+    Due to jobsDB strengthening its anti-scraping measures, selenium is currently being used as a replacement for the requests library for scraping.
 
     Prerequisite: Install the driver according to your local Chrome version and add it to the environment variables.
                   You can find drivers at https://developer.chrome.google.cn/docs/chromedriver/downloads?hl=zh-cn
-    
-    TODO:         Modify the stop criteria to halt loading once specific elements are rendered
-                  Scraping performance is suboptimal in Mainland China, sometimes > 1 min/page
 """
 
-import requests
-import time
-import random
-import json
+import time, json, random
 from datetime import datetime
 from bs4 import BeautifulSoup
+
 from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.wait import WebDriverWait
 
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36'
@@ -26,14 +24,34 @@ compNameSet, jobTitleList = set(), []
 detailList, reqList = [], []
 
 browser = webdriver.Chrome()
-def get_response(url):
-    browser.get(url)
+browser.set_page_load_timeout(10) # 默认 10s 截止, 可以根据网络状态更改
+
+def get_response(url, isPage=True):
+    try:
+        browser.get(url)
+    except Exception:
+        browser.execute_script("window.stop()") # 否则获取 page_source 会报错
+
+    """
+    TODO: Modify the stop criteria to halt loading once specific elements are rendered
+          Scraping performance is suboptimal in Mainland China, sometimes > 1 min/page
+    
+    BUG:  the ClassName of target element would change every visit (?)
+    """
+    # 10s 内每 1s 进行轮询（默认 interval = 0.5s）
+    # if isPage:
+    #     WebDriverWait(browser, 10, 1)\
+    #         .until(EC.presence_of_element_located((By.CLASS_NAME, '_1lns5ab0 _6c7qzn5c _6c7qznhk _6c7qzn70')))
+    # else:
+    #     WebDriverWait(browser, 10, 1)\
+    #         .until(EC.presence_of_element_located((By.CLASS_NAME, '_1lns5ab0 _6c7qzn5c _6c7qznhk _6c7qzn7c')))
+
     return browser.page_source
 
 def getReqs(jid):
     # 用 Salary Range 筛掉一些非应届生岗位
     detailURL = f'https://hk.jobsdb.com/job/{jid}?type=standard&amp;ref=search-standalone'
-    page_source = get_response(detailURL)
+    page_source = get_response(detailURL, isPage=False)
 
     # parse
     soup = BeautifulSoup(page_source, 'html.parser')
@@ -102,7 +120,7 @@ if __name__ == '__main__':
     # 爬 10 页
     for idx in range(1, 21):
         print(idx)
-        scrabPage(idx) # 爬了快 18min
+        scrabPage(idx)
         print(f'Now get: {len(detailList)}')
     
     with open('time.log', 'w', encoding='utf-8') as f:
