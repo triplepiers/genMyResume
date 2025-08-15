@@ -1,7 +1,13 @@
 """
     Copyright (c) 2025 SeaBee All rights reserved.
-    BUG: 由于 jobsdb 现在采取了更严格的反爬机制，目前用 requests 直接请求已经不可行了
-    可以用 requests-html 代替 requests 来模拟浏览器行为，同时注意设置 cookie
+    
+    Due to jobsDB has strengthened its anti-scraping mechanisum, selenium is currently being used as a replacement for the requests library for scraping.
+
+    Prerequisite: Install the driver according to your local Chrome version and add it to the environment variables.
+                  You can find drivers at https://developer.chrome.google.cn/docs/chromedriver/downloads?hl=zh-cn
+    
+    TODO:         Modify the stop criteria to halt loading once specific elements are rendered
+                  Scraping performance is suboptimal in Mainland China, sometimes > 1 min/page
 """
 
 import requests
@@ -10,6 +16,7 @@ import random
 import json
 from datetime import datetime
 from bs4 import BeautifulSoup
+from selenium import webdriver
 
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36'
@@ -18,31 +25,33 @@ headers = {
 compNameSet, jobTitleList = set(), []
 detailList, reqList = [], []
 
+browser = webdriver.Chrome()
+def get_response(url):
+    browser.get(url)
+    return browser.page_source
 
 def getReqs(jid):
     # 用 Salary Range 筛掉一些非应届生岗位
     detailURL = f'https://hk.jobsdb.com/job/{jid}?type=standard&amp;ref=search-standalone'
-    response = requests.get(detailURL, headers=headers)
+    page_source = get_response(detailURL)
 
-    if response.status_code == 200:
-        soup = BeautifulSoup(response.text, 'html.parser')
-        desc = soup.select('[data-automation="jobAdDetails"] > div > p')
-        for t in desc:
-            tagTitle = t.text.lower()
-            isTar = 'requirement' in tagTitle or 'qualification' in tagTitle
-            # print(tagTitle, isTar)
-            if isTar:
-                tags = t.find_next_sibling()
-                if tags == None: break
-                return [
-                    tag.text for tag in
-                    tags.find_all('p')
-                ]
-        print('Req Not Found')
-        return False
-    else:
-        print('Request Failed', response.status_code)
-        return False
+    # parse
+    soup = BeautifulSoup(page_source, 'html.parser')
+    desc = soup.select('[data-automation="jobAdDetails"] > div > p')
+    for t in desc:
+        tagTitle = t.text.lower()
+        isTar = 'requirement' in tagTitle or 'qualification' in tagTitle
+        # print(tagTitle, isTar)
+        if isTar:
+            tags = t.find_next_sibling()
+            if tags == None: break
+            return [
+                tag.text for tag in
+                tags.find_all('p')
+            ]
+    print('Req Not Found')
+    return False
+ 
 
 def getJobInfo(job):
     jid = job['data-job-id'] # 8-bit string
@@ -62,35 +71,32 @@ def getJobInfo(job):
 def scrabPage(pageIdx):
     # 用 Salary Range 筛掉一些非应届生岗位
     url = f'https://hk.jobsdb.com/e-commerce-jobs/full-time?page={pageIdx}&salaryrange=0-35000&salarytype=monthly&sortmode=ListedDate'
-    response = requests.get(url, headers=headers)
-    if response.status_code == 200:
-        # init parser
-        soup = BeautifulSoup(response.text, 'html.parser')
-        # 筛选单页面的所有 job
-        for idx, job in enumerate(soup.select('[data-testid="job-card"]')):
-            print(f'Job {pageIdx}-{idx}')
-            jid, detail, reqs = getJobInfo(job)
-            if reqs == False or len(reqs) == 0:
-                continue
-            else:
-                print('OK')
-            detailList.append({
-                'jid': jid,
-                'detail': detail
-            })
-            reqList.append({
-                'jid': jid,
-                'reqs': reqs
-            })
-            jobTitleList.append({
-                'jid': jid,
-                'title': detail['title']
-            })
-            # time.sleep(random.randint(5, 20))
-            time.sleep(random.randint(1, 3))
-    else:
-        print('Request Failed', response.status_code)
-        return
+    page_source = get_response(url)
+
+    # init parser
+    soup = BeautifulSoup(page_source, 'html.parser')
+    # 筛选单页面的所有 job
+    for idx, job in enumerate(soup.select('[data-testid="job-card"]')):
+        print(f'Job {pageIdx}-{idx}')
+        jid, detail, reqs = getJobInfo(job)
+        if reqs == False or len(reqs) == 0:
+            continue
+        else:
+            print('OK')
+        detailList.append({
+            'jid': jid,
+            'detail': detail
+        })
+        reqList.append({
+            'jid': jid,
+            'reqs': reqs
+        })
+        jobTitleList.append({
+            'jid': jid,
+            'title': detail['title']
+        })
+        # time.sleep(random.randint(5, 20))
+        time.sleep(random.randint(1, 3))
 
 if __name__ == '__main__':
     # 爬 10 页
