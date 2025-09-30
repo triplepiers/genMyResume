@@ -84,18 +84,21 @@ def scrabPage(pageIdx):
             continue
         else:
             print('OK')
-        detailList.append({
-            'jid': jid,
-            'detail': detail
-        })
-        reqList.append({
-            'jid': jid,
-            'reqs': reqs
-        })
-        jobTitleList.append({
-            'jid': jid,
-            'title': detail['title']
-        })
+        try:
+            detailList.append({
+                'jid': jid,
+                'detail': detail
+            })
+            reqList.append({
+                'jid': jid,
+                'reqs': reqs
+            })
+            jobTitleList.append({
+                'jid': jid,
+                'title': detail['title']
+            })
+        except Exception:
+            continue
         # time.sleep(random.randint(5, 20))
         time.sleep(random.randint(1, 3))
 
